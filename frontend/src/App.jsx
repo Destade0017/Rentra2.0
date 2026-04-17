@@ -13,6 +13,8 @@ import Messages from './pages/Messages.jsx';
 import Settings from './pages/Settings.jsx';
 import Login from './pages/auth/Login.jsx';
 import Register from './pages/auth/Register.jsx';
+import ForgotPassword from './pages/auth/ForgotPassword.jsx';
+import ResetPassword from './pages/auth/ResetPassword.jsx';
 import TenantDashboard from './pages/TenantDashboard.jsx';
 import { ProtectedRoute, RoleRoute } from './components/auth/ProtectedRoutes.jsx';
 import { useAuthStore } from './store/useAuthStore.js';
@@ -26,6 +28,8 @@ function App() {
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         {/* Protected Routes Wrapper */}
         <Route 
@@ -38,74 +42,80 @@ function App() {
                   <TopBar />
                   <main className="p-4 md:p-8 max-w-7xl mx-auto w-full flex-1">
                     <Routes>
-                      {/* Landlord Only Routes */}
-                      <Route path="/" element={
-                        <RoleRoute allowedRoles={['landlord']}>
-                          <Dashboard />
-                        </RoleRoute>
-                      } />
-                      <Route path="/properties" element={
-                        <RoleRoute allowedRoles={['landlord']}>
-                          <Properties />
-                        </RoleRoute>
-                      } />
-                      <Route path="/tenants" element={
-                        <RoleRoute allowedRoles={['landlord']}>
-                          <Tenants />
-                        </RoleRoute>
-                      } />
-                      <Route path="/tenants/:id" element={
-                        <RoleRoute allowedRoles={['landlord']}>
-                          <TenantDetails />
-                        </RoleRoute>
-                      } />
-                      <Route path="/assistant" element={
-                        <RoleRoute allowedRoles={['landlord']}>
-                          <SmartAssistant />
-                        </RoleRoute>
-                      } />
-                      <Route path="/payments" element={
-                        <RoleRoute allowedRoles={['landlord']}>
-                          <Payments />
-                        </RoleRoute>
-                      } />
-                      <Route path="/maintenance" element={
-                        <RoleRoute allowedRoles={['landlord']}>
-                          <Maintenance />
-                        </RoleRoute>
-                      } />
-                      <Route path="/messages" element={
-                        <RoleRoute allowedRoles={['landlord']}>
-                          <Messages />
-                        </RoleRoute>
-                      } />
-                      <Route path="/settings" element={
-                        <RoleRoute allowedRoles={['landlord']}>
-                          <Settings />
-                        </RoleRoute>
-                      } />
+                      {/* Landlord Routes */}
+                      <Route 
+                        path="/" 
+                        element={
+                          <RoleRoute allowedRoles={['landlord']}>
+                            <Dashboard />
+                          </RoleRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/properties" 
+                        element={
+                          <RoleRoute allowedRoles={['landlord']}>
+                            <Properties />
+                          </RoleRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/tenants" 
+                        element={
+                          <RoleRoute allowedRoles={['landlord']}>
+                            <Tenants />
+                          </RoleRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/tenants/:id" 
+                        element={
+                          <RoleRoute allowedRoles={['landlord']}>
+                            <TenantDetails />
+                          </RoleRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/assistant" 
+                        element={
+                          <RoleRoute allowedRoles={['landlord']}>
+                            <SmartAssistant />
+                          </RoleRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/payments" 
+                        element={
+                          <RoleRoute allowedRoles={['landlord']}>
+                            <Payments />
+                          </RoleRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/maintenance" 
+                        element={
+                          <RoleRoute allowedRoles={['landlord']}>
+                            <Maintenance />
+                          </RoleRoute>
+                        } 
+                      />
 
-                      {/* Tenant Only Routes */}
-                      <Route path="/tenant-dashboard" element={
-                        <RoleRoute allowedRoles={['tenant']}>
-                          <TenantDashboard />
-                        </RoleRoute>
-                      } />
-                      <Route path="/rent-status" element={
-                        <RoleRoute allowedRoles={['tenant']}>
-                          <Payments />
-                        </RoleRoute>
-                      } />
-                      <Route path="/complaints" element={
-                        <RoleRoute allowedRoles={['tenant']}>
-                          <Maintenance />
-                        </RoleRoute>
-                      } />
+                      {/* Tenant Routes */}
+                      <Route 
+                        path="/tenant-dashboard" 
+                        element={
+                          <RoleRoute allowedRoles={['tenant']}>
+                            <TenantDashboard />
+                          </RoleRoute>
+                        } 
+                      />
+
+                      {/* Shared Routes */}
+                      <Route path="/messages" element={<Messages />} />
+                      <Route path="/settings" element={<Settings />} />
                       
-                      {/* Default Redirect based on Role */}
-                      <Route path="*" element={
-                        <Navigate to={user?.role === 'landlord' ? '/' : '/tenant-dashboard'} replace />
-                      } />
+                      {/* Fallback */}
+                      <Route path="*" element={<Navigate to="/" replace />} />
                     </Routes>
                   </main>
                 </div>

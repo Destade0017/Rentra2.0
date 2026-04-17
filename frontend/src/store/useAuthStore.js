@@ -69,6 +69,51 @@ export const useAuthStore = create()(
         }
       },
 
+      // Forgot Password action
+      forgotPassword: async (email) => {
+        set({ loading: true, error: null });
+        try {
+          const response = await api.post('/auth/forgot-password', { email });
+          set({ loading: false });
+          return response.data;
+        } catch (error) {
+          set({ 
+            error: error.response?.data?.message || 'Request failed', 
+            loading: false 
+          });
+          return { success: false, message: get().error };
+        }
+      },
+
+      // Reset Password action
+      resetPassword: async (token, password) => {
+        set({ loading: true, error: null });
+        try {
+          const response = await api.put(`/auth/reset-password/${token}`, { password });
+          if (response.data.success) {
+            const userData = response.data.data;
+            set({ 
+              user: { 
+                id: userData._id, 
+                name: userData.name, 
+                email: userData.email, 
+                role: userData.role 
+              }, 
+              token: userData.token,
+              isAuthenticated: true,
+              loading: false 
+            });
+            return { success: true };
+          }
+        } catch (error) {
+          set({ 
+            error: error.response?.data?.message || 'Reset failed', 
+            loading: false 
+          });
+          return { success: false, message: get().error };
+        }
+      },
+
       // Fetch current user (Production-ready sync)
       fetchMe: async () => {
         try {
