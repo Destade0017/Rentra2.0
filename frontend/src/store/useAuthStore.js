@@ -1,8 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import axios from 'axios';
-
-const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8000/api') + '/auth';
+import api from '../api/axios.js';
 
 export const useAuthStore = create()(
   persist(
@@ -17,7 +15,7 @@ export const useAuthStore = create()(
       login: async (email, password) => {
         set({ loading: true, error: null });
         try {
-          const response = await axios.post(`${API_URL}/login`, { email, password });
+          const response = await api.post('/auth/login', { email, password });
           if (response.data.success) {
             const userData = response.data.data;
             set({ 
@@ -46,7 +44,7 @@ export const useAuthStore = create()(
       register: async (userData) => {
         set({ loading: true, error: null });
         try {
-          const response = await axios.post(`${API_URL}/register`, userData);
+          const response = await api.post('/auth/register', userData);
           if (response.data.success) {
             const registeredUser = response.data.data;
             set({ 
@@ -73,18 +71,13 @@ export const useAuthStore = create()(
 
       // Fetch current user (Production-ready sync)
       fetchMe: async () => {
-        const { token } = get();
-        if (!token) return;
-        
         try {
-          const response = await axios.get(`${API_URL}/me`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
+          const response = await api.get('/auth/me');
           if (response.data.success) {
             set({ user: response.data.data, isAuthenticated: true });
           }
         } catch (error) {
-          set({ user: null, token: null, isAuthenticated: false });
+          // If 401, the axios interceptor already handles logout
         }
       },
 

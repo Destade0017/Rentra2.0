@@ -1,8 +1,16 @@
 import axios from 'axios';
 import { useAuthStore } from '../store/useAuthStore.js';
 
+// Robust BASE_URL logic
+let baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+
+// If the user forgot to add /api suffix in Vercel environment variables, add it
+if (baseURL.startsWith('http') && !baseURL.endsWith('/api') && !baseURL.includes('/api/')) {
+  baseURL = baseURL.endsWith('/') ? `${baseURL}api` : `${baseURL}/api`;
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -11,7 +19,7 @@ const api = axios.create({
 // Request interceptor for attaching JWT
 api.interceptors.request.use(
   (config) => {
-    // Get token from Zustand store
+    // Get token from Zustand store via getState to avoid hook rules
     const { token } = useAuthStore.getState();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
