@@ -43,8 +43,8 @@ export default function Login() {
             <div className="w-10 h-10 bg-brand-500 rounded-xl flex items-center justify-center shadow-lg shadow-brand-200">
               <Building2 className="text-white" size={24} />
             </div>
-            <span className="text-2xl font-bold tracking-tight text-slate-900">
-              Rent<span className="text-brand-500">Flow</span>
+            <span className="text-2xl font-bold tracking-tight text-slate-900 uppercase">
+              Rentra
             </span>
           </div>
 
@@ -172,9 +172,9 @@ export default function Login() {
         </div>
 
         <div className="relative z-10 text-center">
-            <h2 className="text-2xl font-bold text-white mb-3">Enterprise Property Management</h2>
+            <h2 className="text-2xl font-bold text-white mb-3">Own your rentals. Effortlessly.</h2>
             <p className="text-slate-400 text-sm max-w-sm mx-auto leading-relaxed">
-                Streamline your entire real estate portfolio with world-class automation and executive analytics.
+                Streamline your entire real estate portfolio with world-class automation and Rentra's adaptive analytics.
             </p>
         </div>
       </div>

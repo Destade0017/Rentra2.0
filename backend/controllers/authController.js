@@ -24,11 +24,13 @@ export const register = async (req, res, next) => {
         if (user) {
             res.status(201).json({
                 success: true,
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                token: generateToken(user._id, user.role),
+                data: {
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    token: generateToken(user._id, user.role),
+                }
             });
         }
     } catch (error) {
@@ -48,11 +50,13 @@ export const login = async (req, res, next) => {
         if (user && (await user.matchPassword(password))) {
             res.json({
                 success: true,
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                token: generateToken(user._id, user.role),
+                data: {
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    token: generateToken(user._id, user.role),
+                }
             });
         } else {
             res.status(401).json({ success: false, message: 'Invalid email or password' });
@@ -68,6 +72,10 @@ export const login = async (req, res, next) => {
 export const getMe = async (req, res, next) => {
     try {
         const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
 
         res.status(200).json({
             success: true,

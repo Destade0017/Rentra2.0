@@ -19,14 +19,15 @@ export const useAuthStore = create()(
         try {
           const response = await axios.post(`${API_URL}/login`, { email, password });
           if (response.data.success) {
+            const userData = response.data.data;
             set({ 
               user: { 
-                id: response.data._id, 
-                name: response.data.name, 
-                email: response.data.email, 
-                role: response.data.role 
+                id: userData._id, 
+                name: userData.name, 
+                email: userData.email, 
+                role: userData.role 
               }, 
-              token: response.data.token,
+              token: userData.token,
               isAuthenticated: true,
               loading: false 
             });
@@ -47,14 +48,15 @@ export const useAuthStore = create()(
         try {
           const response = await axios.post(`${API_URL}/register`, userData);
           if (response.data.success) {
+            const registeredUser = response.data.data;
             set({ 
               user: { 
-                id: response.data._id, 
-                name: response.data.name, 
-                email: response.data.email, 
-                role: response.data.role 
+                id: registeredUser._id, 
+                name: registeredUser.name, 
+                email: registeredUser.email, 
+                role: registeredUser.role 
               }, 
-              token: response.data.token,
+              token: registeredUser.token,
               isAuthenticated: true,
               loading: false 
             });
@@ -69,18 +71,35 @@ export const useAuthStore = create()(
         }
       },
 
+      // Fetch current user (Production-ready sync)
+      fetchMe: async () => {
+        const { token } = get();
+        if (!token) return;
+        
+        try {
+          const response = await axios.get(`${API_URL}/me`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          if (response.data.success) {
+            set({ user: response.data.data, isAuthenticated: true });
+          }
+        } catch (error) {
+          set({ user: null, token: null, isAuthenticated: false });
+        }
+      },
+
       // Logout action
       logout: () => {
         set({ user: null, token: null, isAuthenticated: false, error: null });
-        localStorage.removeItem('auth-storage'); // Clearing persisted state
+        localStorage.removeItem('auth-storage');
       },
 
       // Clear Errors
       clearError: () => set({ error: null })
     }),
     {
-      name: 'auth-storage', // name of the item in storage (must be unique)
-      getStorage: () => localStorage, // (optional) by default, 'localStorage' is used
+      name: 'auth-storage',
+      getStorage: () => localStorage,
     }
   )
 );
