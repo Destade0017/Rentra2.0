@@ -32,8 +32,10 @@ export const useAuthStore = create()(
             return { success: true };
           }
         } catch (error) {
-          const message = error.response?.data?.message || error.response?.data?.error || 'Login failed';
-          set({ error: message, loading: false });
+          set({ 
+            error: error.response?.data?.message || 'Login failed', 
+            loading: false 
+          });
           return { success: false, message: get().error };
         }
       },
@@ -41,11 +43,8 @@ export const useAuthStore = create()(
       // Register action
       register: async (userData) => {
         set({ loading: true, error: null });
-        console.log('Attempting registration with:', { ...userData, password: '***' });
         try {
           const response = await api.post('/auth/register', userData);
-          console.log('Registration response:', response.data);
-          
           if (response.data.success) {
             const registeredUser = response.data.data;
             set({ 
@@ -59,13 +58,13 @@ export const useAuthStore = create()(
               isAuthenticated: true,
               loading: false 
             });
-            console.log('Registration successful, state updated.');
             return { success: true };
           }
         } catch (error) {
-          const message = error.response?.data?.message || error.response?.data?.error || 'Registration failed';
-          console.error('Registration failed:', message);
-          set({ error: message, loading: false });
+          set({ 
+            error: error.response?.data?.message || 'Registration failed', 
+            loading: false 
+          });
           return { success: false, message: get().error };
         }
       },
@@ -78,8 +77,10 @@ export const useAuthStore = create()(
           set({ loading: false });
           return response.data;
         } catch (error) {
-          const message = error.response?.data?.message || error.response?.data?.error || 'Request failed';
-          set({ error: message, loading: false });
+          set({ 
+            error: error.response?.data?.message || 'Request failed', 
+            loading: false 
+          });
           return { success: false, message: get().error };
         }
       },
@@ -105,8 +106,10 @@ export const useAuthStore = create()(
             return { success: true };
           }
         } catch (error) {
-          const message = error.response?.data?.message || error.response?.data?.error || 'Reset failed';
-          set({ error: message, loading: false });
+          set({ 
+            error: error.response?.data?.message || 'Reset failed', 
+            loading: false 
+          });
           return { success: false, message: get().error };
         }
       },

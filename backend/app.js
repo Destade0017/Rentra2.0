@@ -34,6 +34,11 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// Health check
+app.get('/', (req, res) => {
+    res.json({ status: 'success', message: 'Rentra API is running' });
+});
+
 // Mount routers
 app.use('/api/auth', auth);
 app.use('/api/properties', properties);

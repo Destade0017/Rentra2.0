@@ -1,7 +1,6 @@
 import Payment from '../models/Payment.js';
 import Property from '../models/Property.js';
 import User from '../models/User.js';
-import mongoose from 'mongoose';
 
 // @desc    Record a new payment
 // @route   POST /api/payments
@@ -62,7 +61,7 @@ export const getPayments = async (req, res) => {
 export const getPaymentStats = async (req, res) => {
     try {
         const stats = await Payment.aggregate([
-            { $match: { landlord: new mongoose.Types.ObjectId(req.user.id) } },
+            { $match: { landlord: req.user._id } },
             {
                 $group: {
                     _id: null,

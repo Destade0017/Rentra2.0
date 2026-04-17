@@ -6,7 +6,7 @@ import Property from '../models/Property.js';
 // @access  Private/Landlord
 export const addTenant = async (req, res, next) => {
     try {
-        const { propertyId, name, email, phone, rent, unit, dueDate, nextRentDate, leaseStart, leaseEnd } = req.body;
+        const { propertyId, name, email, phone, rent, unit, dueDate, leaseStart, leaseEnd } = req.body;
 
         // Verify property exists and belongs to this landlord
         const property = await Property.findById(propertyId || req.body.property);
@@ -27,9 +27,9 @@ export const addTenant = async (req, res, next) => {
             phone,
             rent,
             unit,
+            dueDate,
             leaseStart,
             leaseEnd,
-            nextRentDate: nextRentDate || dueDate || req.body.nextRentDate || req.body.dueDate,
             property: propertyId || req.body.property,
             landlord: req.user.id
         });
