@@ -1,33 +1,27 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle } from 'lucide-react';
+import { Spinner } from '@/components/ui/spinner';
+import { AuthCard } from '@/components/auth/auth-card';
 
 export default function ForgotPasswordPage() {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email) return;
+
     setLoading(true);
 
     try {
-      // Placeholder for API integration
-      // const response = await fetch('/api/auth/forgot-password', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email }),
-      // });
-
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // API call would go here
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       setSubmitted(true);
     } catch (err) {
       console.error('Error sending reset email');
@@ -38,79 +32,77 @@ export default function ForgotPasswordPage() {
 
   if (submitted) {
     return (
-      <Card className="w-full max-w-md space-y-6 border-none shadow-lg text-center">
-        <div className="flex justify-center">
-          <div className="p-3 bg-success/10 rounded-full">
-            <CheckCircle className="h-8 w-8 text-success" />
+      <AuthCard 
+        title="Check your email" 
+        description="We've sent a recovery link to your email address."
+        className="text-center"
+      >
+        <div className="flex justify-center py-2">
+          <div className="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center">
+            <CheckCircle className="h-8 w-8 text-zinc-950" />
           </div>
         </div>
 
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Check your email</h2>
-          <p className="text-sm text-muted-foreground mt-2">
-            We&apos;ve sent a password reset link to <span className="font-medium">{email}</span>
-          </p>
-        </div>
-
-        <p className="text-sm text-muted-foreground">
-          Click the link in your email to reset your password. If you don&apos;t see it, check your spam folder.
+        <p className="text-sm text-zinc-500 max-w-[280px] mx-auto leading-relaxed">
+          If an account exists for <span className="font-semibold text-zinc-950">{email}</span>, you will receive a password reset link shortly.
         </p>
 
-        <Link href="/auth/login">
-          <Button
-            type="button"
-            className="w-full h-10 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium transition-colors"
+        <div className="pt-4 space-y-4">
+          <Link href="/auth/login" className="block">
+            <Button
+              className="w-full h-11 bg-zinc-950 hover:bg-zinc-800 text-white rounded-lg font-medium transition-all shadow-sm"
+            >
+              Return to Login
+            </Button>
+          </Link>
+          <button 
+            onClick={() => setSubmitted(false)}
+            className="text-sm font-medium text-zinc-500 hover:text-zinc-950 transition-colors underline underline-offset-4"
           >
-            Back to login
-          </Button>
-        </Link>
-      </Card>
+            Didn&apos;t get the email? Try again
+          </button>
+        </div>
+      </AuthCard>
     );
   }
 
   return (
-    <Card className="w-full max-w-md space-y-6 border-none shadow-lg">
-      <div>
-        <Link
-          href="/auth/login"
-          className="inline-flex items-center gap-1 text-sm text-accent hover:text-accent/80 transition-colors mb-4"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to login
-        </Link>
-        <h2 className="text-2xl font-bold text-foreground">Reset password</h2>
-        <p className="text-sm text-muted-foreground mt-2">
-          Enter your email address and we&apos;ll send you a link to reset your password
-        </p>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <AuthCard 
+      title="Reset password" 
+      description="Enter your email and we'll send you a link to get back into your account."
+    >
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-2">
-          <label htmlFor="email" className="text-sm font-medium text-foreground">
-            Email
+          <label htmlFor="email" className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
+            Email Address
           </label>
-          <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              id="email"
-              type="email"
-              placeholder="name@company.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="pl-10 h-10 rounded-lg"
-              disabled={loading}
-            />
-          </div>
+          <Input
+            id="email"
+            type="email"
+            placeholder="name@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="h-11 px-4 border-zinc-200 focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950 transition-all rounded-lg bg-[#fdfdfd]"
+            disabled={loading}
+            required
+          />
         </div>
 
-        <Button
-          type="submit"
-          className="w-full h-10 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium transition-colors"
-          disabled={loading}
-        >
-          {loading ? 'Sending...' : 'Send reset link'}
-        </Button>
+        <div className="space-y-4">
+          <Button
+            type="submit"
+            className="w-full h-11 bg-zinc-950 hover:bg-zinc-800 text-white rounded-lg font-medium transition-all shadow-sm active:scale-[0.98]"
+            disabled={loading}
+          >
+            {loading ? <Spinner className="h-4 w-4 text-white" /> : 'Send Reset Link'}
+          </Button>
+
+          <Link href="/auth/login" className="flex items-center justify-center gap-2 text-sm font-medium text-zinc-500 hover:text-zinc-950 transition-colors">
+            <ArrowLeft className="h-4 w-4" />
+            Back to login
+          </Link>
+        </div>
       </form>
-    </Card>
+    </AuthCard>
   );
 }
