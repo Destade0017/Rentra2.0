@@ -90,28 +90,53 @@ export default function PropertiesPage() {
           </div>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {properties.map((property) => (
-            <Card key={property._id} className="p-6 lg:p-8 bg-white border-zinc-100 rounded-[24px] lg:rounded-3xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 lg:w-12 lg:h-12 bg-zinc-50 rounded-xl lg:rounded-2xl flex items-center justify-center text-zinc-950 border border-zinc-100 group-hover:bg-white group-hover:shadow-sm transition-all shrink-0">
-                    <Building2 className="h-5 w-5" />
+            <Card key={property._id} className="group overflow-hidden bg-white border-zinc-100 rounded-[32px] shadow-sm hover:shadow-xl hover:border-zinc-200 transition-all duration-500 flex flex-col p-0">
+              {/* Image Header */}
+              <div className="aspect-[16/10] w-full bg-zinc-100 relative overflow-hidden">
+                {property.images && property.images.length > 0 ? (
+                  <img 
+                    src={property.images[0]} 
+                    alt={property.name} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-zinc-300">
+                    <Building2 className="h-10 w-10 opacity-20" />
+                    <span className="text-[10px] font-black uppercase tracking-widest opacity-50">No Media Sync</span>
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="font-bold text-lg lg:text-xl text-zinc-950 truncate tracking-tight">{property.name}</h3>
-                    <p className="text-[10px] lg:text-[11px] font-bold uppercase tracking-widest text-zinc-400 mt-0.5">Active Unit</p>
+                )}
+                <div className="absolute top-4 left-4">
+                  <div className="px-3 py-1.5 bg-white/90 backdrop-blur-md rounded-full shadow-sm border border-white/20">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-zinc-950">Active Asset</p>
                   </div>
-                </div>
-                <div className="flex items-start gap-2.5 text-zinc-500 font-medium leading-relaxed">
-                  <MapPin className="h-4 w-4 mt-1 shrink-0 text-zinc-300" />
-                  <p className="text-sm lg:text-sm line-clamp-2">{property.address}</p>
                 </div>
               </div>
-              <Button variant="ghost" className="w-full justify-between mt-8 text-zinc-400 hover:text-zinc-950 hover:bg-zinc-50 rounded-xl h-12 lg:h-10 px-4 transition-all border border-zinc-50 lg:border-transparent group/btn">
-                <span className="text-xs font-bold uppercase tracking-widest">Property Details</span>
-                <Plus className="h-4 w-4 transform group-hover/btn:rotate-90 transition-transform" />
-              </Button>
+
+              {/* Content Panel */}
+              <div className="p-8 flex-1 flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="space-y-1">
+                    <h3 className="font-extrabold text-xl text-zinc-950 tracking-tight leading-tight group-hover:text-blue-600 transition-colors">{property.name}</h3>
+                    <div className="flex items-center gap-2 text-zinc-400 font-bold uppercase tracking-[0.1em] text-[10px]">
+                       <MapPin className="h-3 w-3" />
+                       <span className="truncate">{property.address}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-8 flex items-center justify-between border-t border-zinc-50 mt-8">
+                  <div className="flex -space-x-2">
+                    {[1, 2, 3].map(i => (
+                      <div key={i} className="h-7 w-7 rounded-full bg-zinc-50 border-2 border-white ring-1 ring-zinc-100" />
+                    ))}
+                  </div>
+                  <Button variant="ghost" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-950 hover:bg-zinc-50 rounded-xl px-4 group/btn">
+                    Details <Plus className="h-3 w-3 ml-2 transform group-hover/btn:rotate-90 transition-transform" />
+                  </Button>
+                </div>
+              </div>
             </Card>
           ))}
         </div>

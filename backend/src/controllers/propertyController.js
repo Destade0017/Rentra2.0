@@ -15,7 +15,8 @@ const createProperty = asyncHandler(async (req, res) => {
     const property = await Property.create({
         name,
         address,
-        landlord: req.user._id
+        landlord: req.user._id,
+        images: req.body.images || []
     });
 
     res.status(201).json({
