@@ -58,15 +58,12 @@ export default function DashboardLayout({
 
   return (
     <AuthGuard>
-      <div className="flex h-screen bg-background">
-        {/* Sidebar */}
+      <div className="flex h-screen bg-[#fafafa]">
+        {/* Sidebar (Desktop Only) */}
         <div
-          className={`fixed lg:static z-50 h-full w-[240px] bg-white border-r border-[#f1f1f1] transition-transform duration-300 ${
-            sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-          }`}
+          className={`fixed lg:static z-50 h-full w-[240px] bg-white border-r border-[#f1f1f1] transition-transform duration-300 hidden lg:block`}
         >
           <div className="flex flex-col h-full">
-            {/* Logo */}
             <div className="p-7">
               <Link href="/" className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-zinc-950 rounded-lg flex items-center justify-center shadow-sm">
@@ -76,7 +73,6 @@ export default function DashboardLayout({
               </Link>
             </div>
 
-            {/* Navigation */}
             <nav className="flex-1 overflow-y-auto px-3 space-y-0.5">
               <div className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-zinc-400">Main Menu</div>
               {navItems.map((item) => (
@@ -99,7 +95,6 @@ export default function DashboardLayout({
               ))}
             </nav>
 
-            {/* Logout */}
             <div className="p-4 pt-0 border-t border-[#f8f8f8]">
               <Button
                 variant="ghost"
@@ -113,48 +108,68 @@ export default function DashboardLayout({
           </div>
         </div>
 
-        {/* Main content */}
-        <div className="flex-1 flex flex-col overflow-hidden bg-[#fafafa]">
-          {/* Top navbar */}
-          <div className="h-14 border-b border-[#f1f1f1] bg-white flex items-center justify-between px-6 lg:px-10 sticky top-0 z-30">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="lg:hidden p-1.5 hover:bg-zinc-50 rounded-lg transition-colors border border-zinc-100"
-              >
-                <Menu className="h-4 w-4 text-zinc-600" />
-              </button>
+        {/* Main content wrapper */}
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+          {/* Desktop/Mobile Header */}
+          <div className="h-14 lg:h-16 border-b border-[#f1f1f1] bg-white/80 backdrop-blur-md flex items-center justify-between px-5 lg:px-10 sticky top-0 z-30">
+            <div className="flex items-center gap-3">
+              <div className="lg:hidden w-7 h-7 bg-zinc-950 rounded-lg flex items-center justify-center shadow-sm">
+                <span className="text-white font-bold text-[10px]">R</span>
+              </div>
               <div className="hidden lg:flex items-center gap-2">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-300">Workspace</span>
                 <ChevronRight className="h-3 w-3 text-zinc-300" />
                 <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-950">
-                  {pathname.split('/').pop() || 'Overview'}
+                  {pathname.split('/').pop()?.replace(/-/g, ' ') || 'Overview'}
                 </span>
               </div>
+              <span className="lg:hidden text-sm font-bold text-zinc-950 tracking-tight capitalize">
+                {pathname.split('/').pop()?.replace(/-/g, ' ') || 'Overview'}
+              </span>
             </div>
 
-            <div className="flex items-center gap-4">
-              <div className="h-7 w-7 bg-zinc-950 rounded-full flex items-center justify-center">
-                <span className="text-white text-[10px] font-black uppercase">
+            <div className="flex items-center gap-3">
+              <div className="h-8 w-8 lg:h-9 lg:w-9 bg-zinc-100 rounded-full flex items-center justify-center ring-1 ring-zinc-200">
+                <span className="text-zinc-950 text-[10px] lg:text-xs font-bold uppercase">
                   {user?.name?.charAt(0) || 'U'}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Page content */}
-          <div className="flex-1 overflow-y-auto p-6">
-            {children}
+          {/* Scrollable content */}
+          <div className="flex-1 overflow-y-auto pb-24 lg:pb-10 pt-4 lg:pt-8">
+            <div className="max-w-[1200px] mx-auto px-5 lg:px-10">
+              {children}
+            </div>
           </div>
         </div>
 
-        {/* Mobile overlay */}
-        {sidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
+        {/* Mobile Bottom Navigation (Native App Style) */}
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-[#f1f1f1] px-6 flex items-center justify-between z-50 pb-safe">
+          {navItems.filter(item => !item.disabled).map((item) => (
+            <Link key={item.href} href={item.href} className="flex flex-col items-center gap-1.5 touch-none">
+              <div className={`p-2 rounded-xl transition-all duration-300 ${
+                isActive(item.href) 
+                  ? 'bg-zinc-950 text-white shadow-lg shadow-zinc-200 scale-110' 
+                  : 'text-zinc-400 hover:text-zinc-950'
+              }`}>
+                {item.icon}
+              </div>
+              <span className={`text-[10px] font-bold tracking-tight transition-colors ${
+                isActive(item.href) ? 'text-zinc-950' : 'text-zinc-400'
+              }`}>
+                {item.label}
+              </span>
+            </Link>
+          ))}
+          <button onClick={handleLogout} className="flex flex-col items-center gap-1.5 opacity-60">
+            <div className="p-2 text-zinc-400">
+              <LogOut className="h-4 w-4" />
+            </div>
+            <span className="text-[10px] font-bold tracking-tight text-zinc-400">Exit</span>
+          </button>
+        </div>
       </div>
     </AuthGuard>
   );

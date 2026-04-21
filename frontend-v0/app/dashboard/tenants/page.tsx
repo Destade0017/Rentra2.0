@@ -46,46 +46,46 @@ export default function TenantsPage() {
   }
 
   return (
-    <div className="flex-1 space-y-10 animate-in fade-in duration-700">
+    <div className="flex-1 space-y-8 lg:space-y-12 animate-in fade-in duration-700">
       <AddTenantModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
         onSuccess={fetchTenants} 
       />
 
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div className="space-y-1.5">
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-950">Tenants</h1>
-          <p className="text-zinc-500 font-medium">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="space-y-1">
+          <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-zinc-950">Tenants</h1>
+          <p className="text-sm lg:text-base text-zinc-500 font-medium">
             Manage your resident records and lease configurations.
           </p>
         </div>
         <Button 
           onClick={() => setIsModalOpen(true)}
-          className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-11 px-6 shadow-sm font-semibold transition-all"
+          className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-12 lg:h-11 px-6 shadow-sm font-semibold transition-all w-full md:w-auto"
         >
-          <Plus className="h-4 w-4" />
+          <Plus className="h-5 w-5 lg:h-4 lg:w-4 mr-2" />
           Add Tenant
         </Button>
       </div>
 
       {tenants.length === 0 ? (
-        <Card className="p-16 border-dashed border-2 border-zinc-200 bg-zinc-50/30 text-center rounded-3xl">
+        <Card className="p-10 lg:p-16 border-dashed border-2 border-zinc-200 bg-white text-center rounded-[24px] lg:rounded-3xl">
           <div className="max-w-md mx-auto space-y-6">
-            <div className="w-20 h-20 bg-white rounded-2xl shadow-sm border border-zinc-100 flex items-center justify-center mx-auto">
-              <Users className="h-10 w-10 text-zinc-400" />
+            <div className="w-16 h-16 lg:w-20 lg:h-20 bg-zinc-50 rounded-2xl shadow-sm border border-zinc-100 flex items-center justify-center mx-auto">
+              <Users className="h-8 w-8 lg:h-10 lg:w-10 text-zinc-400" />
             </div>
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold text-zinc-950 tracking-tight">No tenants yet</h2>
-              <p className="text-zinc-500 leading-relaxed font-medium">
-                Your resident list is empty. Add your first tenant to start tracking lease payments.
+              <h2 className="text-xl lg:text-2xl font-bold text-zinc-900 tracking-tight">No tenants yet</h2>
+              <p className="text-sm lg:text-base text-zinc-500 leading-relaxed font-medium px-4">
+                Your resident list is empty. Add your first tenant to start tracking.
               </p>
             </div>
             <Button 
               onClick={() => setIsModalOpen(true)}
-              className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-12 px-8 font-bold shadow-md"
+              className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-14 lg:h-12 px-8 font-bold shadow-md w-full"
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="mr-2 h-5 w-5" />
               Add First Tenant
             </Button>
           </div>
@@ -93,36 +93,36 @@ export default function TenantsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tenants.map((tenant) => (
-            <Card key={tenant._id} className="p-8 bg-white border-zinc-100 rounded-3xl shadow-sm card-hover flex flex-col justify-between group">
+            <Card key={tenant._id} className="p-6 lg:p-8 bg-white border-zinc-100 rounded-[24px] lg:rounded-3xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
               <div className="space-y-8">
                 <div className="flex items-center gap-4">
-                  <div className="h-14 w-14 rounded-2xl bg-zinc-50 border border-zinc-100 flex items-center justify-center text-zinc-950 font-extrabold text-xl group-hover:bg-white group-hover:shadow-sm transition-all">
+                  <div className="h-12 w-12 lg:h-14 lg:w-14 rounded-xl lg:rounded-2xl bg-zinc-50 border border-zinc-100 flex items-center justify-center text-zinc-950 font-black text-lg lg:text-xl shrink-0">
                     {tenant.name.charAt(0)}
                   </div>
-                  <div className="space-y-0.5">
-                    <h3 className="font-bold text-lg text-zinc-950 tracking-tight leading-none">{tenant.name}</h3>
-                    <p className="text-xs text-zinc-400 font-semibold uppercase tracking-wider flex items-center gap-1.5 pt-1">
-                      <Mail className="h-3 w-3" /> {tenant.email}
+                  <div className="min-w-0">
+                    <h3 className="font-bold text-base lg:text-lg text-zinc-950 truncate tracking-tight leading-none">{tenant.name}</h3>
+                    <p className="text-[10px] lg:text-xs text-zinc-400 font-semibold uppercase tracking-wider mt-1.5 flex items-center gap-1.5">
+                      <Mail className="h-3 w-3" /> <span className="truncate">{tenant.email}</span>
                     </p>
                   </div>
                 </div>
                 
-                <div className="space-y-4 pt-6 border-t border-zinc-50">
+                <div className="grid grid-cols-1 gap-4 pt-6 border-t border-zinc-50">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-bold text-zinc-400 flex items-center gap-2">
-                      <Building2 className="h-4 w-4 text-zinc-300" /> Rent
+                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                      <Building2 className="h-3.5 w-3.5 text-zinc-300" /> Rent
                     </span>
                     <span className="font-extrabold text-zinc-950 tabular-nums">${tenant.rentAmount}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-bold text-zinc-400 flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-zinc-300" /> Due Date
+                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                      <Calendar className="h-3.5 w-3.5 text-zinc-300" /> Due Date
                     </span>
-                    <span className="text-sm font-bold text-zinc-950 italic">{format(new Date(tenant.dueDate), 'MMM dd, yyyy')}</span>
+                    <span className="text-xs font-bold text-zinc-600">{format(new Date(tenant.dueDate), 'MMM dd, yyyy')}</span>
                   </div>
                   <div className="flex items-center justify-between pt-2">
-                    <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">Payment Status</span>
-                    <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-tighter shadow-sm border ${
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Status</span>
+                    <span className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest border ${
                       tenant.status === 'paid' 
                         ? 'bg-green-50 text-green-700 border-green-100' 
                         : 'bg-amber-50 text-amber-700 border-amber-100'
@@ -132,8 +132,8 @@ export default function TenantsPage() {
                   </div>
                 </div>
               </div>
-              <Button variant="ghost" className="w-full mt-10 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-950 hover:bg-zinc-50 rounded-xl py-6 border border-transparent hover:border-zinc-100 transition-all">
-                Manage Agreement
+              <Button variant="ghost" className="w-full mt-10 text-[10px] lg:text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-950 hover:bg-zinc-50 rounded-xl h-12 lg:h-12 border border-zinc-50 lg:border-transparent transition-all">
+                Manage Tenant
               </Button>
             </Card>
           ))}
