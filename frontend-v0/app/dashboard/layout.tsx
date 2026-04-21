@@ -61,53 +61,53 @@ export default function DashboardLayout({
       <div className="flex h-screen bg-background">
         {/* Sidebar */}
         <div
-          className={`fixed lg:static z-50 h-full w-64 bg-white border-r border-zinc-100 transition-transform duration-300 ${
+          className={`fixed lg:static z-50 h-full w-[240px] bg-white border-r border-[#f1f1f1] transition-transform duration-300 ${
             sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
           }`}
         >
           <div className="flex flex-col h-full">
             {/* Logo */}
-            <div className="p-8">
+            <div className="p-7">
               <Link href="/" className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-zinc-950 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm leading-none">R</span>
+                <div className="w-8 h-8 bg-zinc-950 rounded-lg flex items-center justify-center shadow-sm">
+                  <span className="text-white font-bold text-xs">R</span>
                 </div>
-                <span className="text-lg font-bold text-zinc-950 tracking-tight">Rentra</span>
+                <span className="text-base font-bold text-zinc-950 tracking-tight">Rentra</span>
               </Link>
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 overflow-y-auto px-4 space-y-1">
+            <nav className="flex-1 overflow-y-auto px-3 space-y-0.5">
+              <div className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-zinc-400">Main Menu</div>
               {navItems.map((item) => (
-                <Link key={item.href} href={item.href} className="block">
+                <Link key={item.href} href={item.href} className="block group">
                   <Button
                     variant="ghost"
-                    className={`w-full justify-start gap-3 rounded-lg h-10 px-4 transition-all duration-200 ${
+                    className={`w-full justify-start gap-3 rounded-lg h-9 px-3 transition-all duration-200 ${
                       isActive(item.href)
-                        ? 'bg-zinc-950 text-white hover:bg-zinc-900 shadow-sm'
-                        : 'text-zinc-500 hover:bg-zinc-50 hover:text-zinc-950'
-                    } ${item.disabled ? 'opacity-40 cursor-not-allowed italic' : ''}`}
+                        ? 'bg-zinc-50 text-zinc-950 font-semibold'
+                        : 'text-zinc-500 hover:bg-zinc-50/80 hover:text-zinc-950'
+                    } ${item.disabled ? 'opacity-30 cursor-not-allowed' : ''}`}
                     disabled={item.disabled}
                   >
-                    <span className={isActive(item.href) ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-950 transition-colors'}>
+                    <span className={`transition-colors ${isActive(item.href) ? 'text-zinc-950' : 'text-zinc-400 group-hover:text-zinc-950'}`}>
                       {item.icon}
                     </span>
-                    <span className="font-medium text-sm">{item.label}</span>
-                    {item.disabled && <span className="ml-auto text-[10px] uppercase font-bold tracking-widest opacity-60">Soon</span>}
+                    <span className="text-[13px]">{item.label}</span>
                   </Button>
                 </Link>
               ))}
             </nav>
 
             {/* Logout */}
-            <div className="p-6 border-t border-zinc-50">
+            <div className="p-4 pt-0 border-t border-[#f8f8f8]">
               <Button
                 variant="ghost"
                 onClick={handleLogout}
-                className="w-full justify-start gap-3 rounded-lg h-10 px-4 text-zinc-500 hover:bg-red-50 hover:text-red-600 transition-all"
+                className="w-full justify-start gap-3 rounded-lg h-9 px-3 text-zinc-500 hover:bg-red-50/50 hover:text-red-500 transition-all"
               >
                 <LogOut className="h-4 w-4" />
-                <span className="font-medium text-sm">Sign out</span>
+                <span className="text-[13px] font-medium">Log out</span>
               </Button>
             </div>
           </div>
@@ -116,27 +116,26 @@ export default function DashboardLayout({
         {/* Main content */}
         <div className="flex-1 flex flex-col overflow-hidden bg-[#fafafa]">
           {/* Top navbar */}
-          <div className="h-16 border-b border-zinc-100 bg-white/80 backdrop-blur-md flex items-center justify-between px-6 lg:px-10 sticky top-0 z-30">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden p-2 hover:bg-zinc-50 rounded-lg transition-colors border border-zinc-100"
-            >
-              <Menu className="h-5 w-5 text-zinc-600" />
-            </button>
-
-            <div className="hidden lg:flex items-center text-xs font-semibold uppercase tracking-widest text-zinc-400">
-              <span className="px-2 py-1 bg-zinc-50 rounded text-zinc-500 border border-zinc-100">
-                {pathname.split('/').pop() || 'Overview'}
-              </span>
+          <div className="h-14 border-b border-[#f1f1f1] bg-white flex items-center justify-between px-6 lg:px-10 sticky top-0 z-30">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="lg:hidden p-1.5 hover:bg-zinc-50 rounded-lg transition-colors border border-zinc-100"
+              >
+                <Menu className="h-4 w-4 text-zinc-600" />
+              </button>
+              <div className="hidden lg:flex items-center gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-300">Workspace</span>
+                <ChevronRight className="h-3 w-3 text-zinc-300" />
+                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-950">
+                  {pathname.split('/').pop() || 'Overview'}
+                </span>
+              </div>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="flex flex-col items-end hidden sm:flex">
-                <span className="text-xs font-bold text-zinc-950 leading-tight">{user?.name}</span>
-                <span className="text-[10px] text-zinc-400 leading-tight uppercase font-medium">Landlord</span>
-              </div>
-              <div className="h-9 w-9 bg-zinc-950 rounded-full flex items-center justify-center ring-2 ring-zinc-50 ring-offset-1">
-                <span className="text-white text-sm font-bold">
+              <div className="h-7 w-7 bg-zinc-950 rounded-full flex items-center justify-center">
+                <span className="text-white text-[10px] font-black uppercase">
                   {user?.name?.charAt(0) || 'U'}
                 </span>
               </div>

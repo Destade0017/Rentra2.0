@@ -158,7 +158,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="flex-1 space-y-10 pb-20 animate-in fade-in duration-700">
+    <div className="flex-1 max-w-[1200px] mx-auto w-full space-y-12 pb-24 animate-in fade-in duration-700">
       {/* Modals */}
       <AddPropertyModal 
         isOpen={isPropertyModalOpen} 
@@ -172,24 +172,24 @@ export default function DashboardPage() {
       />
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div className="space-y-1.5">
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-950">Overview</h1>
-          <p className="text-zinc-500 font-medium">
-            Manage your properties and track tenant performance.
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-4">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">Workspace Overview</h1>
+          <p className="text-sm text-zinc-500 font-medium">
+            Monitor your rental performance and property health.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <Button 
             variant="outline" 
             onClick={() => setIsTenantModalOpen(true)} 
-            className="rounded-xl h-11 border-zinc-200 hover:bg-zinc-50 transition-all font-semibold"
+            className="rounded-lg h-9 border-zinc-200 bg-white hover:bg-zinc-50 transition-all font-semibold text-xs py-0"
           >
             Add Tenant
           </Button>
           <Button 
             onClick={() => setIsPropertyModalOpen(true)} 
-            className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-11 px-6 shadow-sm font-semibold transition-all"
+            className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-lg h-9 px-4 shadow-sm font-semibold transition-all text-xs py-0"
           >
             New Property
           </Button>
@@ -197,85 +197,101 @@ export default function DashboardPage() {
       </div>
 
       {isEmpty ? (
-        <Card className="p-16 border-dashed border-2 border-zinc-200 bg-zinc-50/30 text-center rounded-3xl">
-          <div className="max-w-md mx-auto space-y-6">
-            <div className="w-20 h-20 bg-white rounded-2xl shadow-sm border border-zinc-100 flex items-center justify-center mx-auto">
-              <Building2 className="h-10 w-10 text-zinc-400" />
+        <Card className="p-20 border-dashed border-2 border-zinc-100 bg-white text-center rounded-[32px] shadow-none">
+          <div className="max-w-[320px] mx-auto space-y-8">
+            <div className="w-16 h-16 bg-zinc-50 rounded-2xl flex items-center justify-center mx-auto ring-1 ring-zinc-100">
+              <Building2 className="h-8 w-8 text-zinc-300" />
             </div>
-            <div className="space-y-2">
-              <h2 className="text-2xl font-bold text-zinc-950 tracking-tight">Your portfolio is empty</h2>
-              <p className="text-zinc-500 leading-relaxed font-medium">
-                Start by adding your first property to manage tenants and track rent payments in one place.
+            <div className="space-y-3">
+              <h2 className="text-xl font-bold text-zinc-900 tracking-tight">Empty Workspace</h2>
+              <p className="text-sm text-zinc-500 leading-relaxed font-medium">
+                Your property management dashboard is ready. Add your first property to begin tracking tenants.
               </p>
             </div>
             <Button 
               onClick={() => setIsPropertyModalOpen(true)} 
-              className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-12 px-8 font-bold shadow-md animate-pulse hover:animate-none"
+              className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-11 px-8 font-bold shadow-md w-full"
             >
-              Add Your First Property
+              Add First Property
             </Button>
           </div>
         </Card>
       ) : (
-        <div className="space-y-12">
+        <div className="space-y-14">
           {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {summaryCards.map((card, index) => (
-              <Card key={index} className="p-8 border-zinc-100 shadow-sm bg-white card-hover rounded-2xl relative overflow-hidden group">
-                <div className="absolute top-0 right-0 p-6 opacity-[0.03] group-hover:opacity-10 transition-opacity">
-                  {card.icon}
-                </div>
-                <div className="space-y-4">
-                  <div className="p-2.5 bg-zinc-50 rounded-lg w-fit text-zinc-950 border border-zinc-100">
-                    {card.icon}
+              <Card key={index} className="p-7 border-[#f1f1f1] bg-white rounded-2xl shadow-none relative group transition-all hover:border-zinc-200">
+                <div className="space-y-5">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest leading-none">{card.label}</p>
+                    <div className="text-zinc-300 group-hover:text-zinc-900 transition-colors">
+                      {card.icon}
+                    </div>
                   </div>
                   <div className="space-y-1">
-                    <p className="text-sm font-bold text-zinc-400 uppercase tracking-widest">{card.label}</p>
-                    <p className="text-4xl font-extrabold text-zinc-950 tracking-tight">{card.value}</p>
+                    <p className="text-3xl font-bold text-zinc-950 tracking-tight leading-none">{card.value}</p>
+                    {card.subtext && (
+                      <p className="text-[11px] font-bold text-zinc-400 flex items-center gap-2 pt-1 uppercase">
+                        <span className="w-1 h-1 rounded-full bg-zinc-950" />
+                        {card.subtext}
+                      </p>
+                    )}
                   </div>
-                  {card.subtext && (
-                    <p className="text-xs font-semibold text-zinc-500 flex items-center gap-1.5 pt-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                      {card.subtext}
-                    </p>
-                  )}
                 </div>
               </Card>
             ))}
           </div>
 
           {/* Activity Section */}
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold tracking-tight text-zinc-950">Recent History</h2>
-              <Button variant="ghost" className="text-sm font-semibold text-zinc-400 hover:text-zinc-950 gap-2 px-2 hover:bg-transparent transition-colors group">
-                Full timeline <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </div>
-            <Card className="border-zinc-100 bg-white rounded-3xl shadow-sm overflow-hidden divide-y divide-zinc-50">
-              {recentActivity.length > 0 ? (
-                recentActivity.map((activity) => (
-                  <div key={activity.id} className="p-6 hover:bg-zinc-50/50 transition-all duration-300 group">
-                    <div className="flex items-center gap-5">
-                      <div className="w-12 h-12 bg-zinc-50 rounded-2xl flex items-center justify-center text-zinc-950 border border-zinc-100 group-hover:bg-white group-hover:shadow-sm transition-all">
-                        {activity.type === 'property' ? <Building2 className="h-5 w-5" /> : <Users className="h-5 w-5" />}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+            <div className="lg:col-span-3 space-y-6">
+              <div className="flex items-center justify-between border-b border-[#f1f1f1] pb-4">
+                <h2 className="text-sm font-bold tracking-tight text-zinc-900 uppercase tracking-[0.1em]">Recent Activity</h2>
+                <Button variant="ghost" className="text-xs font-bold text-zinc-400 hover:text-zinc-950 gap-2 px-0 hover:bg-transparent transition-colors group uppercase tracking-widest">
+                  View Logs <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </div>
+              <div className="space-y-px">
+                {recentActivity.length > 0 ? (
+                  recentActivity.map((activity) => (
+                    <div key={activity.id} className="group flex items-center gap-6 py-5 px-4 rounded-xl hover:bg-white border border-transparent hover:border-[#f1f1f1] transition-all duration-300">
+                      <div className="w-10 h-10 bg-zinc-50 rounded-xl flex items-center justify-center text-zinc-400 group-hover:bg-zinc-950 group-hover:text-white transition-all shadow-sm">
+                        {activity.type === 'property' ? <Building2 className="h-4 w-4" /> : <Users className="h-4 w-4" />}
                       </div>
-                      <div className="flex-1">
-                        <p className="font-bold text-zinc-950 mb-0.5">{activity.title}</p>
-                        <p className="text-sm text-zinc-500 font-medium">{activity.description}</p>
+                      <div className="flex-1 space-y-0.5">
+                        <p className="text-sm font-bold text-zinc-900 leading-none">{activity.title}</p>
+                        <p className="text-xs text-zinc-500 font-medium">{activity.description}</p>
                       </div>
-                      <div className="text-xs font-bold text-zinc-400 uppercase tracking-tighter tabular-nums bg-zinc-50 px-3 py-1.5 rounded-full border border-zinc-100">
+                      <div className="text-[10px] font-bold text-zinc-400 uppercase tracking-tighter tabular-nums bg-white px-2 py-1 rounded border border-[#f1f1f1]">
                         {activity.timestamp}
                       </div>
                     </div>
+                  ))
+                ) : (
+                  <div className="p-12 text-center bg-zinc-50 rounded-3xl border border-dashed border-zinc-100">
+                    <p className="text-zinc-400 text-sm font-medium">Clear activity log.</p>
                   </div>
-                ))
-              ) : (
-                <div className="p-12 text-center">
-                  <p className="text-zinc-400 font-medium italic">No recent activity found.</p>
+                )}
+              </div>
+            </div>
+
+            {/* Sidebar Stats Area */}
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Quick Stats</h3>
+                <div className="space-y-4">
+                  <div className="p-4 bg-white border border-[#f1f1f1] rounded-2xl shadow-none flex items-center justify-between">
+                     <span className="text-xs font-bold text-zinc-500">Rent Health</span>
+                     <span className="text-xs font-black text-green-600 uppercase tracking-tighter">Stability Low</span>
+                  </div>
+                   <div className="p-4 bg-white border border-[#f1f1f1] rounded-2xl shadow-none flex items-center justify-between">
+                     <span className="text-xs font-bold text-zinc-500">Occupancy</span>
+                     <span className="text-xs font-black text-zinc-950 uppercase tracking-tighter">100%</span>
+                  </div>
                 </div>
-              )}
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       )}
