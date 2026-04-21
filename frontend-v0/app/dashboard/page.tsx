@@ -144,7 +144,7 @@ export default function DashboardPage() {
   const isEmpty = !loading && properties.length === 0 && tenants.length === 0;
 
   return (
-    <div className="flex-1 max-w-[1000px] mx-auto w-full space-y-16 pb-32 animate-in fade-in duration-1000">
+    <div className="flex-1 max-w-[1020px] mx-auto w-full space-y-20 pb-40 animate-in fade-in duration-1000">
       <AddPropertyModal 
         isOpen={isPropertyModalOpen} 
         onClose={() => setIsPropertyModalOpen(false)} 
@@ -156,50 +156,54 @@ export default function DashboardPage() {
         onSuccess={fetchDashboardData}
       />
 
-      {/* 1. OVERVIEW (The Pulse) */}
-      <div className="space-y-8">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Dashboard</h1>
-          <p className="text-sm text-slate-500 font-medium">Your portfolio at a glance.</p>
+      {/* TIER 1: THE ANALYTICS PULSE */}
+      <div className="space-y-10">
+        <div className="space-y-2 px-1">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Workspace Overview</h1>
+          <p className="text-sm text-slate-500 font-medium">Real-time health of your property portfolio.</p>
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-32 rounded-[32px] border border-slate-100" />)}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-40 rounded-[32px] border border-slate-100" />)}
           </div>
         ) : isEmpty ? (
-          <Card className="p-20 text-center border-dashed border-2 flex flex-col items-center justify-center min-h-[400px]">
-            <div className="max-w-[320px] space-y-8">
-              <div className="w-20 h-20 bg-slate-50 rounded-[28px] flex items-center justify-center mx-auto border border-slate-100">
+          <Card className="p-24 text-center border-dashed border-2 flex flex-col items-center justify-center min-h-[440px] animate-in zoom-in-95 duration-700">
+            <div className="max-w-[340px] space-y-10">
+              <div className="w-20 h-20 bg-slate-50 rounded-[28px] flex items-center justify-center mx-auto border border-slate-100 shadow-sm">
                 <Building2 className="h-10 w-10 text-slate-300" />
               </div>
-              <div className="space-y-2">
-                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Empty Workspace</h2>
+              <div className="space-y-3">
+                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Activate Portfolio</h2>
                 <p className="text-sm text-slate-500 leading-relaxed font-medium">
-                  Add your first property to activate your landlord control center.
+                  Your management controls will activate once your first property is onboarded.
                 </p>
               </div>
               <Button 
                 onClick={() => setIsPropertyModalOpen(true)} 
                 size="lg"
-                className="w-full bg-indigo-600 hover:bg-indigo-700"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-100"
               >
-                Add First Property
+                Add Your First Property
               </Button>
             </div>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {summaryCards.map((card, index) => (
-              <Card key={index} className="p-8 border-slate-200/50 hover-lift">
-                <div className="space-y-6">
+              <Card key={index} className="p-8 border-slate-200/50 hover-lift bg-white shadow-sm ring-1 ring-slate-100/5">
+                <div className="space-y-8">
                   <div className="flex items-center justify-between">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">{card.label}</p>
-                    <div className="text-slate-300">{card.icon}</div>
+                    <div className="p-3 bg-slate-50 rounded-2xl text-slate-400 group-hover:text-indigo-600 transition-colors">
+                      {card.icon}
+                    </div>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em]">{card.label}</p>
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-3xl font-bold text-slate-900 tracking-tighter tabular-nums">{card.value}</p>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pt-1">{card.subtext}</p>
+                  <div className="space-y-1.5">
+                    <p className="text-4xl font-bold text-slate-900 tracking-tighter tabular-nums leading-none">{card.value}</p>
+                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest pt-1 flex items-center gap-2">
+                       <span className="w-1.5 h-1.5 rounded-full bg-slate-200" /> {card.subtext}
+                    </p>
                   </div>
                 </div>
               </Card>
@@ -210,55 +214,66 @@ export default function DashboardPage() {
 
       {!isEmpty && !loading && (
         <>
-          {/* 2. INSIGHTS (The Intelligence) */}
-          <div className="space-y-6">
-            <h2 className="text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase px-1">Insights</h2>
-            <div className="bg-white border border-slate-200/60 rounded-[32px] p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 group">
-              <div className="flex items-center gap-5">
-                <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center shrink-0">
-                  <div className="w-2.5 h-2.5 bg-indigo-600 rounded-full animate-pulse" />
+          {/* TIER 2: SMART ADVISORY */}
+          <div className="space-y-8">
+            <div className="flex items-center justify-between px-1">
+              <h2 className="text-[10px] font-bold tracking-[0.25em] text-slate-400 uppercase">Strategic Insight</h2>
+              <span className="text-[10px] font-bold text-slate-300">Updated just now</span>
+            </div>
+            <div className="bg-white border border-slate-200/50 rounded-[32px] p-10 flex flex-col md:flex-row md:items-center justify-between gap-10 hover:border-slate-300 transition-all shadow-sm">
+              <div className="flex items-center gap-8">
+                <div className="w-16 h-16 bg-indigo-50/50 rounded-3xl flex items-center justify-center shrink-0 border border-indigo-100/30">
+                  <div className="w-3.5 h-3.5 bg-indigo-600 rounded-full animate-pulse shadow-[0_0_12px_rgba(79,70,229,0.4)]" />
                 </div>
-                <div className="space-y-1">
-                  <p className="text-base font-bold text-slate-900 tracking-tight leading-none">
+                <div className="space-y-2">
+                  <p className="text-xl font-bold text-slate-900 tracking-tight leading-none italic">
                     {tenants.length - paidTenants > 0 
-                      ? `${tenants.length - paidTenants} payments need your attention today.` 
-                      : "Portfolio hygiene is excellent. All accounts are settled."
+                      ? `${tenants.length - paidTenants} tenants have outstanding balances this cycle.` 
+                      : "Portfolio optimization: All accounts are currently balanced."
                     }
                   </p>
-                  <p className="text-xs text-slate-400 font-medium">Auto-generated diagnostic based on latest tenant logs.</p>
+                  <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-[500px]">
+                    Automatic diagnostic suggests reviewing {tenants.length - paidTenants > 0 ? "collection schedules" : "maintenance requests"} to maintain peak operational efficiency.
+                  </p>
                 </div>
               </div>
-              <Button variant="outline" className="rounded-xl px-6 h-10 shrink-0">
-                View Ledger
+              <Button variant="outline" size="lg" className="rounded-2xl px-8 h-14 shrink-0 font-bold tracking-tight">
+                Analyze Ledger
               </Button>
             </div>
           </div>
 
-          {/* 3. ACTIONS (The Command) */}
-          <div className="space-y-6">
-            <h2 className="text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase px-1">Command Hub</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="p-8 border-slate-200/50 hover-lift group cursor-pointer" onClick={() => setIsPropertyModalOpen(true)}>
+          {/* TIER 3: COMMAND & CONTROL */}
+          <div className="space-y-8">
+            <h2 className="text-[10px] font-bold tracking-[0.25em] text-slate-400 uppercase px-1">Primary Operations</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Card className="p-10 border-slate-200/50 hover-lift group cursor-pointer bg-white" onClick={() => setIsPropertyModalOpen(true)}>
                 <div className="flex items-center justify-between">
-                  <div className="space-y-2">
-                    <p className="text-lg font-bold text-slate-900">Add Property</p>
-                    <p className="text-xs text-slate-500 font-medium font-medium">Expand your portfolio with new assets.</p>
+                  <div className="space-y-4">
+                    <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500 shadow-inner">
+                      <Building2 className="h-6 w-6" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <p className="text-xl font-bold text-slate-900 tracking-tight">Expand Portfolio</p>
+                      <p className="text-sm text-slate-500 font-medium">Acquire and onboard new assets into the system.</p>
+                    </div>
                   </div>
-                  <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                    <Plus className="h-5 w-5" />
-                  </div>
+                  <Plus className="h-6 w-6 text-slate-200 group-hover:text-indigo-600 group-hover:scale-125 transition-all duration-500" />
                 </div>
               </Card>
 
-              <Card className="p-8 border-slate-200/50 hover-lift group cursor-pointer" onClick={() => setIsTenantModalOpen(true)}>
+              <Card className="p-10 border-slate-200/50 hover-lift group cursor-pointer bg-white" onClick={() => setIsTenantModalOpen(true)}>
                 <div className="flex items-center justify-between">
-                  <div className="space-y-2">
-                    <p className="text-lg font-bold text-slate-900">Add Resident</p>
-                    <p className="text-xs text-slate-500 font-medium">Onboard a new tenant to occupied units.</p>
+                  <div className="space-y-4">
+                    <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500 shadow-inner">
+                      <Users className="h-6 w-6" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <p className="text-xl font-bold text-slate-900 tracking-tight">Onboard Resident</p>
+                      <p className="text-sm text-slate-500 font-medium">Assign tenants and generate rental contracts.</p>
+                    </div>
                   </div>
-                  <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                    <Users className="h-5 w-5" />
-                  </div>
+                  <Plus className="h-6 w-6 text-slate-200 group-hover:text-indigo-600 group-hover:scale-125 transition-all duration-500" />
                 </div>
               </Card>
             </div>

@@ -90,36 +90,44 @@ export default function PropertiesPage() {
           </div>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {properties.map((property) => (
-            <Card key={property._id} className="overflow-hidden bg-white border border-slate-200/60 rounded-2xl shadow-none flex flex-col p-0 hover:border-slate-300 transition-all group">
-              {/* Simplified Media Header */}
-              <div className="aspect-[16/9] w-full bg-slate-50 relative overflow-hidden flex items-center justify-center border-b border-slate-100/50">
+            <Card key={property._id} className="overflow-hidden bg-white border border-slate-200/50 rounded-[32px] shadow-sm flex flex-col p-0 hover-lift group">
+              {/* Institutional Media Header */}
+              <div className="aspect-[16/10] w-full bg-slate-50 relative overflow-hidden flex items-center justify-center border-b border-slate-100/50">
                 {property.images && property.images.length > 0 ? (
                   <img 
                     src={property.images[0]} 
                     alt={property.name} 
-                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
                   />
                 ) : (
-                  <Building2 className="h-8 w-8 text-slate-200" />
+                  <div className="flex flex-col items-center gap-3">
+                    <Building2 className="h-8 w-8 text-slate-200" />
+                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-[0.25em]">No Media</span>
+                  </div>
                 )}
               </div>
 
-              {/* Minimal Content */}
-              <div className="p-6 space-y-6 flex-1 flex flex-col justify-between">
-                <div className="space-y-1">
-                  <h3 className="font-bold text-lg text-slate-900 tracking-tight leading-tight">{property.name}</h3>
-                  <div className="flex items-center gap-2 text-slate-400 font-medium text-xs">
-                    <MapPin className="h-3 w-3 shrink-0" />
-                    <span className="truncate">{property.address}</span>
+              {/* Expensive Content Architecture */}
+              <div className="p-10 space-y-10 flex-1 flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="space-y-1.5">
+                    <h3 className="font-bold text-xl text-slate-900 tracking-tight leading-tight">{property.name}</h3>
+                    <div className="flex items-center gap-2.5 text-slate-400 font-medium text-xs">
+                      <MapPin className="h-3.5 w-3.5 shrink-0 text-slate-300" />
+                      <span className="truncate">{property.address}</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="pt-4 flex items-center justify-between border-t border-slate-50">
-                  <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Property</span>
-                  <Button variant="ghost" className="text-xs font-bold text-slate-400 hover:text-indigo-600 rounded-lg h-8 px-3">
-                    View
+                <div className="pt-8 flex items-center justify-between border-t border-slate-50">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[9px] font-bold text-slate-300 uppercase tracking-[0.3em]">Asset Class</span>
+                    <span className="text-xs font-bold text-slate-900">Residential</span>
+                  </div>
+                  <Button variant="ghost" className="text-xs font-bold text-slate-400 hover:text-indigo-600 rounded-2xl h-10 px-5 bg-slate-50/50 border border-transparent hover:border-indigo-100/50">
+                    View Asset
                   </Button>
                 </div>
               </div>

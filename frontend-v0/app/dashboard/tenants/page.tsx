@@ -91,40 +91,43 @@ export default function TenantsPage() {
           </div>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {tenants.map((tenant) => (
-            <Card key={tenant._id} className="bg-white border border-slate-200/60 rounded-2xl shadow-none flex flex-col justify-between p-6 hover:border-slate-300 transition-all group">
-              <div className="space-y-6">
-                {/* Header */}
-                <div className="flex items-center gap-4">
-                  <div className="h-10 w-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-900 font-bold text-sm shrink-0">
+            <Card key={tenant._id} className="bg-white border border-slate-200/50 rounded-[32px] shadow-sm flex flex-col justify-between p-10 hover-lift group">
+              <div className="space-y-10">
+                {/* Institutional Header */}
+                <div className="flex items-center gap-6">
+                  <div className="h-14 w-14 rounded-[20px] bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-900 font-bold text-lg shrink-0 shadow-inner">
                     {tenant.name.charAt(0)}
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-bold text-base text-slate-900 tracking-tight leading-none">{tenant.name}</h3>
-                    <p className="text-[10px] text-slate-400 font-medium tracking-tight mt-1 truncate">{tenant.email}</p>
+                    <h3 className="font-bold text-xl text-slate-900 tracking-tight leading-none">{tenant.name}</h3>
+                    <p className="text-xs text-slate-400 font-medium tracking-tight mt-2 truncate">{tenant.email}</p>
                   </div>
                 </div>
 
-                {/* Simplified Data */}
-                <div className="space-y-3 pt-4 border-t border-slate-50">
+                {/* Structured Financials */}
+                <div className="space-y-4 pt-10 border-t border-slate-50">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Monthly Rent</span>
-                    <span className="text-sm font-bold text-slate-900 tabular-nums">${tenant.rentAmount}</span>
+                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-[0.25em]">Monthly Flow</span>
+                    <span className="text-lg font-bold text-slate-900 tabular-nums">${tenant.rentAmount.toLocaleString()}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Status</span>
-                    <span className={`text-[10px] font-bold uppercase tracking-tight ${
-                      tenant.status === 'paid' ? 'text-green-600' : 'text-amber-500'
-                    }`}>
-                      {tenant.status}
-                    </span>
+                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-[0.25em]">Health</span>
+                    <div className="flex items-center gap-2">
+                      <div className={`w-1.5 h-1.5 rounded-full ${tenant.status === 'paid' ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]' : 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.4)]'}`} />
+                      <span className={`text-[10px] font-bold uppercase tracking-widest ${
+                        tenant.status === 'paid' ? 'text-green-600' : 'text-amber-600'
+                      }`}>
+                        {tenant.status}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <Button variant="ghost" className="w-full mt-6 text-xs font-bold text-slate-400 hover:text-indigo-600 rounded-lg h-9">
-                View Profile
+              <Button variant="ghost" className="w-full mt-10 text-xs font-bold text-slate-400 hover:text-indigo-600 rounded-2xl h-12 bg-slate-50/50 border border-transparent hover:border-indigo-100/50">
+                Manage Profile
               </Button>
             </Card>
           ))}
