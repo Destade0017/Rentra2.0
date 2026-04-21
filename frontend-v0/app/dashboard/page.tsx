@@ -144,7 +144,7 @@ export default function DashboardPage() {
   const isEmpty = !loading && properties.length === 0 && tenants.length === 0;
 
   return (
-    <div className="flex-1 max-w-[1000px] mx-auto w-full space-y-12 pb-32 animate-in fade-in duration-700">
+    <div className="flex-1 max-w-[1000px] mx-auto w-full space-y-16 pb-32 animate-in fade-in duration-1000">
       <AddPropertyModal 
         isOpen={isPropertyModalOpen} 
         onClose={() => setIsPropertyModalOpen(false)} 
@@ -156,111 +156,114 @@ export default function DashboardPage() {
         onSuccess={fetchDashboardData}
       />
 
-      {/* Simplified Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      {/* 1. OVERVIEW (The Pulse) */}
+      <div className="space-y-8">
         <div className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Overview</h1>
-          <p className="text-sm text-slate-500 font-medium">
-            Manage your rental workspace.
-          </p>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Dashboard</h1>
+          <p className="text-sm text-slate-500 font-medium">Your portfolio at a glance.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <Button 
-            onClick={() => setIsPropertyModalOpen(true)} 
-            className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-xl h-10 px-6 shadow-sm font-bold transition-all text-xs active:scale-95"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Property
-          </Button>
-        </div>
-      </div>
 
-      {loading ? (
-        <div className="space-y-10 animate-in fade-in duration-500">
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map(i => <Skeleton key={i} className="h-28 rounded-2xl border border-slate-100" />)}
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-32 rounded-[32px] border border-slate-100" />)}
           </div>
-          <Skeleton className="h-48 w-full rounded-2xl border border-slate-100" />
-        </div>
-      ) : isEmpty ? (
-        <Card className="p-16 border-slate-200/60 bg-white text-center rounded-[32px] shadow-none flex flex-col items-center justify-center min-h-[400px]">
-          <div className="max-w-[300px] space-y-6">
-            <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto">
-              <Building2 className="h-8 w-8 text-slate-300" />
+        ) : isEmpty ? (
+          <Card className="p-20 text-center border-dashed border-2 flex flex-col items-center justify-center min-h-[400px]">
+            <div className="max-w-[320px] space-y-8">
+              <div className="w-20 h-20 bg-slate-50 rounded-[28px] flex items-center justify-center mx-auto border border-slate-100">
+                <Building2 className="h-10 w-10 text-slate-300" />
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Empty Workspace</h2>
+                <p className="text-sm text-slate-500 leading-relaxed font-medium">
+                  Add your first property to activate your landlord control center.
+                </p>
+              </div>
+              <Button 
+                onClick={() => setIsPropertyModalOpen(true)} 
+                size="lg"
+                className="w-full bg-indigo-600 hover:bg-indigo-700"
+              >
+                Add First Property
+              </Button>
             </div>
-            <div className="space-y-2">
-              <h2 className="text-xl font-bold text-slate-900 tracking-tight">Ready to start?</h2>
-              <p className="text-sm text-slate-500 leading-relaxed font-medium">
-                Add your first property to begin managing your tenants and rental payments.
-              </p>
-            </div>
-            <Button 
-              onClick={() => setIsPropertyModalOpen(true)} 
-              className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-xl h-12 px-8 font-bold w-full"
-            >
-              Add First Property
-            </Button>
-          </div>
-        </Card>
-      ) : (
-        <div className="space-y-12">
-          {/* Intelligence Insight Bar */}
-          <div className="bg-indigo-50/50 border border-indigo-100/50 rounded-2xl p-4 flex items-center gap-4">
-             <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse shrink-0" />
-             <p className="text-sm font-bold text-indigo-900 tracking-tight">
-                {tenants.length - paidTenants > 0 
-                  ? `${tenants.length - paidTenants} tenants have outstanding payments this month.` 
-                  : "All tenant accounts are currently in good standing."
-                }
-             </p>
-          </div>
-
-          {/* Simple Metrics */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {summaryCards.map((card, index) => (
-              <Card key={index} className="p-6 bg-white border border-slate-200/60 rounded-2xl shadow-none">
-                <div className="space-y-4">
+              <Card key={index} className="p-8 border-slate-200/50 hover-lift">
+                <div className="space-y-6">
                   <div className="flex items-center justify-between">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{card.label}</p>
-                    <div className="text-slate-300">
-                      {card.icon}
-                    </div>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">{card.label}</p>
+                    <div className="text-slate-300">{card.icon}</div>
                   </div>
                   <div className="space-y-1">
-                    <p className="text-3xl font-bold text-slate-900 tracking-tight leading-none tabular-nums">{card.value}</p>
+                    <p className="text-3xl font-bold text-slate-900 tracking-tighter tabular-nums">{card.value}</p>
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pt-1">{card.subtext}</p>
                   </div>
                 </div>
               </Card>
             ))}
           </div>
+        )}
+      </div>
 
-          {/* History Log */}
+      {!isEmpty && !loading && (
+        <>
+          {/* 2. INSIGHTS (The Intelligence) */}
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-bold tracking-widest text-slate-400 uppercase">Recent Activity</h2>
-              <Button variant="ghost" className="text-[10px] font-bold text-slate-400 hover:text-indigo-600 rounded-lg px-2 group">
-                View All <ArrowRight className="h-3 w-3 ml-1 group-hover:translate-x-0.5 transition-transform" />
+            <h2 className="text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase px-1">Insights</h2>
+            <div className="bg-white border border-slate-200/60 rounded-[32px] p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 group">
+              <div className="flex items-center gap-5">
+                <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center shrink-0">
+                  <div className="w-2.5 h-2.5 bg-indigo-600 rounded-full animate-pulse" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-base font-bold text-slate-900 tracking-tight leading-none">
+                    {tenants.length - paidTenants > 0 
+                      ? `${tenants.length - paidTenants} payments need your attention today.` 
+                      : "Portfolio hygiene is excellent. All accounts are settled."
+                    }
+                  </p>
+                  <p className="text-xs text-slate-400 font-medium">Auto-generated diagnostic based on latest tenant logs.</p>
+                </div>
+              </div>
+              <Button variant="outline" className="rounded-xl px-6 h-10 shrink-0">
+                View Ledger
               </Button>
             </div>
-            <div className="bg-white border border-slate-200/60 rounded-[24px] divide-y divide-slate-100 overflow-hidden">
-              {recentActivity.map((activity) => (
-                <div key={activity.id} className="flex items-center gap-5 py-5 px-6 hover:bg-slate-50/30 transition-colors">
-                  <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center text-slate-400 shrink-0">
-                    {activity.icon}
+          </div>
+
+          {/* 3. ACTIONS (The Command) */}
+          <div className="space-y-6">
+            <h2 className="text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase px-1">Command Hub</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="p-8 border-slate-200/50 hover-lift group cursor-pointer" onClick={() => setIsPropertyModalOpen(true)}>
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2">
+                    <p className="text-lg font-bold text-slate-900">Add Property</p>
+                    <p className="text-xs text-slate-500 font-medium font-medium">Expand your portfolio with new assets.</p>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-slate-900 truncate tracking-tight">{activity.title}</p>
-                    <p className="text-xs text-slate-400 font-medium truncate tracking-tight">{activity.description}</p>
-                  </div>
-                  <div className="text-[10px] font-bold text-slate-300 uppercase tabular-nums">
-                    {activity.timestamp}
+                  <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                    <Plus className="h-5 w-5" />
                   </div>
                 </div>
-              ))}
+              </Card>
+
+              <Card className="p-8 border-slate-200/50 hover-lift group cursor-pointer" onClick={() => setIsTenantModalOpen(true)}>
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2">
+                    <p className="text-lg font-bold text-slate-900">Add Resident</p>
+                    <p className="text-xs text-slate-500 font-medium">Onboard a new tenant to occupied units.</p>
+                  </div>
+                  <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                    <Users className="h-5 w-5" />
+                  </div>
+                </div>
+              </Card>
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
