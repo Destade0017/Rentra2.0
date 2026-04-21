@@ -13,7 +13,7 @@ import { format } from 'date-fns';
 export default function TenantsPage() {
   const [tenants, setTenants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTenantModalOpen, setIsTenantModalOpen] = useState(false);
 
   const fetchTenants = useCallback(async () => {
     try {
@@ -48,8 +48,8 @@ export default function TenantsPage() {
   return (
     <div className="flex-1 space-y-8 lg:space-y-12 animate-in fade-in duration-700">
       <AddTenantModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+        isOpen={isTenantModalOpen} 
+        onClose={() => setIsTenantModalOpen(false)} 
         onSuccess={fetchTenants} 
       />
 
@@ -61,7 +61,7 @@ export default function TenantsPage() {
           </p>
         </div>
         <Button 
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsTenantModalOpen(true)}
           className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-12 lg:h-11 px-6 shadow-sm font-semibold transition-all w-full md:w-auto"
         >
           <Plus className="h-5 w-5 lg:h-4 lg:w-4 mr-2" />
@@ -82,7 +82,7 @@ export default function TenantsPage() {
               </p>
             </div>
             <Button 
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => setIsTenantModalOpen(true)}
               className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-14 lg:h-12 px-8 font-bold shadow-md w-full"
             >
               <Plus className="mr-2 h-5 w-5" />

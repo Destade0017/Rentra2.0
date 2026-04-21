@@ -12,7 +12,7 @@ import { AddPropertyModal } from '@/components/modals/add-property-modal';
 export default function PropertiesPage() {
   const [properties, setProperties] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPropertyModalOpen, setIsPropertyModalOpen] = useState(false);
 
   const fetchProperties = useCallback(async () => {
     try {
@@ -47,8 +47,8 @@ export default function PropertiesPage() {
   return (
     <div className="flex-1 space-y-8 lg:space-y-12 animate-in fade-in duration-700">
       <AddPropertyModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+        isOpen={isPropertyModalOpen} 
+        onClose={() => setIsPropertyModalOpen(false)} 
         onSuccess={fetchProperties} 
       />
 
@@ -60,7 +60,7 @@ export default function PropertiesPage() {
           </p>
         </div>
         <Button 
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsPropertyModalOpen(true)}
           className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-12 lg:h-11 px-6 shadow-sm font-semibold transition-all w-full md:w-auto"
         >
           <Plus className="h-5 w-5 lg:h-4 lg:w-4 mr-2" />
