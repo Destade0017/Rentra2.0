@@ -4,23 +4,20 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Cowrywise / Stripe Inspired Calm Palette */
+  /* Design Foundation: 4px Grid System */
   --background: #f8fafc;
   --foreground: #0f172a;
   
   --card: #ffffff;
   --card-foreground: #0f172a;
   
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  
-  --primary: #4f46e5; /* Soft Indigo */
+  --primary: #4f46e5;
   --primary-foreground: #ffffff;
   
   --secondary: #f1f5f9;
   --secondary-foreground: #475569;
   
-  --muted: #f1f5f9;
+  --muted: #f8fafc;
   --muted-foreground: #64748b;
   
   --accent: #eff6ff;
@@ -29,26 +26,11 @@
   --destructive: #fee2e2;
   --destructive-foreground: #ef4444;
   
-  --success: #f0fdf4;
-  --success-foreground: #22c55e;
-  
   --border: #e2e8f0;
   --input: #e2e8f0;
   --ring: #4f46e5;
   
-  --radius: 1rem;
-}
-
-.dark {
-  /* Minimal Dark Support if ever needed, but focused on Light theme */
-  --background: #0f172a;
-  --foreground: #f8fafc;
-  
-  --card: #1e293b;
-  --card-foreground: #f8fafc;
-  
-  --border: #334155;
-  --input: #334155;
+  --radius: 1rem; /* 16px Baseline Radius */
 }
 
 @theme inline {
@@ -56,61 +38,51 @@
   
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
   --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
   --color-border: var(--border);
   
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 16px);
 }
 
 @layer base {
   * {
-    @apply border-border/60 outline-none transition-all duration-200;
+    @apply border-border/60 outline-none transition-all duration-300;
   }
   
   body {
-    @apply bg-background text-foreground antialiased selection:bg-indigo-100 selection:text-indigo-900;
+    @apply bg-background text-slate-600 antialiased selection:bg-indigo-100 selection:text-indigo-900;
+    font-size: 0.9375rem; 
+    line-height: 1.6;
   }
 
-  /* Smooth Typography Hierarchy */
   h1, h2, h3, h4 {
     @apply font-bold tracking-tight text-slate-900;
   }
 
-  /* Custom Scrollbar for Premium Feel */
-  ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-  }
-  ::-webkit-scrollbar-track {
-    @apply bg-transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+  p {
+    @apply text-slate-500 font-medium;
   }
 
-  /* Prevent blue tap highlight on mobile */
-  html {
-    -webkit-tap-highlight-color: transparent;
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-200 rounded-full hover:bg-slate-300;
   }
 }
 
 @layer components {
-  .glass {
-    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-sm;
+  .card-premium {
+    @apply bg-white border border-slate-200/60 rounded-[32px] transition-all;
   }
   
-  .card-hover {
-    @apply hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-0.5 transition-all duration-300;
+  .hover-lift {
+    @apply hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgb(0,0,0,0.03)] active:scale-[0.99];
   }
 }
