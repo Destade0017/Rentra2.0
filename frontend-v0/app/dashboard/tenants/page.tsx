@@ -31,30 +31,6 @@ export default function TenantsPage() {
     fetchTenants();
   }, [fetchTenants]);
 
-  return (
-    <div className="flex-1 p-4 sm:p-6 lg:p-8 space-y-8">
-      <AddTenantModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        onSuccess={fetchTenants} 
-      />
-
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Tenants</h1>
-          <p className="text-muted-foreground mt-1">
-            Manage your tenant database and lease terms
-          </p>
-        </div>
-        <Button 
-          onClick={() => setIsModalOpen(true)}
-          className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg h-10 gap-2"
-        >
-          <Plus className="h-4 w-4" />
-          Add Tenant
-        </Button>
-      </div>
-
   if (loading) {
     return (
       <div className="flex-1 space-y-8 animate-in fade-in duration-500">

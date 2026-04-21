@@ -30,30 +30,6 @@ export default function PropertiesPage() {
     fetchProperties();
   }, [fetchProperties]);
 
-  return (
-    <div className="flex-1 p-4 sm:p-6 lg:p-8 space-y-8">
-      <AddPropertyModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        onSuccess={fetchProperties} 
-      />
-
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Properties</h1>
-          <p className="text-muted-foreground mt-1">
-            Manage all your rental properties
-          </p>
-        </div>
-        <Button 
-          onClick={() => setIsModalOpen(true)}
-          className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg h-10 gap-2"
-        >
-          <Plus className="h-4 w-4" />
-          Add Property
-        </Button>
-      </div>
-
   if (loading) {
     return (
       <div className="flex-1 space-y-8 animate-in fade-in duration-500">
