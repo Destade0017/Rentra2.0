@@ -39,7 +39,6 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
@@ -110,27 +109,30 @@ export default function DashboardLayout({
 
         {/* Main content wrapper */}
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-          {/* Desktop/Mobile Header */}
-          <div className="h-14 lg:h-16 border-b border-[#f1f1f1] bg-white/80 backdrop-blur-md flex items-center justify-between px-5 lg:px-10 sticky top-0 z-30">
-            <div className="flex items-center gap-3">
-              <div className="lg:hidden w-7 h-7 bg-zinc-950 rounded-lg flex items-center justify-center shadow-sm">
-                <span className="text-white font-bold text-[10px]">R</span>
-              </div>
-              <div className="hidden lg:flex items-center gap-2">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-300">Workspace</span>
-                <ChevronRight className="h-3 w-3 text-zinc-300" />
-                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-950">
+          {/* Top navbar */}
+          <div className="h-14 lg:h-16 border-b border-[#f1f1f1] bg-white flex items-center justify-between px-5 lg:px-10 sticky top-0 z-30">
+            <div className="flex items-center gap-4">
+              {/* Context Indicator */}
+              <div className="flex items-center gap-2 lg:gap-3">
+                <div className="lg:hidden w-8 h-8 bg-zinc-950 rounded-lg flex items-center justify-center shadow-sm">
+                   <span className="text-white font-bold text-[10px]">R</span>
+                </div>
+                <div className="hidden lg:flex items-center gap-2">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-300">Workspace</span>
+                  <ChevronRight className="h-3 w-3 text-zinc-300" />
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-950">
+                    {pathname.split('/').pop()?.replace(/-/g, ' ') || 'Overview'}
+                  </span>
+                </div>
+                <span className="lg:hidden text-sm font-bold text-zinc-900 tracking-tight capitalize">
                   {pathname.split('/').pop()?.replace(/-/g, ' ') || 'Overview'}
                 </span>
               </div>
-              <span className="lg:hidden text-sm font-bold text-zinc-950 tracking-tight capitalize">
-                {pathname.split('/').pop()?.replace(/-/g, ' ') || 'Overview'}
-              </span>
             </div>
 
-            <div className="flex items-center gap-3">
-              <div className="h-8 w-8 lg:h-9 lg:w-9 bg-zinc-100 rounded-full flex items-center justify-center ring-1 ring-zinc-200">
-                <span className="text-zinc-950 text-[10px] lg:text-xs font-bold uppercase">
+            <div className="flex items-center gap-4">
+              <div className="h-8 w-8 lg:h-9 lg:w-9 bg-zinc-50 rounded-full flex items-center justify-center ring-1 ring-zinc-100">
+                <span className="text-zinc-950 text-[10px] lg:text-xs font-black uppercase">
                   {user?.name?.charAt(0) || 'U'}
                 </span>
               </div>

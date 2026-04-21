@@ -88,14 +88,19 @@
 
   /* Custom Scrollbar for Premium Feel */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
   }
   ::-webkit-scrollbar-track {
     @apply bg-transparent;
   }
   ::-webkit-scrollbar-thumb {
     @apply bg-zinc-200 rounded-full hover:bg-zinc-300 transition-colors;
+  }
+
+  /* Prevent blue tap highlight on mobile */
+  html {
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
