@@ -164,10 +164,10 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
           <DialogFooter className="p-10 pt-6 bg-slate-50/30 -mx-10 mt-6 md:flex-row-reverse border-t border-slate-50">
             <Button
               type="submit"
-              disabled={loading}
+              loading={loading}
               className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-2xl h-14 px-10 font-bold text-sm shadow-xl shadow-indigo-100 active:scale-95 transition-all w-full md:w-auto"
             >
-              {loading ? 'Processing...' : 'Settle Assignment'}
+              Settle Assignment
             </Button>
             <Button
               type="button"

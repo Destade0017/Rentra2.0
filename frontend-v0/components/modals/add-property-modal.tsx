@@ -82,50 +82,50 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[480px] bg-white border-zinc-100 rounded-[32px] overflow-hidden p-0 gap-0">
-        <DialogHeader className="p-8 pb-4">
-          <DialogTitle className="text-xl font-bold tracking-tight text-slate-900">New Property</DialogTitle>
-          <p className="text-sm text-slate-400 font-medium mt-1">Add a new rental to your workspace.</p>
+      <DialogContent className="sm:max-w-[480px] bg-white border-slate-100 rounded-[40px] overflow-hidden p-0 gap-0 shadow-2xl shadow-slate-200 ring-1 ring-black/5">
+        <DialogHeader className="p-10 pb-4">
+          <DialogTitle className="text-2xl font-bold tracking-tight text-slate-900">Digitize Asset</DialogTitle>
+          <p className="text-sm text-slate-400 font-medium mt-2 leading-relaxed">Infrastructure mapping for new portfolio recruitment.</p>
         </DialogHeader>
         
-        <form onSubmit={handleSubmit} className="space-y-6 px-8 py-4">
-          <div className="grid grid-cols-1 gap-5">
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-xs font-bold text-slate-500 ml-1">Property Name</Label>
+        <form onSubmit={handleSubmit} className="space-y-8 px-10 py-6">
+          <div className="grid grid-cols-1 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="name" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em] ml-1">Asset Designation</Label>
               <Input
                 id="name"
-                placeholder="e.g. Sunset Apartments"
+                placeholder="e.g. Sunset Towers"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 disabled={loading}
-                className="rounded-xl h-11 bg-slate-50/50 border-slate-200/50 focus:bg-white transition-all text-sm font-medium"
+                className="rounded-2xl h-12 bg-slate-50/50 border-slate-100 focus:bg-white transition-all text-sm font-medium"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="address" className="text-xs font-bold text-slate-500 ml-1">Address</Label>
+            <div className="space-y-3">
+              <Label htmlFor="address" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em] ml-1">Geolocation</Label>
               <Input
                 id="address"
-                placeholder="123 Main St, Miami"
+                placeholder="123 Financial District"
                 value={formData.address}
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 disabled={loading}
-                className="rounded-xl h-11 bg-slate-50/50 border-slate-200/50 focus:bg-white transition-all text-sm font-medium"
+                className="rounded-2xl h-12 bg-slate-50/50 border-slate-100 focus:bg-white transition-all text-sm font-medium"
               />
             </div>
 
             {/* Image Upload Area */}
-            <div className="space-y-3">
-              <Label className="text-xs font-bold text-slate-500 ml-1">Images (Optional)</Label>
-              <div className="grid grid-cols-4 gap-3">
+            <div className="space-y-4">
+              <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em] ml-1">Visual Evidence</Label>
+              <div className="grid grid-cols-4 gap-4">
                 {images.map((img, idx) => (
-                  <div key={idx} className="relative aspect-square rounded-lg overflow-hidden group border border-slate-100 shadow-none">
+                  <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden group border border-slate-100 shadow-inner">
                     <img src={img} alt="Preview" className="w-full h-full object-cover transition-opacity group-hover:opacity-80" />
                     <button 
                       type="button"
                       onClick={() => removeImage(idx)}
-                      className="absolute top-1 right-1 p-1 bg-white rounded-full border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute top-1.5 right-1.5 p-1.5 bg-white/90 backdrop-blur-md rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-all active:scale-75"
                     >
-                      <X className="h-2 w-2 text-slate-950" />
+                      <X className="h-3 w-3 text-slate-900" />
                     </button>
                   </div>
                 ))}
@@ -134,10 +134,10 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={loading}
-                    className="aspect-square rounded-lg border-2 border-dashed border-slate-100 bg-slate-50/30 flex flex-col items-center justify-center gap-1 hover:bg-slate-50 hover:border-slate-200 transition-all group"
+                    className="aspect-square rounded-2xl border-2 border-dashed border-slate-100 bg-slate-50/50 flex flex-col items-center justify-center gap-2 hover:bg-slate-50 hover:border-indigo-100 transition-all group active:scale-95"
                   >
-                    <ImagePlus className="h-4 w-4 text-slate-300 group-hover:text-indigo-600 transition-colors" />
-                    <span className="text-[10px] font-bold text-slate-400">Add</span>
+                    <ImagePlus className="h-5 w-5 text-slate-300 group-hover:text-indigo-600 transition-colors" />
+                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Attach</span>
                   </button>
                 )}
               </div>
@@ -152,22 +152,22 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
             </div>
           </div>
 
-          <DialogFooter className="p-8 pt-4 bg-slate-50/30">
+          <DialogFooter className="p-10 pt-6 bg-slate-50/30 -mx-10 mt-6 border-t border-slate-50 md:flex-row-reverse">
+            <Button
+              type="submit"
+              loading={loading}
+              className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-2xl h-14 px-10 font-bold text-sm shadow-xl shadow-indigo-100 active:scale-95 transition-all w-full md:w-auto"
+            >
+              Onboard Asset
+            </Button>
             <Button
               type="button"
               variant="ghost"
               onClick={onClose}
               disabled={loading}
-              className="text-xs font-bold text-slate-400 hover:text-slate-900 px-6 h-11 rounded-xl"
+              className="text-xs font-bold text-slate-300 hover:text-slate-900 px-6 h-14 rounded-2xl w-full md:w-auto"
             >
               Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={loading}
-              className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-xl h-11 px-8 font-bold text-xs shadow-sm active:scale-95 transition-all flex items-center gap-2"
-            >
-              {loading ? <Loader2 className="h-3 w-3 animate-spin" /> : 'Add Property'}
             </Button>
           </DialogFooter>
         </form>

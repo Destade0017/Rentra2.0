@@ -3,34 +3,29 @@
 
 @custom-variant dark (&:is(.dark *));
 
-:root {
-  /* Design Foundation: 4px Grid System */
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  
-  --primary: #4f46e5;
-  --primary-foreground: #ffffff;
-  
-  --secondary: #f1f5f9;
-  --secondary-foreground: #475569;
-  
-  --muted: #f8fafc;
-  --muted-foreground: #64748b;
-  
-  --accent: #eff6ff;
-  --accent-foreground: #1e40af;
-  
-  --destructive: #fee2e2;
-  --destructive-foreground: #ef4444;
-  
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #4f46e5;
-  
-  --radius: 1rem; /* 16px Baseline Radius */
+@layer base {
+  :root {
+    --background: 210 40% 99%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 238 77% 62%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 238 77% 62%;
+    --radius: 1rem;
+  }
 }
 
 @theme inline {
@@ -84,5 +79,12 @@
   
   .hover-lift {
     @apply hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgb(0,0,0,0.03)] active:scale-[0.99];
+  }
+}
+@layer utilities {
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
   }
 }

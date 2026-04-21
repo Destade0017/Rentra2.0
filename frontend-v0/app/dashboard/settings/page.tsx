@@ -111,10 +111,10 @@ export default function SettingsPage() {
               <div className="flex justify-end pt-4">
                  <Button 
                    onClick={handleSave} 
-                   disabled={loading}
+                   loading={loading}
                    className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-2xl px-12 h-14 shadow-xl shadow-indigo-100 font-bold tracking-tight text-sm active:scale-95 transition-all"
                  >
-                   {loading ? 'Synchronizing Workspace...' : 'Update Identity'}
+                   Update Identity
                  </Button>
               </div>
             </div>
@@ -125,7 +125,7 @@ export default function SettingsPage() {
               <section className="space-y-8">
                  <div className="space-y-2">
                   <h2 className="text-xl font-bold text-slate-900 tracking-tight">Access Control</h2>
-                  <p className="text-sm text-slate-400 font-medium leading-relaxed">Rotate credentials and monitor active infrastructure endpoints.</p>
+                  <p className="text-sm text-slate-500 font-medium leading-relaxed">Rotate credentials and monitor active infrastructure endpoints.</p>
                 </div>
                 <Card className="p-10 border-slate-200/50 bg-white rounded-[32px] shadow-sm">
                   <div className="space-y-10">
@@ -155,7 +155,7 @@ export default function SettingsPage() {
 
                <div className="flex justify-end pt-4 space-x-6">
                  <Button variant="ghost" className="text-xs font-bold text-slate-400 uppercase tracking-widest rounded-2xl hover:bg-slate-50 px-8 transition-colors">Rotate Key</Button>
-                 <Button onClick={handleSave} className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-2xl px-12 h-14 font-bold tracking-tight text-sm active:scale-95 transition-all">Apply Security</Button>
+                 <Button onClick={handleSave} loading={loading} className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-2xl px-12 h-14 font-bold tracking-tight text-sm active:scale-95 transition-all">Apply Security</Button>
               </div>
             </div>
           )}
