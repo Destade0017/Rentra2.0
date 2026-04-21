@@ -57,51 +57,51 @@ export default function DashboardLayout({
 
   return (
     <AuthGuard>
-      <div className="flex h-screen bg-[#fafafa]">
+      <div className="flex h-screen bg-[#f8fafc]">
         {/* Sidebar (Desktop Only) */}
         <div
-          className={`fixed lg:static z-50 h-full w-[240px] bg-white border-r border-[#f1f1f1] transition-transform duration-300 hidden lg:block`}
+          className={`fixed lg:static z-50 h-full w-[260px] bg-white border-r border-slate-200/60 transition-transform duration-300 hidden lg:block`}
         >
           <div className="flex flex-col h-full">
-            <div className="p-7">
+            <div className="p-8">
               <Link href="/" className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-zinc-950 rounded-lg flex items-center justify-center shadow-sm">
-                  <span className="text-white font-bold text-xs">R</span>
+                <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shadow-sm">
+                  <span className="text-white font-bold text-xs leading-none">R</span>
                 </div>
-                <span className="text-base font-bold text-zinc-950 tracking-tight">Rentra</span>
+                <span className="text-lg font-bold text-slate-900 tracking-tight">Rentra</span>
               </Link>
             </div>
 
-            <nav className="flex-1 overflow-y-auto px-3 space-y-0.5">
-              <div className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-zinc-400">Main Menu</div>
+            <nav className="flex-1 overflow-y-auto px-4 space-y-1">
+              <div className="px-4 mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300">Workspace</div>
               {navItems.map((item) => (
                 <Link key={item.href} href={item.href} className="block group">
                   <Button
                     variant="ghost"
-                    className={`w-full justify-start gap-3 rounded-lg h-9 px-3 transition-all duration-200 ${
+                    className={`w-full justify-start gap-3 rounded-xl h-10 px-4 transition-all duration-200 ${
                       isActive(item.href)
-                        ? 'bg-zinc-50 text-zinc-950 font-semibold'
-                        : 'text-zinc-500 hover:bg-zinc-50/80 hover:text-zinc-950'
+                        ? 'bg-indigo-50 text-indigo-700 font-bold'
+                        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
                     } ${item.disabled ? 'opacity-30 cursor-not-allowed' : ''}`}
                     disabled={item.disabled}
                   >
-                    <span className={`transition-colors ${isActive(item.href) ? 'text-zinc-950' : 'text-zinc-400 group-hover:text-zinc-950'}`}>
+                    <span className={`transition-colors ${isActive(item.href) ? 'text-indigo-600' : 'text-slate-300 group-hover:text-slate-900'}`}>
                       {item.icon}
                     </span>
-                    <span className="text-[13px]">{item.label}</span>
+                    <span className="text-[14px] leading-none">{item.label}</span>
                   </Button>
                 </Link>
               ))}
             </nav>
 
-            <div className="p-4 pt-0 border-t border-[#f8f8f8]">
+            <div className="p-6 border-t border-slate-50">
               <Button
                 variant="ghost"
                 onClick={handleLogout}
-                className="w-full justify-start gap-3 rounded-lg h-9 px-3 text-zinc-500 hover:bg-red-50/50 hover:text-red-500 transition-all"
+                className="w-full justify-start gap-3 rounded-xl h-10 px-4 text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all font-bold text-xs uppercase tracking-widest"
               >
                 <LogOut className="h-4 w-4" />
-                <span className="text-[13px] font-medium">Log out</span>
+                <span>Logout</span>
               </Button>
             </div>
           </div>
@@ -110,66 +110,65 @@ export default function DashboardLayout({
         {/* Main content wrapper */}
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
           {/* Top navbar */}
-          <div className="h-14 lg:h-16 border-b border-[#f1f1f1] bg-white flex items-center justify-between px-5 lg:px-10 sticky top-0 z-30">
+          <div className="h-16 border-b border-slate-200/60 bg-white flex items-center justify-between px-8 lg:px-12 sticky top-0 z-30">
             <div className="flex items-center gap-4">
-              {/* Context Indicator */}
-              <div className="flex items-center gap-2 lg:gap-3">
-                <div className="lg:hidden w-8 h-8 bg-zinc-950 rounded-lg flex items-center justify-center shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="lg:hidden w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shadow-sm">
                    <span className="text-white font-bold text-[10px]">R</span>
                 </div>
-                <div className="hidden lg:flex items-center gap-2">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-300">Workspace</span>
-                  <ChevronRight className="h-3 w-3 text-zinc-300" />
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-950">
+                <div className="hidden lg:flex items-center gap-3">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300">View</span>
+                  <ChevronRight className="h-3 w-3 text-slate-200" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-900 capitalize">
                     {pathname.split('/').pop()?.replace(/-/g, ' ') || 'Overview'}
                   </span>
                 </div>
-                <span className="lg:hidden text-sm font-bold text-zinc-900 tracking-tight capitalize">
-                  {pathname.split('/').pop()?.replace(/-/g, ' ') || 'Overview'}
-                </span>
               </div>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="h-8 w-8 lg:h-9 lg:w-9 bg-zinc-50 rounded-full flex items-center justify-center ring-1 ring-zinc-100">
-                <span className="text-zinc-950 text-[10px] lg:text-xs font-black uppercase">
-                  {user?.name?.charAt(0) || 'U'}
-                </span>
+              <div className="flex items-center gap-3 px-3 py-1.5 bg-slate-50 rounded-full border border-slate-100">
+                <span className="text-[10px] font-bold text-slate-500 truncate max-w-[120px]">{user?.name || 'Landlord'}</span>
+                <div className="h-6 w-6 bg-white rounded-full flex items-center justify-center border border-slate-200">
+                  <span className="text-slate-900 text-[10px] font-black uppercase">
+                    {user?.name?.charAt(0) || 'U'}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto pb-24 lg:pb-10 pt-4 lg:pt-8">
-            <div className="max-w-[1200px] mx-auto px-5 lg:px-10">
+          <div className="flex-1 overflow-y-auto pb-32 lg:pb-12 pt-6 lg:pt-12">
+            <div className="px-8 lg:px-12 max-w-[1200px]">
               {children}
             </div>
           </div>
         </div>
 
-        {/* Mobile Bottom Navigation (Native App Style) */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-[#f1f1f1] px-6 flex items-center justify-between z-50 pb-safe">
+        {/* Mobile Bottom Navigation */}
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-slate-200 px-8 flex items-center justify-between z-50 pb-safe shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
           {navItems.filter(item => !item.disabled).map((item) => (
-            <Link key={item.href} href={item.href} className="flex flex-col items-center gap-1.5 touch-none">
-              <div className={`p-2 rounded-xl transition-all duration-300 ${
+            <Link key={item.href} href={item.href} className="flex flex-col items-center gap-2">
+              <div className={`p-2 transition-all duration-300 ${
                 isActive(item.href) 
-                  ? 'bg-zinc-950 text-white shadow-lg shadow-zinc-200 scale-110' 
-                  : 'text-zinc-400 hover:text-zinc-950'
+                  ? 'text-indigo-600' 
+                  : 'text-slate-300'
               }`}>
                 {item.icon}
               </div>
               <span className={`text-[10px] font-bold tracking-tight transition-colors ${
-                isActive(item.href) ? 'text-zinc-950' : 'text-zinc-400'
+                isActive(item.href) ? 'text-indigo-600' : 'text-slate-300'
               }`}>
                 {item.label}
               </span>
             </Link>
           ))}
-          <button onClick={handleLogout} className="flex flex-col items-center gap-1.5 opacity-60">
-            <div className="p-2 text-zinc-400">
+          <button onClick={handleLogout} className="flex flex-col items-center gap-2">
+            <div className="p-2 text-slate-300">
               <LogOut className="h-4 w-4" />
             </div>
-            <span className="text-[10px] font-bold tracking-tight text-zinc-400">Exit</span>
+            <span className="text-[10px] font-bold tracking-tight text-slate-300">Logout</span>
           </button>
         </div>
       </div>

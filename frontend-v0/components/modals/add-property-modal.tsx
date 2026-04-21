@@ -84,48 +84,48 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[480px] bg-white border-zinc-100 rounded-[32px] overflow-hidden p-0 gap-0">
         <DialogHeader className="p-8 pb-4">
-          <DialogTitle className="text-2xl font-black tracking-tight text-zinc-950">Onboard Property</DialogTitle>
-          <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest mt-1">Portfolio Expansion Module</p>
+          <DialogTitle className="text-xl font-bold tracking-tight text-slate-900">New Property</DialogTitle>
+          <p className="text-sm text-slate-400 font-medium mt-1">Add a new rental to your workspace.</p>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6 px-8 py-4">
           <div className="grid grid-cols-1 gap-5">
-            <div className="space-y-2.5">
-              <Label htmlFor="name" className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-1">Asset Designation</Label>
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-xs font-bold text-slate-500 ml-1">Property Name</Label>
               <Input
                 id="name"
-                placeholder="e.g. Skyline Residence"
+                placeholder="e.g. Sunset Apartments"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 disabled={loading}
-                className="rounded-2xl h-12 bg-zinc-50/50 border-zinc-100/50 focus:bg-white transition-all text-sm font-medium"
+                className="rounded-xl h-11 bg-slate-50/50 border-slate-200/50 focus:bg-white transition-all text-sm font-medium"
               />
             </div>
-            <div className="space-y-2.5">
-              <Label htmlFor="address" className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-1">Geographical Anchor</Label>
+            <div className="space-y-2">
+              <Label htmlFor="address" className="text-xs font-bold text-slate-500 ml-1">Address</Label>
               <Input
                 id="address"
-                placeholder="123 Financial District, Miami"
+                placeholder="123 Main St, Miami"
                 value={formData.address}
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 disabled={loading}
-                className="rounded-2xl h-12 bg-zinc-50/50 border-zinc-100/50 focus:bg-white transition-all text-sm font-medium"
+                className="rounded-xl h-11 bg-slate-50/50 border-slate-200/50 focus:bg-white transition-all text-sm font-medium"
               />
             </div>
 
             {/* Image Upload Area */}
             <div className="space-y-3">
-              <Label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-1">Visual Documentation</Label>
+              <Label className="text-xs font-bold text-slate-500 ml-1">Images (Optional)</Label>
               <div className="grid grid-cols-4 gap-3">
                 {images.map((img, idx) => (
-                  <div key={idx} className="relative aspect-square rounded-xl overflow-hidden group border border-zinc-100 shadow-sm">
-                    <img src={img} alt="Preview" className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                  <div key={idx} className="relative aspect-square rounded-lg overflow-hidden group border border-slate-100 shadow-none">
+                    <img src={img} alt="Preview" className="w-full h-full object-cover transition-opacity group-hover:opacity-80" />
                     <button 
                       type="button"
                       onClick={() => removeImage(idx)}
-                      className="absolute top-1 right-1 p-1 bg-white/90 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transition-opacity border border-zinc-100"
+                      className="absolute top-1 right-1 p-1 bg-white rounded-full border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
                     >
-                      <X className="h-3 w-3 text-zinc-950" />
+                      <X className="h-2 w-2 text-slate-950" />
                     </button>
                   </div>
                 ))}
@@ -134,10 +134,10 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={loading}
-                    className="aspect-square rounded-xl border-2 border-dashed border-zinc-100 bg-zinc-50/30 flex flex-col items-center justify-center gap-1 hover:bg-zinc-50 hover:border-zinc-200 transition-all group"
+                    className="aspect-square rounded-lg border-2 border-dashed border-slate-100 bg-slate-50/30 flex flex-col items-center justify-center gap-1 hover:bg-slate-50 hover:border-slate-200 transition-all group"
                   >
-                    <ImagePlus className="h-5 w-5 text-zinc-300 group-hover:text-zinc-950 transition-colors" />
-                    <span className="text-[8px] font-black uppercase tracking-tighter text-zinc-400">Add HQ</span>
+                    <ImagePlus className="h-4 w-4 text-slate-300 group-hover:text-indigo-600 transition-colors" />
+                    <span className="text-[10px] font-bold text-slate-400">Add</span>
                   </button>
                 )}
               </div>
@@ -152,22 +152,22 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
             </div>
           </div>
 
-          <DialogFooter className="p-8 pt-4 bg-zinc-50/30">
+          <DialogFooter className="p-8 pt-4 bg-slate-50/30">
             <Button
               type="button"
               variant="ghost"
               onClick={onClose}
               disabled={loading}
-              className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-950 px-6 h-12 rounded-2xl"
+              className="text-xs font-bold text-slate-400 hover:text-slate-900 px-6 h-11 rounded-xl"
             >
-              Abort
+              Cancel
             </Button>
             <Button
               type="submit"
               disabled={loading}
-              className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-2xl h-12 px-8 font-black uppercase tracking-widest text-[10px] shadow-lg shadow-zinc-200 active:scale-95 transition-all flex items-center gap-2"
+              className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-xl h-11 px-8 font-bold text-xs shadow-sm active:scale-95 transition-all flex items-center gap-2"
             >
-              {loading ? <Loader2 className="h-3 w-3 animate-spin" /> : 'Sync Asset'}
+              {loading ? <Loader2 className="h-3 w-3 animate-spin" /> : 'Add Property'}
             </Button>
           </DialogFooter>
         </form>

@@ -144,7 +144,7 @@ export default function DashboardPage() {
   const isEmpty = !loading && properties.length === 0 && tenants.length === 0;
 
   return (
-    <div className="flex-1 max-w-[1240px] mx-auto w-full space-y-16 pb-32 animate-in fade-in slide-in-from-bottom-2 duration-1000">
+    <div className="flex-1 max-w-[1000px] mx-auto w-full space-y-12 pb-32 animate-in fade-in duration-700">
       <AddPropertyModal 
         isOpen={isPropertyModalOpen} 
         onClose={() => setIsPropertyModalOpen(false)} 
@@ -156,146 +156,108 @@ export default function DashboardPage() {
         onSuccess={fetchDashboardData}
       />
 
-      {/* Workspace Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-        <div className="space-y-1.5">
-          <h1 className="text-3xl font-extrabold tracking-tight text-zinc-1000">Workspace</h1>
-          <p className="text-sm text-zinc-400 font-bold uppercase tracking-widest">
-            Portfolio Analytics • {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+      {/* Simplified Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Overview</h1>
+          <p className="text-sm text-slate-500 font-medium">
+            Manage your rental workspace.
           </p>
         </div>
         <div className="flex items-center gap-3">
           <Button 
-            variant="outline" 
-            onClick={() => setIsTenantModalOpen(true)} 
-            className="rounded-xl h-11 border-zinc-100 bg-white hover:bg-zinc-50 transition-all font-bold text-[11px] px-6 uppercase tracking-widest"
-          >
-            Add Tenant
-          </Button>
-          <Button 
             onClick={() => setIsPropertyModalOpen(true)} 
-            className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-11 px-8 shadow-md font-bold transition-all text-[11px] uppercase tracking-widest active:scale-95"
+            className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-xl h-10 px-6 shadow-sm font-bold transition-all text-xs active:scale-95"
           >
-            New Property
+            <Plus className="h-4 w-4 mr-2" />
+            Add Property
           </Button>
         </div>
       </div>
 
       {loading ? (
-        <div className="space-y-16 animate-in fade-in duration-500">
+        <div className="space-y-10 animate-in fade-in duration-500">
            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map(i => <Skeleton key={i} className="h-36 rounded-[24px] border border-zinc-50" />)}
+            {[1, 2, 3].map(i => <Skeleton key={i} className="h-28 rounded-2xl border border-slate-100" />)}
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
-            <div className="lg:col-span-3 space-y-6">
-              <Skeleton className="h-8 w-48 rounded-lg" />
-              <div className="space-y-4">
-                {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-20 rounded-2xl border border-zinc-50" />)}
-              </div>
-            </div>
-             <div className="space-y-6">
-              <Skeleton className="h-8 w-full rounded-lg" />
-              <Skeleton className="h-32 w-full rounded-2xl" />
-            </div>
-          </div>
+          <Skeleton className="h-48 w-full rounded-2xl border border-slate-100" />
         </div>
       ) : isEmpty ? (
-        <Card className="p-24 border-dashed border-2 border-zinc-100 bg-white/50 text-center rounded-[40px] shadow-none flex flex-col items-center justify-center min-h-[500px] animate-in zoom-in-95 duration-700">
-          <div className="max-w-[340px] space-y-8">
-            <div className="w-20 h-20 bg-zinc-50 rounded-[28px] flex items-center justify-center mx-auto ring-8 ring-zinc-50/50">
-              <Building2 className="h-10 w-10 text-zinc-300" />
+        <Card className="p-16 border-slate-200/60 bg-white text-center rounded-[32px] shadow-none flex flex-col items-center justify-center min-h-[400px]">
+          <div className="max-w-[300px] space-y-6">
+            <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto">
+              <Building2 className="h-8 w-8 text-slate-300" />
             </div>
-            <div className="space-y-3">
-              <h2 className="text-2xl font-bold text-zinc-950 tracking-tight">Portfolio Launch</h2>
-              <p className="text-sm text-zinc-500 leading-relaxed font-medium">
-                Your workspace is initialized. Strategic property and tenant tracking begins here.
+            <div className="space-y-2">
+              <h2 className="text-xl font-bold text-slate-900 tracking-tight">Ready to start?</h2>
+              <p className="text-sm text-slate-500 leading-relaxed font-medium">
+                Add your first property to begin managing your tenants and rental payments.
               </p>
             </div>
             <Button 
               onClick={() => setIsPropertyModalOpen(true)} 
-              className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-14 px-10 font-black shadow-xl shadow-zinc-100 w-full uppercase tracking-widest text-[11px]"
+              className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-xl h-12 px-8 font-bold w-full"
             >
               Add First Property
             </Button>
           </div>
         </Card>
       ) : (
-        <div className="space-y-20">
-          {/* Summary Intelligence Grids */}
+        <div className="space-y-12">
+          {/* Intelligence Insight Bar */}
+          <div className="bg-indigo-50/50 border border-indigo-100/50 rounded-2xl p-4 flex items-center gap-4">
+             <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse shrink-0" />
+             <p className="text-sm font-bold text-indigo-900 tracking-tight">
+                {tenants.length - paidTenants > 0 
+                  ? `${tenants.length - paidTenants} tenants have outstanding payments this month.` 
+                  : "All tenant accounts are currently in good standing."
+                }
+             </p>
+          </div>
+
+          {/* Simple Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {summaryCards.map((card, index) => (
-              <Card key={index} className="p-8 bg-white border border-zinc-100/50 rounded-[24px] shadow-sm relative group hover:shadow-md transition-all">
-                <div className="space-y-6">
+              <Card key={index} className="p-6 bg-white border border-slate-200/60 rounded-2xl shadow-none">
+                <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <p className="text-[10px] font-black text-zinc-300 uppercase tracking-[0.2em] leading-none">{card.label}</p>
-                    <div className="p-2.5 bg-zinc-50 rounded-xl text-zinc-400 group-hover:bg-zinc-950 group-hover:text-white transition-all duration-300">
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{card.label}</p>
+                    <div className="text-slate-300">
                       {card.icon}
                     </div>
                   </div>
-                  <div className="space-y-1.5">
-                    <p className="text-4xl font-extrabold text-zinc-950 tracking-tighter leading-none tabular-nums">{card.value}</p>
-                    {card.subtext && (
-                      <div className="flex items-center gap-2 pt-1">
-                        <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">{card.subtext}</span>
-                      </div>
-                    )}
+                  <div className="space-y-1">
+                    <p className="text-3xl font-bold text-slate-900 tracking-tight leading-none tabular-nums">{card.value}</p>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pt-1">{card.subtext}</p>
                   </div>
                 </div>
               </Card>
             ))}
           </div>
 
-          {/* Operational Timeline & Diagnostics */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-16">
-            <div className="lg:col-span-3 space-y-8">
-              <div className="flex items-center justify-between border-b border-zinc-100/80 pb-6">
-                <div>
-                   <h2 className="text-sm font-black tracking-[0.15em] text-zinc-950 uppercase">Recent History</h2>
-                   <p className="text-xs text-zinc-400 font-medium mt-1">Audit log of portfolio modifications</p>
-                </div>
-                <Button variant="ghost" className="text-[10px] font-black text-zinc-300 hover:text-zinc-950 gap-2 px-4 hover:bg-zinc-50 rounded-lg transition-all uppercase tracking-widest group">
-                  Full Archive <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
-                </Button>
-              </div>
-              <div className="space-y-1">
-                {recentActivity.map((activity) => (
-                  <div key={activity.id} className="group flex items-center gap-6 py-6 px-4 rounded-2xl hover:bg-zinc-50/50 border border-transparent transition-all duration-300 cursor-default">
-                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-zinc-300 group-hover:bg-zinc-950 group-hover:text-white transition-all shadow-[0_4px_12px_rgba(0,0,0,0.03)] border border-zinc-100 group-hover:border-zinc-950">
-                      {activity.icon}
-                    </div>
-                    <div className="flex-1 space-y-1">
-                      <p className="text-sm font-bold text-zinc-950 leading-none tracking-tight">{activity.title}</p>
-                      <p className="text-xs text-zinc-400 font-medium tracking-tight truncate max-w-[200px] sm:max-w-none">{activity.description}</p>
-                    </div>
-                    <div className="text-[10px] font-black text-zinc-300 uppercase tracking-tighter tabular-nums bg-white border border-zinc-100 px-3 py-1.5 rounded-lg shadow-[0_1px_2px_rgba(0,0,0,0.02)] group-hover:border-zinc-200 transition-colors">
-                      {activity.timestamp}
-                    </div>
-                  </div>
-                ))}
-              </div>
+          {/* History Log */}
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-sm font-bold tracking-widest text-slate-400 uppercase">Recent Activity</h2>
+              <Button variant="ghost" className="text-[10px] font-bold text-slate-400 hover:text-indigo-600 rounded-lg px-2 group">
+                View All <ArrowRight className="h-3 w-3 ml-1 group-hover:translate-x-0.5 transition-transform" />
+              </Button>
             </div>
-
-            {/* Workplace Health Diagnostics */}
-            <div className="space-y-10">
-              <div className="space-y-6">
-                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-300">Live Health</h3>
-                <div className="space-y-4">
-                  <div className="p-6 bg-white border border-zinc-100 rounded-[24px] shadow-sm flex flex-col gap-3">
-                     <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Revenue Stability</span>
-                     <div className="flex items-center justify-between">
-                       <span className="text-lg font-extrabold text-zinc-950">Normal</span>
-                       <div className="h-1.5 w-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)] animate-pulse" />
-                     </div>
+            <div className="bg-white border border-slate-200/60 rounded-[24px] divide-y divide-slate-100 overflow-hidden">
+              {recentActivity.map((activity) => (
+                <div key={activity.id} className="flex items-center gap-5 py-5 px-6 hover:bg-slate-50/30 transition-colors">
+                  <div className="w-8 h-8 bg-slate-50 rounded-lg flex items-center justify-center text-slate-400 shrink-0">
+                    {activity.icon}
                   </div>
-                   <div className="p-6 bg-white border border-zinc-100 rounded-[24px] shadow-sm flex flex-col gap-3">
-                     <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Occupancy Rate</span>
-                     <div className="flex items-center justify-between">
-                       <span className="text-lg font-extrabold text-zinc-950">100%</span>
-                       <span className="text-[10px] font-extrabold text-zinc-300 pb-0.5">PEERING</span>
-                     </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-slate-900 truncate tracking-tight">{activity.title}</p>
+                    <p className="text-xs text-slate-400 font-medium truncate tracking-tight">{activity.description}</p>
+                  </div>
+                  <div className="text-[10px] font-bold text-slate-300 uppercase tabular-nums">
+                    {activity.timestamp}
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

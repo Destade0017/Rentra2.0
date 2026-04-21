@@ -93,47 +93,38 @@ export default function TenantsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tenants.map((tenant) => (
-            <Card key={tenant._id} className="p-6 lg:p-8 bg-white border-zinc-100 rounded-[24px] lg:rounded-3xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
-              <div className="space-y-8">
+            <Card key={tenant._id} className="bg-white border border-slate-200/60 rounded-2xl shadow-none flex flex-col justify-between p-6 hover:border-slate-300 transition-all group">
+              <div className="space-y-6">
+                {/* Header */}
                 <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 lg:h-14 lg:w-14 rounded-xl lg:rounded-2xl bg-zinc-50 border border-zinc-100 flex items-center justify-center text-zinc-950 font-black text-lg lg:text-xl shrink-0">
+                  <div className="h-10 w-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-900 font-bold text-sm shrink-0">
                     {tenant.name.charAt(0)}
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-bold text-base lg:text-lg text-zinc-950 truncate tracking-tight leading-none">{tenant.name}</h3>
-                    <p className="text-[10px] lg:text-xs text-zinc-400 font-semibold uppercase tracking-wider mt-1.5 flex items-center gap-1.5">
-                      <Mail className="h-3 w-3" /> <span className="truncate">{tenant.email}</span>
-                    </p>
+                    <h3 className="font-bold text-base text-slate-900 tracking-tight leading-none">{tenant.name}</h3>
+                    <p className="text-[10px] text-slate-400 font-medium tracking-tight mt-1 truncate">{tenant.email}</p>
                   </div>
                 </div>
-                
-                <div className="grid grid-cols-1 gap-4 pt-6 border-t border-zinc-50">
+
+                {/* Simplified Data */}
+                <div className="space-y-3 pt-4 border-t border-slate-50">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-2">
-                      <Building2 className="h-3.5 w-3.5 text-zinc-300" /> Rent
-                    </span>
-                    <span className="font-extrabold text-zinc-950 tabular-nums">${tenant.rentAmount}</span>
+                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Monthly Rent</span>
+                    <span className="text-sm font-bold text-slate-900 tabular-nums">${tenant.rentAmount}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-2">
-                      <Calendar className="h-3.5 w-3.5 text-zinc-300" /> Due Date
-                    </span>
-                    <span className="text-xs font-bold text-zinc-600">{format(new Date(tenant.dueDate), 'MMM dd, yyyy')}</span>
-                  </div>
-                  <div className="flex items-center justify-between pt-2">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Status</span>
-                    <span className={`px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest border ${
-                      tenant.status === 'paid' 
-                        ? 'bg-green-50 text-green-700 border-green-100' 
-                        : 'bg-amber-50 text-amber-700 border-amber-100'
+                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Status</span>
+                    <span className={`text-[10px] font-bold uppercase tracking-tight ${
+                      tenant.status === 'paid' ? 'text-green-600' : 'text-amber-500'
                     }`}>
                       {tenant.status}
                     </span>
                   </div>
                 </div>
               </div>
-              <Button variant="ghost" className="w-full mt-10 text-[10px] lg:text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-950 hover:bg-zinc-50 rounded-xl h-12 lg:h-12 border border-zinc-50 lg:border-transparent transition-all">
-                Manage Tenant
+
+              <Button variant="ghost" className="w-full mt-6 text-xs font-bold text-slate-400 hover:text-indigo-600 rounded-lg h-9">
+                View Profile
               </Button>
             </Card>
           ))}

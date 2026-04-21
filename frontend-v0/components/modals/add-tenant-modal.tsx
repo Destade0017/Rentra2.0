@@ -80,24 +80,25 @@ export function AddTenantModal({ isOpen, onClose, onSuccess }: AddTenantModalPro
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] bg-card border-border">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold">Add Tenant</DialogTitle>
+      <DialogContent className="sm:max-w-[440px] bg-white border-slate-100 rounded-[32px] p-0 overflow-hidden gap-0">
+        <DialogHeader className="p-8 pb-4">
+          <DialogTitle className="text-xl font-bold tracking-tight text-slate-900">New Resident</DialogTitle>
+          <p className="text-sm text-slate-400 font-medium mt-1">Assign a new tenant to your portfolio.</p>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4 py-4">
+        <form onSubmit={handleSubmit} className="space-y-5 px-8 py-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Full Name</Label>
+            <Label htmlFor="name" className="text-xs font-bold text-slate-500 ml-1">Full Name</Label>
             <Input
               id="name"
               placeholder="John Doe"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               disabled={loading}
-              className="rounded-lg h-10"
+              className="rounded-xl h-11 bg-slate-50/50 border-slate-200/50 focus:bg-white transition-all text-sm font-medium"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-xs font-bold text-slate-500 ml-1">Email Address</Label>
             <Input
               id="email"
               type="email"
@@ -105,21 +106,21 @@ export function AddTenantModal({ isOpen, onClose, onSuccess }: AddTenantModalPro
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               disabled={loading}
-              className="rounded-lg h-10"
+              className="rounded-xl h-11 bg-slate-50/50 border-slate-200/50 focus:bg-white transition-all text-sm font-medium"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="property">Assign to Property</Label>
+            <Label htmlFor="property" className="text-xs font-bold text-slate-500 ml-1">Assign to Property</Label>
             <Select 
               onValueChange={(val) => setFormData({ ...formData, property: val })}
               value={formData.property}
             >
-              <SelectTrigger className="h-10 rounded-lg">
+              <SelectTrigger className="h-11 rounded-xl bg-slate-50/50 border-slate-200/50 focus:bg-white text-sm">
                 <SelectValue placeholder="Select a property" />
               </SelectTrigger>
-              <SelectContent className="bg-card border-border">
+              <SelectContent className="bg-white border-slate-100 rounded-xl">
                 {properties.map((property) => (
-                  <SelectItem key={property._id} value={property._id}>
+                  <SelectItem key={property._id} value={property._id} className="text-sm font-semibold text-slate-700">
                     {property.name}
                   </SelectItem>
                 ))}
@@ -128,7 +129,7 @@ export function AddTenantModal({ isOpen, onClose, onSuccess }: AddTenantModalPro
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="rentAmount">Rent Amount ($)</Label>
+              <Label htmlFor="rentAmount" className="text-xs font-bold text-slate-500 ml-1">Rent Amount ($)</Label>
               <Input
                 id="rentAmount"
                 type="number"
@@ -136,37 +137,37 @@ export function AddTenantModal({ isOpen, onClose, onSuccess }: AddTenantModalPro
                 value={formData.rentAmount}
                 onChange={(e) => setFormData({ ...formData, rentAmount: e.target.value })}
                 disabled={loading}
-                className="rounded-lg h-10"
+                className="rounded-xl h-11 bg-slate-50/50 border-slate-200/50 focus:bg-white transition-all text-sm font-medium"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="dueDate">Due Date</Label>
+              <Label htmlFor="dueDate" className="text-xs font-bold text-slate-500 ml-1">Due Date</Label>
               <Input
                 id="dueDate"
                 type="date"
                 value={formData.dueDate}
                 onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
                 disabled={loading}
-                className="rounded-lg h-10"
+                className="rounded-xl h-11 bg-slate-50/50 border-slate-200/50 focus:bg-white transition-all text-sm font-medium"
               />
             </div>
           </div>
-          <DialogFooter className="pt-4">
+          <DialogFooter className="p-8 pt-4 bg-slate-50/30 -mx-8 mt-4">
             <Button
               type="button"
-              variant="outline"
+              variant="ghost"
               onClick={onClose}
               disabled={loading}
-              className="rounded-lg h-10"
+              className="text-xs font-bold text-slate-400 hover:text-slate-900 px-6 h-11 rounded-xl"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={loading}
-              className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg h-10"
+              className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-xl h-11 px-8 font-bold text-xs shadow-sm active:scale-95 transition-all"
             >
-              {loading ? 'Adding...' : 'Add Tenant'}
+              {loading ? 'Adding...' : 'Add Resident'}
             </Button>
           </DialogFooter>
         </form>
