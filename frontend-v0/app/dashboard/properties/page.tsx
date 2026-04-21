@@ -54,44 +54,84 @@ export default function PropertiesPage() {
         </Button>
       </div>
 
-      {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3].map(i => <Skeleton key={i} className="h-48 rounded-xl" />)}
+  if (loading) {
+    return (
+      <div className="flex-1 space-y-8 animate-in fade-in duration-500">
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-10 w-48 rounded-lg" />
+          <Skeleton className="h-11 w-32 rounded-xl" />
         </div>
-      ) : properties.length === 0 ? (
-        <Card className="p-12 bg-card border-border text-center">
-          <Empty
-            icon={<Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />}
-            title="No properties yet"
-            description="Create your first property to start managing tenants and track rent payments."
-          />
-          <Button 
-            onClick={() => setIsModalOpen(true)}
-            className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg h-10 gap-2 mt-6 mx-auto"
-          >
-            <Plus className="h-4 w-4" />
-            Add First Property
-          </Button>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3].map(i => <Skeleton key={i} className="h-48 rounded-2xl border border-zinc-100" />)}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex-1 space-y-10 animate-in fade-in duration-700">
+      <AddPropertyModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onSuccess={fetchProperties} 
+      />
+
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="space-y-1.5">
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-950">Properties</h1>
+          <p className="text-zinc-500 font-medium">
+            Manage your real estate data and rental units.
+          </p>
+        </div>
+        <Button 
+          onClick={() => setIsModalOpen(true)}
+          className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-11 px-6 shadow-sm font-semibold transition-all"
+        >
+          <Plus className="h-4 w-4" />
+          Add Property
+        </Button>
+      </div>
+
+      {properties.length === 0 ? (
+        <Card className="p-16 border-dashed border-2 border-zinc-200 bg-zinc-50/30 text-center rounded-3xl">
+          <div className="max-w-md mx-auto space-y-6">
+            <div className="w-20 h-20 bg-white rounded-2xl shadow-sm border border-zinc-100 flex items-center justify-center mx-auto">
+              <Building2 className="h-10 w-10 text-zinc-400" />
+            </div>
+            <div className="space-y-2">
+              <h2 className="text-2xl font-bold text-zinc-950 tracking-tight">No properties found</h2>
+              <p className="text-zinc-500 leading-relaxed font-medium">
+                Your portfolio is currently empty. Add your first property to begin managing your tenants.
+              </p>
+            </div>
+            <Button 
+              onClick={() => setIsModalOpen(true)}
+              className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-12 px-8 font-bold shadow-md"
+            >
+              <Plus className="h-4 w-4" />
+              Add First Property
+            </Button>
+          </div>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {properties.map((property) => (
-            <Card key={property._id} className="p-6 bg-card border-border hover:shadow-md transition-shadow flex flex-col justify-between h-48">
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 bg-accent/10 rounded-lg text-accent">
+            <Card key={property._id} className="p-8 bg-white border-zinc-100 rounded-3xl shadow-sm card-hover flex flex-col justify-between group">
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-zinc-50 rounded-2xl flex items-center justify-center text-zinc-950 border border-zinc-100 group-hover:bg-white group-hover:shadow-sm transition-all">
                     <Building2 className="h-5 w-5" />
                   </div>
-                  <h3 className="font-bold text-lg truncate">{property.name}</h3>
+                  <h3 className="font-bold text-xl text-zinc-950 truncate tracking-tight">{property.name}</h3>
                 </div>
-                <div className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
-                  <p className="line-clamp-2">{property.address}</p>
+                <div className="flex items-start gap-2.5 text-zinc-500 font-medium leading-relaxed">
+                  <MapPin className="h-4 w-4 mt-1 shrink-0 text-zinc-300" />
+                  <p className="text-sm line-clamp-2">{property.address}</p>
                 </div>
               </div>
-              <Button variant="ghost" className="w-full justify-between mt-4 text-accent hover:bg-accent/10 group">
-                View Details
-                <Plus className="h-4 w-4 transform group-hover:rotate-90 transition-transform" />
+              <Button variant="ghost" className="w-full justify-between mt-8 text-zinc-400 hover:text-zinc-950 hover:bg-zinc-50 rounded-xl h-10 px-3 transition-all group/btn">
+                <span className="text-xs font-bold uppercase tracking-widest">Details</span>
+                <Plus className="h-4 w-4 transform group-hover/btn:rotate-90 transition-transform" />
               </Button>
             </Card>
           ))}

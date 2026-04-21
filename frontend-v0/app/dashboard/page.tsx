@@ -125,33 +125,40 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex-1 p-4 sm:p-6 lg:p-8 space-y-8">
-        <Skeleton className="h-10 w-48 mb-2" />
-        <Skeleton className="h-6 w-96 mb-8" />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[1, 2, 3].map(i => <Skeleton key={i} className="h-32 rounded-xl" />)}
+      <div className="flex-1 space-y-10 animate-in fade-in duration-500">
+        <div className="space-y-4">
+          <Skeleton className="h-10 w-48 rounded-lg" />
+          <Skeleton className="h-4 w-96 rounded-lg opacity-60" />
         </div>
-        <Skeleton className="h-10 w-full rounded-xl" />
-        <Skeleton className="h-64 w-full rounded-xl" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[1, 2, 3].map(i => <Skeleton key={i} className="h-32 rounded-xl border border-zinc-100" />)}
+        </div>
+        <Skeleton className="h-[400px] w-full rounded-2xl border border-zinc-100" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex-1 p-4 sm:p-6 lg:p-8 flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <AlertCircle className="h-12 w-12 text-destructive mx-auto" />
-          <h2 className="text-xl font-bold text-foreground">Something went wrong</h2>
-          <p className="text-muted-foreground">{error}</p>
-          <Button onClick={fetchDashboardData} variant="outline">Try Again</Button>
+      <div className="flex-1 flex items-center justify-center min-h-[400px]">
+        <div className="text-center space-y-6 max-w-sm mx-auto">
+          <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto">
+            <AlertCircle className="h-8 w-8 text-red-500" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-xl font-bold text-zinc-950">System unavailable</h2>
+            <p className="text-sm text-zinc-500 leading-relaxed">{error}</p>
+          </div>
+          <Button onClick={fetchDashboardData} variant="outline" className="rounded-xl px-10">
+            Retry Connection
+          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 p-4 sm:p-6 lg:p-8 space-y-8">
+    <div className="flex-1 space-y-10 pb-20 animate-in fade-in duration-700">
       {/* Modals */}
       <AddPropertyModal 
         isOpen={isPropertyModalOpen} 
@@ -165,98 +172,109 @@ export default function DashboardPage() {
       />
 
       {/* Header */}
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-        <p className="text-muted-foreground">
-          Welcome back! Here&apos;s an overview of your properties and tenants.
-        </p>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="space-y-1.5">
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-950">Overview</h1>
+          <p className="text-zinc-500 font-medium">
+            Manage your properties and track tenant performance.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Button 
+            variant="outline" 
+            onClick={() => setIsTenantModalOpen(true)} 
+            className="rounded-xl h-11 border-zinc-200 hover:bg-zinc-50 transition-all font-semibold"
+          >
+            Add Tenant
+          </Button>
+          <Button 
+            onClick={() => setIsPropertyModalOpen(true)} 
+            className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-11 px-6 shadow-sm font-semibold transition-all"
+          >
+            New Property
+          </Button>
+        </div>
       </div>
 
       {isEmpty ? (
-        <div className="grid gap-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {summaryCards.map((card, index) => (
-              <Card key={index} className="p-6 bg-card border-border hover:shadow-md transition-shadow">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">{card.label}</p>
-                    <p className="text-3xl font-bold text-foreground mt-2">{card.value}</p>
-                    {card.subtext && <p className="text-xs text-muted-foreground mt-1">{card.subtext}</p>}
-                  </div>
-                  <div className="p-3 bg-accent/10 rounded-lg text-accent">{card.icon}</div>
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          <Card className="p-12 bg-card border-border text-center">
-            <Empty
-              icon={<Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />}
-              title="No properties yet"
-              description="Get started by adding your first property to manage tenants and track rent."
-            />
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
-              <Button onClick={() => setIsPropertyModalOpen(true)} className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg h-10 gap-2">
-                <Plus className="h-4 w-4" /> Add Property
-              </Button>
-              <Button variant="outline" onClick={() => setIsTenantModalOpen(true)} className="border-border hover:bg-secondary rounded-lg h-10 gap-2">
-                <Plus className="h-4 w-4" /> Add Tenant
-              </Button>
+        <Card className="p-16 border-dashed border-2 border-zinc-200 bg-zinc-50/30 text-center rounded-3xl">
+          <div className="max-w-md mx-auto space-y-6">
+            <div className="w-20 h-20 bg-white rounded-2xl shadow-sm border border-zinc-100 flex items-center justify-center mx-auto">
+              <Building2 className="h-10 w-10 text-zinc-400" />
             </div>
-          </Card>
-        </div>
+            <div className="space-y-2">
+              <h2 className="text-2xl font-bold text-zinc-950 tracking-tight">Your portfolio is empty</h2>
+              <p className="text-zinc-500 leading-relaxed font-medium">
+                Start by adding your first property to manage tenants and track rent payments in one place.
+              </p>
+            </div>
+            <Button 
+              onClick={() => setIsPropertyModalOpen(true)} 
+              className="bg-zinc-950 text-white hover:bg-zinc-800 rounded-xl h-12 px-8 font-bold shadow-md animate-pulse hover:animate-none"
+            >
+              Add Your First Property
+            </Button>
+          </div>
+        </Card>
       ) : (
-        <div className="grid gap-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-12">
+          {/* Summary Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {summaryCards.map((card, index) => (
-              <Card key={index} className="p-6 bg-card border-border hover:shadow-md transition-shadow">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">{card.label}</p>
-                    <p className="text-3xl font-bold text-foreground mt-2">{card.value}</p>
-                    {card.subtext && <p className="text-xs text-muted-foreground mt-1">{card.subtext}</p>}
+              <Card key={index} className="p-8 border-zinc-100 shadow-sm bg-white card-hover rounded-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-6 opacity-[0.03] group-hover:opacity-10 transition-opacity">
+                  {card.icon}
+                </div>
+                <div className="space-y-4">
+                  <div className="p-2.5 bg-zinc-50 rounded-lg w-fit text-zinc-950 border border-zinc-100">
+                    {card.icon}
                   </div>
-                  <div className="p-3 bg-accent/10 rounded-lg text-accent">{card.icon}</div>
+                  <div className="space-y-1">
+                    <p className="text-sm font-bold text-zinc-400 uppercase tracking-widest">{card.label}</p>
+                    <p className="text-4xl font-extrabold text-zinc-950 tracking-tight">{card.value}</p>
+                  </div>
+                  {card.subtext && (
+                    <p className="text-xs font-semibold text-zinc-500 flex items-center gap-1.5 pt-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                      {card.subtext}
+                    </p>
+                  )}
                 </div>
               </Card>
             ))}
           </div>
 
-          <div className="flex gap-3">
-            <Button onClick={() => setIsPropertyModalOpen(true)} className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg h-10 gap-2">
-              <Plus className="h-4 w-4" /> Add Property
-            </Button>
-            <Button variant="outline" onClick={() => setIsTenantModalOpen(true)} className="border-border hover:bg-secondary rounded-lg h-10 gap-2">
-              <Plus className="h-4 w-4" /> Add Tenant
-            </Button>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-foreground">Recent Activity</h2>
-              <Button variant="ghost" className="text-accent hover:bg-accent/10 rounded-lg h-8 gap-1 p-2">
-                View all <ArrowRight className="h-3 w-3" />
+          {/* Activity Section */}
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold tracking-tight text-zinc-950">Recent History</h2>
+              <Button variant="ghost" className="text-sm font-semibold text-zinc-400 hover:text-zinc-950 gap-2 px-2 hover:bg-transparent transition-colors group">
+                Full timeline <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
-            <Card className="bg-card border-border overflow-hidden">
-              <div className="divide-y divide-border">
-                {recentActivity.length > 0 ? (
-                  recentActivity.map((activity) => (
-                    <div key={activity.id} className="p-4 hover:bg-secondary/50 transition-colors">
-                      <div className="flex items-center gap-4">
-                        <div className="p-2 bg-accent/10 rounded-lg text-accent">{activity.icon}</div>
-                        <div className="flex-1">
-                          <p className="font-medium text-foreground">{activity.title}</p>
-                          <p className="text-sm text-muted-foreground">{activity.description}</p>
-                        </div>
-                        <div className="text-xs text-muted-foreground">{activity.timestamp}</div>
+            <Card className="border-zinc-100 bg-white rounded-3xl shadow-sm overflow-hidden divide-y divide-zinc-50">
+              {recentActivity.length > 0 ? (
+                recentActivity.map((activity) => (
+                  <div key={activity.id} className="p-6 hover:bg-zinc-50/50 transition-all duration-300 group">
+                    <div className="flex items-center gap-5">
+                      <div className="w-12 h-12 bg-zinc-50 rounded-2xl flex items-center justify-center text-zinc-950 border border-zinc-100 group-hover:bg-white group-hover:shadow-sm transition-all">
+                        {activity.type === 'property' ? <Building2 className="h-5 w-5" /> : <Users className="h-5 w-5" />}
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-bold text-zinc-950 mb-0.5">{activity.title}</p>
+                        <p className="text-sm text-zinc-500 font-medium">{activity.description}</p>
+                      </div>
+                      <div className="text-xs font-bold text-zinc-400 uppercase tracking-tighter tabular-nums bg-zinc-50 px-3 py-1.5 rounded-full border border-zinc-100">
+                        {activity.timestamp}
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="p-8 text-center text-muted-foreground italic">No recent activity yet.</div>
-                )}
-              </div>
+                  </div>
+                ))
+              ) : (
+                <div className="p-12 text-center">
+                  <p className="text-zinc-400 font-medium italic">No recent activity found.</p>
+                </div>
+              )}
             </Card>
           </div>
         </div>

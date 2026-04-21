@@ -61,88 +61,85 @@ export default function DashboardLayout({
       <div className="flex h-screen bg-background">
         {/* Sidebar */}
         <div
-          className={`fixed lg:static z-50 h-full w-64 bg-card border-r border-border transition-transform duration-300 ${
+          className={`fixed lg:static z-50 h-full w-64 bg-white border-r border-zinc-100 transition-transform duration-300 ${
             sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
           }`}
         >
           <div className="flex flex-col h-full">
             {/* Logo */}
-            <div className="p-6 border-b border-border">
-              <Link href="/" className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-sm">R</span>
+            <div className="p-8">
+              <Link href="/" className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-zinc-950 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm leading-none">R</span>
                 </div>
-                <span className="text-lg font-bold text-foreground">Rentra</span>
+                <span className="text-lg font-bold text-zinc-950 tracking-tight">Rentra</span>
               </Link>
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 overflow-y-auto p-4">
-              <div className="space-y-2">
-                {navItems.map((item) => (
-                  <Link key={item.href} href={item.href} className="block">
-                    <Button
-                      variant={isActive(item.href) ? 'default' : 'ghost'}
-                      className={`w-full justify-start gap-3 rounded-lg h-10 ${
-                        isActive(item.href)
-                          ? 'bg-accent text-accent-foreground hover:bg-accent/90'
-                          : 'text-foreground hover:bg-secondary'
-                      } ${item.disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                      disabled={item.disabled}
-                    >
+            <nav className="flex-1 overflow-y-auto px-4 space-y-1">
+              {navItems.map((item) => (
+                <Link key={item.href} href={item.href} className="block">
+                  <Button
+                    variant="ghost"
+                    className={`w-full justify-start gap-3 rounded-lg h-10 px-4 transition-all duration-200 ${
+                      isActive(item.href)
+                        ? 'bg-zinc-950 text-white hover:bg-zinc-900 shadow-sm'
+                        : 'text-zinc-500 hover:bg-zinc-50 hover:text-zinc-950'
+                    } ${item.disabled ? 'opacity-40 cursor-not-allowed italic' : ''}`}
+                    disabled={item.disabled}
+                  >
+                    <span className={isActive(item.href) ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-950 transition-colors'}>
                       {item.icon}
-                      <span>{item.label}</span>
-                      {item.disabled && <span className="ml-auto text-xs">Coming</span>}
-                    </Button>
-                  </Link>
-                ))}
-              </div>
+                    </span>
+                    <span className="font-medium text-sm">{item.label}</span>
+                    {item.disabled && <span className="ml-auto text-[10px] uppercase font-bold tracking-widest opacity-60">Soon</span>}
+                  </Button>
+                </Link>
+              ))}
             </nav>
 
             {/* Logout */}
-            <div className="p-4 border-t border-border">
+            <div className="p-6 border-t border-zinc-50">
               <Button
                 variant="ghost"
                 onClick={handleLogout}
-                className="w-full justify-start gap-3 rounded-lg h-10 text-destructive hover:bg-destructive/10"
+                className="w-full justify-start gap-3 rounded-lg h-10 px-4 text-zinc-500 hover:bg-red-50 hover:text-red-600 transition-all"
               >
                 <LogOut className="h-4 w-4" />
-                <span>Logout</span>
+                <span className="font-medium text-sm">Sign out</span>
               </Button>
             </div>
           </div>
-
-          {/* Close button for mobile */}
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="lg:hidden absolute top-6 right-6"
-          >
-            <X className="h-6 w-6" />
-          </button>
         </div>
 
         {/* Main content */}
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex-1 flex flex-col overflow-hidden bg-[#fafafa]">
           {/* Top navbar */}
-          <div className="h-16 border-b border-border bg-card flex items-center justify-between px-4 lg:px-8">
+          <div className="h-16 border-b border-zinc-100 bg-white/80 backdrop-blur-md flex items-center justify-between px-6 lg:px-10 sticky top-0 z-30">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden p-2 hover:bg-secondary rounded-lg transition-colors"
+              className="lg:hidden p-2 hover:bg-zinc-50 rounded-lg transition-colors border border-zinc-100"
             >
-              <Menu className="h-5 w-5" />
+              <Menu className="h-5 w-5 text-zinc-600" />
             </button>
 
-            <div className="hidden lg:flex items-center text-sm text-muted-foreground">
-              <span className="capitalize">{pathname.split('/').pop() || 'Dashboard'}</span>
+            <div className="hidden lg:flex items-center text-xs font-semibold uppercase tracking-widest text-zinc-400">
+              <span className="px-2 py-1 bg-zinc-50 rounded text-zinc-500 border border-zinc-100">
+                {pathname.split('/').pop() || 'Overview'}
+              </span>
             </div>
 
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 bg-accent rounded-full flex items-center justify-center">
-                <span className="text-accent-foreground text-sm font-medium">
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col items-end hidden sm:flex">
+                <span className="text-xs font-bold text-zinc-950 leading-tight">{user?.name}</span>
+                <span className="text-[10px] text-zinc-400 leading-tight uppercase font-medium">Landlord</span>
+              </div>
+              <div className="h-9 w-9 bg-zinc-950 rounded-full flex items-center justify-center ring-2 ring-zinc-50 ring-offset-1">
+                <span className="text-white text-sm font-bold">
                   {user?.name?.charAt(0) || 'U'}
                 </span>
               </div>
-              <span className="text-sm font-medium hidden sm:inline-block">{user?.name}</span>
             </div>
           </div>
 
