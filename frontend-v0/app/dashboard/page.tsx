@@ -124,17 +124,18 @@ export default function DashboardPage() {
 
   if (error) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-[500px] animate-in fade-in zoom-in duration-500">
-        <div className="text-center space-y-8 max-w-[320px] mx-auto">
-          <div className="w-20 h-20 bg-zinc-50 rounded-[32px] flex items-center justify-center mx-auto ring-1 ring-zinc-100 shadow-sm">
-            <AlertCircle className="h-8 w-8 text-zinc-400" />
+      <div className="flex-1 flex items-center justify-center min-h-[500px] animate-in fade-in zoom-in duration-700">
+        <div className="text-center space-y-10 max-w-[340px] mx-auto p-12 bg-white rounded-[40px] border border-slate-100 shadow-2xl shadow-slate-200">
+          <div className="w-20 h-20 bg-indigo-50 rounded-[28px] flex items-center justify-center mx-auto border border-indigo-100/30">
+            <AlertCircle className="h-10 w-10 text-indigo-400" />
           </div>
-          <div className="space-y-2">
-            <h2 className="text-xl font-bold text-zinc-950 tracking-tight">System Synchronizing</h2>
-            <p className="text-sm text-zinc-500 font-medium leading-relaxed">{error}</p>
+          <div className="space-y-3">
+            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Sync Delayed</h2>
+            <p className="text-sm text-slate-500 font-medium leading-relaxed">{error}</p>
           </div>
-          <Button onClick={fetchDashboardData} className="rounded-xl h-12 w-full font-bold shadow-lg shadow-zinc-100 transition-all active:scale-95">
-            Reconnect Terminal
+          <Button onClick={fetchDashboardData} className="rounded-2xl h-14 w-full bg-indigo-600 text-white font-bold shadow-xl shadow-indigo-100 transition-all active:scale-95 group">
+            <span className="group-hover:mr-2 transition-all">Reconnect Terminal</span>
+            <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-all" />
           </Button>
         </div>
       </div>

@@ -151,16 +151,17 @@ export default function PropertiesPage() {
                     <div className="flex items-center gap-4">
                        <Button 
                          variant="ghost" 
-                         size="icon"
+                         size="sm"
                          onClick={() => {
                            setSelectedPropertyId(property._id);
                            setIsTenantModalOpen(true);
                          }}
-                         className="rounded-2xl h-11 w-11 bg-slate-50/50 hover:bg-indigo-600 hover:text-white transition-all shadow-inner border border-transparent hover:border-indigo-100 group/action"
+                         className="rounded-2xl h-11 px-5 bg-slate-50/50 hover:bg-slate-100/80 text-slate-400 hover:text-indigo-600 transition-all border border-transparent hover:border-indigo-100 group/action flex items-center gap-2"
                        >
-                         <Plus className="h-5 w-5 transition-transform group-active/action:scale-75" />
+                         <Plus className="h-4 w-4 transition-transform group-active/action:scale-75" />
+                         <span className="text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">Sign Resident</span>
                        </Button>
-                       <Button variant="outline" className="text-xs font-bold text-slate-600 rounded-2xl h-11 px-6 bg-white hover:bg-slate-50">
+                       <Button variant="outline" className="text-xs font-bold text-slate-600 rounded-2xl h-11 px-6 bg-white hover:bg-slate-50 border-slate-200/60">
                           Configure
                        </Button>
                     </div>
