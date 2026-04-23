@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: 210 40% 99%;
+    --background: 210 40% 98%;
     --foreground: 222 47% 11%;
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
@@ -24,7 +24,7 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 238 77% 62%;
-    --radius: 1rem;
+    --radius: 0.75rem;
   }
 }
 
@@ -74,11 +74,11 @@
 
 @layer components {
   .card-premium {
-    @apply bg-white border border-slate-200/60 rounded-[32px] transition-all;
+    @apply bg-white border border-slate-200/60 rounded-2xl transition-all;
   }
   
   .hover-lift {
-    @apply hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgb(0,0,0,0.03)] active:scale-[0.99];
+    @apply hover:-translate-y-0.5 hover:shadow-sm active:scale-[0.99];
   }
 }
 @layer utilities {
