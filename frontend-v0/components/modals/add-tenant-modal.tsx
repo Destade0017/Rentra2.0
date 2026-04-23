@@ -90,12 +90,12 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[480px] bg-white border-slate-100 rounded-[40px] p-0 overflow-hidden gap-0 shadow-2xl shadow-slate-200">
         <DialogHeader className="p-10 pb-4">
-          <DialogTitle className="text-2xl font-bold tracking-tight text-slate-900">Finalize Resident Assignment</DialogTitle>
-          <p className="text-sm text-slate-400 font-medium mt-2 leading-relaxed">Map a new resident record to your portfolio infrastructure.</p>
+          <DialogTitle className="text-2xl font-bold tracking-tight text-slate-900">Add New Tenant</DialogTitle>
+          <p className="text-sm text-slate-500 font-medium mt-2 leading-relaxed">Assign a tenant to one of your properties.</p>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-6 px-10 py-6">
           <div className="space-y-3">
-            <Label htmlFor="name" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Legal Identity</Label>
+            <Label htmlFor="name" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Full Name</Label>
             <Input
               id="name"
               placeholder="John Doe"
@@ -106,7 +106,7 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
             />
           </div>
           <div className="space-y-3">
-            <Label htmlFor="email" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">System Mailbox</Label>
+            <Label htmlFor="email" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Email Address</Label>
             <Input
               id="email"
               type="email"
@@ -118,14 +118,14 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
             />
           </div>
           <div className="space-y-3">
-            <Label htmlFor="property" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Asset Mapping</Label>
+            <Label htmlFor="property" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Select Property</Label>
             <Select 
               onValueChange={(val) => setFormData({ ...formData, property: val })}
               value={formData.property}
               disabled={loading || !!defaultPropertyId}
             >
               <SelectTrigger className="h-12 rounded-2xl bg-slate-50/50 border-slate-100 focus:bg-white text-sm font-medium">
-                <SelectValue placeholder="Select target asset" />
+                <SelectValue placeholder="Select a property" />
               </SelectTrigger>
               <SelectContent className="bg-white border-slate-100 rounded-2xl shadow-xl">
                 {properties.map((property) => (
@@ -138,7 +138,7 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
           </div>
           <div className="grid grid-cols-2 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="rentAmount" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Fiscal Cycle ($)</Label>
+              <Label htmlFor="rentAmount" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Monthly Rent ($)</Label>
               <Input
                 id="rentAmount"
                 type="number"
@@ -150,7 +150,7 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
               />
             </div>
             <div className="space-y-3">
-              <Label htmlFor="dueDate" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Protocol Date</Label>
+              <Label htmlFor="dueDate" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Rent Due Date</Label>
               <Input
                 id="dueDate"
                 type="date"
@@ -167,16 +167,16 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
               loading={loading}
               className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-2xl h-14 px-10 font-bold text-sm shadow-xl shadow-indigo-100 active:scale-95 transition-all w-full md:w-auto"
             >
-              Settle Assignment
+              Add Tenant
             </Button>
             <Button
               type="button"
               variant="ghost"
               onClick={onClose}
               disabled={loading}
-              className="text-xs font-bold text-slate-300 hover:text-slate-900 px-6 h-14 rounded-2xl w-full md:w-auto"
+              className="text-xs font-bold text-slate-400 hover:text-slate-900 px-6 h-14 rounded-2xl w-full md:w-auto"
             >
-              Abort Process
+              Cancel
             </Button>
           </DialogFooter>
         </form>

@@ -65,8 +65,8 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
         ...formData,
         images
       });
-      toast.success('Property optimized with media', {
-        className: 'rounded-xl font-bold uppercase tracking-tighter'
+      toast.success('Property added successfully', {
+        className: 'rounded-2xl font-bold uppercase tracking-tighter text-[10px]'
       });
       setFormData({ name: '', address: '' });
       setImages([]);
@@ -84,14 +84,14 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[480px] bg-white border-slate-100 rounded-[40px] overflow-hidden p-0 gap-0 shadow-2xl shadow-slate-200 ring-1 ring-black/5">
         <DialogHeader className="p-10 pb-4">
-          <DialogTitle className="text-2xl font-bold tracking-tight text-slate-900">Digitize Asset</DialogTitle>
-          <p className="text-sm text-slate-400 font-medium mt-2 leading-relaxed">Infrastructure mapping for new portfolio recruitment.</p>
+          <DialogTitle className="text-2xl font-bold tracking-tight text-slate-900">Add Property</DialogTitle>
+          <p className="text-sm text-slate-500 font-medium mt-2 leading-relaxed">Register a new property to your portfolio.</p>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-8 px-10 py-6">
           <div className="grid grid-cols-1 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="name" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em] ml-1">Asset Designation</Label>
+              <Label htmlFor="name" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em] ml-1">Property Name</Label>
               <Input
                 id="name"
                 placeholder="e.g. Sunset Towers"
@@ -102,7 +102,7 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
               />
             </div>
             <div className="space-y-3">
-              <Label htmlFor="address" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em] ml-1">Geolocation</Label>
+              <Label htmlFor="address" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em] ml-1">Property Address</Label>
               <Input
                 id="address"
                 placeholder="123 Financial District"
@@ -115,7 +115,7 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
 
             {/* Image Upload Area */}
             <div className="space-y-4">
-              <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em] ml-1">Visual Evidence</Label>
+              <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em] ml-1">Property Photos</Label>
               <div className="grid grid-cols-4 gap-4">
                 {images.map((img, idx) => (
                   <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden group border border-slate-100 shadow-inner">
@@ -158,14 +158,14 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
               loading={loading}
               className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-2xl h-14 px-10 font-bold text-sm shadow-xl shadow-indigo-100 active:scale-95 transition-all w-full md:w-auto"
             >
-              Onboard Asset
+              Add Property
             </Button>
             <Button
               type="button"
               variant="ghost"
               onClick={onClose}
               disabled={loading}
-              className="text-xs font-bold text-slate-300 hover:text-slate-900 px-6 h-14 rounded-2xl w-full md:w-auto"
+              className="text-xs font-bold text-slate-400 hover:text-slate-900 px-6 h-14 rounded-2xl w-full md:w-auto"
             >
               Cancel
             </Button>

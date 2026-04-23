@@ -93,7 +93,7 @@ export default function PaymentsPage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold text-slate-900 text-sm">${tenant.rentAmount.toLocaleString()}</p>
+                  <p className="font-bold text-slate-900 text-sm">${(tenant.rentAmount || 0).toLocaleString()}</p>
                   <p className={`text-[10px] font-bold uppercase tracking-wider ${tenant.status === 'paid' ? 'text-green-600' : 'text-amber-600'}`}>
                     {tenant.status}
                   </p>

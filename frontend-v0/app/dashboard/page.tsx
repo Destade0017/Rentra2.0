@@ -9,6 +9,8 @@ import {
   Users,
   DollarSign,
   Plus,
+  AlertCircle,
+  ArrowRight,
 } from 'lucide-react';
 import api from '@/lib/api';
 import { AddPropertyModal } from '@/components/modals/add-property-modal';

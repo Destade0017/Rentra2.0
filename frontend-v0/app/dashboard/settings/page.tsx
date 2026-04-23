@@ -24,8 +24,8 @@ export default function SettingsPage() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      toast.success('Settings synchronized successfully', {
-        className: 'rounded-xl font-bold uppercase tracking-tighter'
+      toast.success('Settings saved successfully', {
+        className: 'rounded-2xl font-bold uppercase tracking-tighter text-[10px]'
       });
     }, 800);
   };
@@ -139,14 +139,16 @@ export default function SettingsPage() {
                         <Input type="password" placeholder="Enter new password" className="h-11 rounded-xl bg-slate-50 border-slate-100 focus:bg-white" />
                       </div>
                     </div>
+                    <Button 
+                      onClick={handleSave} 
+                      loading={loading}
+                      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl h-12 font-bold shadow-md shadow-indigo-100"
+                    >
+                      Save Changes
+                    </Button>
                   </div>
                 </Card>
               </section>
-
-               <div className="flex justify-end space-x-4">
-                 <Button variant="ghost" className="text-[10px] font-bold text-slate-400 uppercase tracking-wider rounded-xl hover:bg-slate-50 px-6 transition-colors">Reset</Button>
-                 <Button onClick={handleSave} loading={loading} className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-xl px-8 h-11 font-semibold text-sm active:scale-95 transition-all">Save Security</Button>
-              </div>
             </div>
           )}
 

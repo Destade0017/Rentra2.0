@@ -102,11 +102,10 @@ export default function TenantsPage() {
                     </div>
                   </div>
                 </div>
-
                 <div className="space-y-4 pt-6 border-t border-slate-50">
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wider">Rent</span>
-                    <span className="text-lg font-bold text-slate-900 tabular-nums">${tenant.rentAmount.toLocaleString()}</span>
+                    <span className="text-lg font-bold text-slate-900 tabular-nums">${(tenant.rentAmount || 0).toLocaleString()}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wider">Status</span>
