@@ -33,8 +33,23 @@ export default function PaymentsPage() {
           <Skeleton className="h-8 w-40 rounded-xl" />
           <Skeleton className="h-4 w-64 mt-2 rounded-xl" />
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Skeleton className="h-24 rounded-2xl" />
+          <Skeleton className="h-24 rounded-2xl" />
+        </div>
         <div className="space-y-4">
-          {[1, 2, 3].map(i => <Skeleton key={i} className="h-20 rounded-xl border border-slate-100" />)}
+          {[1, 2, 3].map(i => (
+            <div key={i} className="p-5 bg-white rounded-2xl border border-slate-50 shadow-sm flex items-center justify-between">
+              <div className="flex items-center gap-4 flex-1">
+                <Skeleton className="h-10 w-10 rounded-lg" />
+                <div className="space-y-2 flex-1">
+                  <Skeleton className="h-4 w-1/4 rounded-lg" />
+                  <Skeleton className="h-3 w-1/6 rounded-lg" />
+                </div>
+              </div>
+              <Skeleton className="h-8 w-20 rounded-lg" />
+            </div>
+          ))}
         </div>
       </div>
     );
@@ -76,9 +91,17 @@ export default function PaymentsPage() {
       <div className="space-y-4">
         <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider px-1">Recent Activity</h2>
         {tenants.length === 0 ? (
-          <Card className="p-12 text-center border-dashed border-2 bg-white rounded-2xl">
-            <p className="text-sm text-slate-500">No payment history available.</p>
-          </Card>
+          <div className="flex-1 flex items-center justify-center min-h-[300px] animate-in fade-in zoom-in duration-700">
+            <div className="text-center space-y-6 max-w-[340px] mx-auto p-12 bg-white rounded-[40px] border border-slate-100 shadow-2xl shadow-slate-200">
+              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto border border-slate-100">
+                <DollarSign className="h-8 w-8 text-slate-300" />
+              </div>
+              <div className="space-y-2">
+                <p className="text-lg font-bold text-slate-900">No Payments Yet</p>
+                <p className="text-sm text-slate-500 font-medium leading-relaxed">Financial data will appear here once you assign tenants to your properties.</p>
+              </div>
+            </div>
+          </div>
         ) : (
           <div className="space-y-3">
             {tenants.map((tenant) => (

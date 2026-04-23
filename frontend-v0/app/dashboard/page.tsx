@@ -128,40 +128,49 @@ export default function DashboardPage() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map(i => <Skeleton key={i} className="h-32 rounded-2xl border border-slate-100" />)}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="p-5 lg:p-6 bg-white rounded-2xl border border-slate-50 shadow-sm flex items-center gap-4">
+                <Skeleton className="h-10 w-10 rounded-xl" />
+                <div className="space-y-2 flex-1">
+                  <Skeleton className="h-3 w-1/3 rounded-lg" />
+                  <Skeleton className="h-6 w-1/2 rounded-lg" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : isEmpty ? (
-          <Card className="p-16 text-center border-dashed border-2 flex flex-col items-center justify-center min-h-[300px]">
-            <div className="max-w-[300px] space-y-6">
-              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto border border-slate-100">
-                <Building2 className="h-8 w-8 text-slate-300" />
+          <div className="flex-1 flex items-center justify-center min-h-[400px] animate-in fade-in zoom-in duration-700">
+            <div className="text-center space-y-10 max-w-[340px] mx-auto p-12 bg-white rounded-[40px] border border-slate-100 shadow-2xl shadow-slate-200">
+              <div className="w-20 h-20 bg-slate-50 rounded-[28px] flex items-center justify-center mx-auto border border-slate-100">
+                <Building2 className="h-10 w-10 text-slate-300" />
               </div>
-              <div className="space-y-2">
-                <h2 className="text-xl font-bold text-slate-900">Get Started</h2>
-                <p className="text-sm text-slate-500 leading-relaxed">
-                  Add your first property to start tracking rent.
+              <div className="space-y-3">
+                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Welcome to Rentra</h2>
+                <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                  Start your journey by adding your first property asset to the portfolio.
                 </p>
               </div>
               <Button 
                 onClick={() => setIsPropertyModalOpen(true)} 
-                className="w-full bg-indigo-600 hover:bg-indigo-700 rounded-xl h-12 shadow-md shadow-indigo-100 font-semibold"
+                className="rounded-2xl h-14 w-full bg-indigo-600 text-white font-bold shadow-xl shadow-indigo-100 transition-all active:scale-95"
               >
-                Add Property
+                Add Your First Property
               </Button>
             </div>
-          </Card>
+          </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6">
             {summaryCards.map((card, index) => (
-              <Card key={index} className="p-6 border-slate-200/50 hover-lift bg-white shadow-sm ring-1 ring-slate-100/5 rounded-2xl">
+              <Card key={index} className="p-5 lg:p-6 border-slate-200/50 hover-lift bg-white shadow-sm ring-1 ring-slate-100/5 rounded-2xl lg:rounded-2xl">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-slate-50 rounded-xl text-slate-400">
+                  <div className="p-3 bg-slate-50 rounded-xl text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors">
                     {card.icon}
                   </div>
                   <div className="space-y-0.5">
-                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{card.label}</p>
-                    <p className="text-2xl font-bold text-slate-900 tracking-tight">{card.value}</p>
+                    <p className="text-[10px] lg:text-[11px] font-bold text-slate-400 uppercase tracking-wider">{card.label}</p>
+                    <p className="text-xl lg:text-2xl font-bold text-slate-900 tracking-tight">{card.value}</p>
+                    {card.subtext && <p className="text-[10px] text-slate-400 font-medium hidden sm:block">{card.subtext}</p>}
                   </div>
                 </div>
               </Card>
@@ -172,36 +181,32 @@ export default function DashboardPage() {
 
       {!isEmpty && !loading && (
         <div className="space-y-6">
-          <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider px-1">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="p-8 border-slate-200/50 hover-lift group cursor-pointer bg-white rounded-2xl" onClick={() => setIsPropertyModalOpen(true)}>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-5">
-                  <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                    <Building2 className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <p className="text-lg font-bold text-slate-900">Add Property</p>
-                    <p className="text-sm text-slate-500">Register a new property.</p>
-                  </div>
+          <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] px-1">Quick Actions</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 lg:gap-6">
+            <Card className="p-6 lg:p-8 border-slate-200/50 hover-lift group cursor-pointer bg-white rounded-2xl lg:rounded-2xl overflow-hidden relative" onClick={() => setIsPropertyModalOpen(true)}>
+              <div className="flex flex-col gap-4">
+                <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-sm">
+                  <Building2 className="h-5 w-5 lg:h-6 lg:w-6" />
                 </div>
-                <Plus className="h-5 w-5 text-slate-300 group-hover:text-indigo-600 transition-all" />
+                <div>
+                  <p className="text-sm lg:text-lg font-bold text-slate-900">Add Property</p>
+                  <p className="text-[11px] text-slate-400 font-medium hidden sm:block">Register a new property.</p>
+                </div>
               </div>
+              <Plus className="absolute top-6 right-6 h-4 w-4 text-slate-200 group-hover:text-indigo-600 group-hover:scale-125 transition-all" />
             </Card>
 
-            <Card className="p-8 border-slate-200/50 hover-lift group cursor-pointer bg-white rounded-2xl" onClick={() => setIsTenantModalOpen(true)}>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-5">
-                  <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                    <Users className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <p className="text-lg font-bold text-slate-900">Add Tenant</p>
-                    <p className="text-sm text-slate-500">Add a tenant to a unit.</p>
-                  </div>
+            <Card className="p-6 lg:p-8 border-slate-200/50 hover-lift group cursor-pointer bg-white rounded-2xl lg:rounded-2xl overflow-hidden relative" onClick={() => setIsTenantModalOpen(true)}>
+              <div className="flex flex-col gap-4">
+                <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-sm">
+                  <Users className="h-5 w-5 lg:h-6 lg:w-6" />
                 </div>
-                <Plus className="h-5 w-5 text-slate-300 group-hover:text-indigo-600 transition-all" />
+                <div>
+                  <p className="text-sm lg:text-lg font-bold text-slate-900">Add Tenant</p>
+                  <p className="text-[11px] text-slate-400 font-medium hidden sm:block">Add a tenant to a unit.</p>
+                </div>
               </div>
+              <Plus className="absolute top-6 right-6 h-4 w-4 text-slate-200 group-hover:text-indigo-600 group-hover:scale-125 transition-all" />
             </Card>
           </div>
         </div>

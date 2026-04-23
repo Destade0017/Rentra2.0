@@ -36,11 +36,22 @@ export default function PropertiesPage() {
     return (
       <div className="flex-1 space-y-12 animate-in fade-in duration-500">
         <div className="flex items-center justify-between px-1">
-          <Skeleton className="h-10 w-48 rounded-2xl" />
-          <Skeleton className="h-12 w-40 rounded-2xl" />
+          <div className="space-y-2">
+            <Skeleton className="h-8 w-40 rounded-xl" />
+            <Skeleton className="h-4 w-60 rounded-lg" />
+          </div>
+          <Skeleton className="h-12 w-40 rounded-xl" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[1, 2, 3].map(i => <Skeleton key={i} className="h-64 rounded-[32px] border border-slate-100" />)}
+          {[1, 2, 3].map(i => (
+            <div key={i} className="space-y-6">
+              <Skeleton className="aspect-[16/9] w-full rounded-[32px]" />
+              <div className="space-y-3">
+                <Skeleton className="h-6 w-3/4 rounded-lg" />
+                <Skeleton className="h-4 w-1/2 rounded-lg" />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     );
@@ -81,25 +92,25 @@ export default function PropertiesPage() {
       </div>
 
       {properties.length === 0 ? (
-        <Card className="p-16 border-dashed border-2 bg-white text-center rounded-2xl">
-          <div className="max-w-[300px] mx-auto space-y-6">
-            <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto border border-slate-100 text-slate-300">
-              <Building2 className="h-8 w-8" />
+        <div className="flex-1 flex items-center justify-center min-h-[400px] animate-in fade-in zoom-in duration-700">
+          <div className="text-center space-y-10 max-w-[340px] mx-auto p-12 bg-white rounded-[40px] border border-slate-100 shadow-2xl shadow-slate-200">
+            <div className="w-20 h-20 bg-slate-50 rounded-[28px] flex items-center justify-center mx-auto border border-slate-100">
+              <Building2 className="h-10 w-10 text-slate-300" />
             </div>
-            <div className="space-y-2">
-              <h2 className="text-xl font-bold text-slate-900">No Properties</h2>
-              <p className="text-sm text-slate-500 leading-relaxed">
-                Add your first property to start tracking rent.
+            <div className="space-y-3">
+              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">No Properties</h2>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                Start by adding your first property to manage units and tenants.
               </p>
             </div>
             <Button 
               onClick={() => setIsPropertyModalOpen(true)}
-              className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-xl h-12 px-8 font-semibold shadow-md shadow-indigo-100 w-full"
+              className="rounded-2xl h-14 w-full bg-indigo-600 text-white font-bold shadow-xl shadow-indigo-100 transition-all active:scale-95"
             >
-              Add Property
+              Add Your First Property
             </Button>
           </div>
-        </Card>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {properties.map((property) => (

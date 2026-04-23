@@ -94,45 +94,62 @@ export default function DashboardLayout({
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col min-w-0 lg:pl-[260px]">
           {/* Top Bar */}
-          <header className="h-16 border-b border-slate-200/40 bg-white/80 backdrop-blur-md flex items-center justify-between px-8 lg:px-10 sticky top-0 z-40 transition-all">
-            <div className="flex items-center gap-4">
-              <div className="lg:hidden w-7 h-7 bg-indigo-600 rounded-md flex items-center justify-center">
+          <header className="h-16 lg:h-16 border-b border-slate-200/40 bg-white/80 backdrop-blur-md flex items-center justify-between px-4 lg:px-10 sticky top-0 z-40 transition-all">
+            <div className="flex items-center gap-3">
+              <div className="lg:hidden w-8 h-8 bg-indigo-600 rounded-xl flex items-center justify-center shadow-md shadow-indigo-100">
                 <span className="text-white font-bold text-[10px]">R</span>
               </div>
-              <h2 className="text-sm font-semibold text-slate-900 capitalize">
+              <h2 className="text-sm font-bold text-slate-900 capitalize tracking-tight">
                 {pathname.split('/').pop()?.replace(/-/g, ' ') || 'Dashboard'}
               </h2>
             </div>
 
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-full border border-slate-100">
-                <div className="h-5 w-5 bg-white rounded-full flex items-center justify-center border border-slate-200">
+            <div className="flex items-center gap-3">
+              <Link href="/dashboard/settings" className="lg:hidden p-2 text-slate-400 hover:text-slate-900 transition-colors">
+                <Settings className="h-5 w-5" />
+              </Link>
+              <div className="flex items-center gap-2 pl-1 pr-3 py-1 bg-slate-50 rounded-full border border-slate-100">
+                <div className="h-6 w-6 bg-white rounded-full flex items-center justify-center border border-slate-200 shadow-sm">
                   <span className="text-slate-900 text-[9px] font-bold">{user?.name?.charAt(0) || 'U'}</span>
                 </div>
-                <span className="text-[11px] font-semibold text-slate-600">{user?.name || 'Landlord'}</span>
+                <span className="hidden sm:inline text-[11px] font-semibold text-slate-600">{user?.name || 'Landlord'}</span>
               </div>
             </div>
           </header>
 
-          <main className="flex-1 overflow-y-auto pt-8 lg:pt-12 pb-24">
-            <div className="px-8 lg:px-10 max-w-[1100px] mx-auto">
+          <main className="flex-1 overflow-y-auto pt-6 lg:pt-12 pb-32 lg:pb-12">
+            <div className="px-4 lg:px-10 max-w-[1100px] mx-auto">
               {children}
             </div>
           </main>
         </div>
 
-        {/* Mobile Nav */}
-        <nav className="lg:hidden fixed bottom-4 left-4 right-4 h-14 bg-white/90 backdrop-blur-xl border border-slate-200/60 rounded-2xl px-6 flex items-center justify-between z-50 shadow-lg ring-1 ring-black/5">
-          {navItems.map((item) => (
-            <Link key={item.href} href={item.href} className="flex flex-col items-center">
-              <div className={`p-2 transition-all ${isActive(item.href) ? 'text-indigo-600' : 'text-slate-400'}`}>
+        {/* Mobile Nav (App-like Bottom Navigation) */}
+        <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-[84px] bg-white border-t border-slate-100 px-2 flex items-start justify-around z-50 pt-3 pb-safe shadow-[0_-4px_16px_rgba(0,0,0,0.02)]">
+          {navItems.filter(i => i.label !== 'Settings').map((item, idx) => (
+            <Link key={item.href} href={item.href} className="flex-1 flex flex-col items-center gap-1.5 transition-all active:scale-95">
+              <div className={`p-2 rounded-xl transition-all ${
+                isActive(item.href) 
+                  ? 'bg-indigo-50 text-indigo-600' 
+                  : 'text-slate-400'
+              }`}>
                 {item.icon}
               </div>
+              <span className={`text-[10px] font-bold tracking-tight transition-colors ${
+                isActive(item.href) ? 'text-indigo-600' : 'text-slate-400'
+              }`}>
+                {item.label}
+              </span>
             </Link>
           ))}
-          <button onClick={handleLogout} className="p-2 text-slate-400">
-            <LogOut className="h-4 w-4" />
-          </button>
+          
+          {/* Quick Action FAB Placeholder (Logic handled in specific pages if needed, but visually represented here for better design) */}
+          <div className="flex-1 flex flex-col items-center gap-1.5 opacity-50 pointer-events-none">
+            <div className="p-2 rounded-xl text-slate-300">
+               <Plus className="h-4 w-4" />
+            </div>
+            <span className="text-[10px] font-bold tracking-tight text-slate-300">More</span>
+          </div>
         </nav>
       </div>
     </AuthGuard>

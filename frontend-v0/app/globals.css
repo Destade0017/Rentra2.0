@@ -53,14 +53,23 @@
     @apply bg-background text-slate-600 antialiased selection:bg-indigo-100 selection:text-indigo-900;
     font-size: 0.9375rem; 
     line-height: 1.6;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  h1, h2, h3, h4 {
-    @apply font-bold tracking-tight text-slate-900;
+  h1 {
+    @apply text-2xl lg:text-3xl font-bold tracking-tight text-slate-900;
+  }
+
+  h2 {
+    @apply text-xl lg:text-2xl font-bold tracking-tight text-slate-900;
+  }
+
+  h3 {
+    @apply text-lg lg:text-xl font-bold tracking-tight text-slate-900;
   }
 
   p {
-    @apply text-slate-500 font-medium;
+    @apply text-slate-500 font-medium leading-relaxed;
   }
 
   ::-webkit-scrollbar {
@@ -81,6 +90,9 @@
   }
 }
 @layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
   @keyframes shimmer {
     100% {
       transform: translateX(100%);
