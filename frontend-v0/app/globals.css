@@ -46,7 +46,7 @@
 
 @layer base {
   * {
-    @apply border-border/60 outline-none transition-all duration-300;
+    @apply border-border/60 outline-none;
   }
   
   body {
