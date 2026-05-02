@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { DollarSign, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { DollarSign, CheckCircle2, Clock, AlertCircle, ArrowRight } from 'lucide-react';
 import { useTenants } from '@/hooks/use-tenants';
 
 interface Tenant {
@@ -15,7 +15,32 @@ interface Tenant {
 }
 
 export default function PaymentsPage() {
-  const { data: tenants = [] as Tenant[], isLoading: loading } = useTenants();
+  const { 
+    data: tenants = [] as Tenant[], 
+    isLoading: loading, 
+    error,
+    refetch
+  } = useTenants();
+
+  if (error) {
+    return (
+      <div className="flex-1 flex items-center justify-center min-h-[500px] animate-in fade-in zoom-in duration-700">
+        <div className="text-center space-y-10 max-w-[340px] mx-auto p-12 bg-white rounded-[40px] border border-slate-100 shadow-2xl shadow-slate-200">
+          <div className="w-20 h-20 bg-indigo-50 rounded-[28px] flex items-center justify-center mx-auto border border-indigo-100/30">
+            <AlertCircle className="h-10 w-10 text-indigo-400" />
+          </div>
+          <div className="space-y-3">
+            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Sync Fault</h2>
+            <p className="text-sm text-slate-500 font-medium leading-relaxed">Failed to retrieve financial records.</p>
+          </div>
+          <Button onClick={() => refetch()} className="rounded-2xl h-14 w-full bg-indigo-600 text-white font-bold shadow-xl shadow-indigo-100 transition-all active:scale-95 group">
+            <span className="group-hover:mr-2 transition-all">Retry Connection</span>
+            <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-all" />
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
