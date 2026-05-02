@@ -9,8 +9,15 @@ import { useProperties } from '@/hooks/use-properties';
 import { AddPropertyModal } from '@/components/modals/add-property-modal';
 import { AddTenantModal } from '@/components/modals/add-tenant-modal';
 
+interface Property {
+  _id: string;
+  name: string;
+  address: string;
+  images: string[];
+}
+
 export default function PropertiesPage() {
-  const { data: properties = [], isLoading: loading, error, refetch: fetchProperties } = useProperties();
+  const { data: properties = [] as Property[], isLoading: loading, error, refetch: fetchProperties } = useProperties();
   const [isPropertyModalOpen, setIsPropertyModalOpen] = useState(false);
   const [isTenantModalOpen, setIsTenantModalOpen] = useState(false);
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | undefined>(undefined);

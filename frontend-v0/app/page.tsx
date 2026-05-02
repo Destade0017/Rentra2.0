@@ -9,8 +9,8 @@ export default function Home() {
   const { isAuthenticated, isLoading, checkAuth } = useAuth();
 
   useEffect(() => {
-    const initialize = async () => {
-      await checkAuth();
+    checkAuth().then(() => {
+      // Small delay to ensure state has settled
       if (!isLoading) {
         if (isAuthenticated) {
           router.push('/dashboard');
@@ -18,9 +18,8 @@ export default function Home() {
           router.push('/auth/login');
         }
       }
-    };
-    initialize();
-  }, [checkAuth, isAuthenticated, isLoading, router]);
+    });
+  }, []);
 
   return (
     <div className="flex h-screen w-full items-center justify-center bg-background">

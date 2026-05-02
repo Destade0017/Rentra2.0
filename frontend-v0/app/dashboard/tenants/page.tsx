@@ -8,8 +8,17 @@ import { Plus, Users, Mail } from 'lucide-react';
 import { useTenants } from '@/hooks/use-tenants';
 import { AddTenantModal } from '@/components/modals/add-tenant-modal';
 
+interface Tenant {
+  _id: string;
+  name: string;
+  email: string;
+  status: 'paid' | 'unpaid' | 'pending';
+  rentAmount: number;
+  profileImage?: string;
+}
+
 export default function TenantsPage() {
-  const { data: tenants = [], isLoading: loading, error, refetch: fetchTenants } = useTenants();
+  const { data: tenants = [] as Tenant[], isLoading: loading, error, refetch: fetchTenants } = useTenants();
   const [isTenantModalOpen, setIsTenantModalOpen] = useState(false);
 
   if (loading) {

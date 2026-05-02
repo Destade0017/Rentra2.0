@@ -7,9 +7,10 @@ const { asyncHandler } = require('../middleware/errorMiddleware');
 // @access  Private
 const addTenant = asyncHandler(async (req, res) => {
     const { name, email, property: propertyId, rentAmount, dueDate } = req.body;
+    const normalizedEmail = email?.toLowerCase().trim();
 
     // Field validation
-    if (!name || !email || !propertyId || !rentAmount || !dueDate) {
+    if (!name || !normalizedEmail || !propertyId || !rentAmount || !dueDate) {
         res.status(400);
         throw new Error('Please provide all tenant fields');
     }
@@ -24,11 +25,12 @@ const addTenant = asyncHandler(async (req, res) => {
 
     const tenant = await Tenant.create({
         name,
-        email,
+        email: normalizedEmail,
         property: propertyId,
         rentAmount,
         dueDate,
-        status: 'pending'
+        status: 'pending',
+        profileImage: req.body.profileImage || ''
     });
 
     res.status(201).json({

@@ -17,9 +17,24 @@ import { useTenants } from '@/hooks/use-tenants';
 import { AddPropertyModal } from '@/components/modals/add-property-modal';
 import { AddTenantModal } from '@/components/modals/add-tenant-modal';
 
+interface Property {
+  _id: string;
+  name: string;
+  address: string;
+  images: string[];
+}
+
+interface Tenant {
+  _id: string;
+  name: string;
+  email: string;
+  status: 'paid' | 'unpaid' | 'pending';
+  rentAmount: number;
+}
+
 export default function DashboardPage() {
-  const { data: properties = [], isLoading: loadingProperties, error: errorProperties, refetch: refetchProperties } = useProperties();
-  const { data: tenants = [], isLoading: loadingTenants, error: errorTenants, refetch: refetchTenants } = useTenants();
+  const { data: properties = [] as Property[], isLoading: loadingProperties, error: errorProperties, refetch: refetchProperties } = useProperties();
+  const { data: tenants = [] as Tenant[], isLoading: loadingTenants, error: errorTenants, refetch: refetchTenants } = useTenants();
   
   const loading = loadingProperties || loadingTenants;
   const error = errorProperties || errorTenants ? 'Failed to load dashboard data. Please try again later.' : '';
@@ -37,8 +52,8 @@ export default function DashboardPage() {
   const { totalProperties, totalTenants, paidTenants, totalRentAmount } = useMemo(() => ({
     totalProperties: properties.length,
     totalTenants: tenants.length,
-    paidTenants: tenants.filter((t: any) => t.status === 'paid').length,
-    totalRentAmount: tenants.reduce((acc: number, t: any) => acc + (t.rentAmount || 0), 0)
+    paidTenants: tenants.filter((t) => t.status === 'paid').length,
+    totalRentAmount: tenants.reduce((acc, t) => acc + (Number(t.rentAmount) || 0), 0)
   }), [properties, tenants]);
 
   const summaryCards = useMemo(() => [

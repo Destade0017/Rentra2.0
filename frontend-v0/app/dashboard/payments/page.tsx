@@ -6,8 +6,16 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { DollarSign, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
 import { useTenants } from '@/hooks/use-tenants';
 
+interface Tenant {
+  _id: string;
+  name: string;
+  email: string;
+  status: 'paid' | 'unpaid' | 'pending';
+  rentAmount: number;
+}
+
 export default function PaymentsPage() {
-  const { data: tenants = [], isLoading: loading } = useTenants();
+  const { data: tenants = [] as Tenant[], isLoading: loading } = useTenants();
 
   if (loading) {
     return (
