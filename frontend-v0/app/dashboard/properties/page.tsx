@@ -51,7 +51,7 @@ export default function PropertiesPage() {
           </div>
           <Skeleton className="h-12 w-40 rounded-xl" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {[1, 2, 3].map(i => (
             <div key={i} className="space-y-6">
               <Skeleton className="aspect-[16/9] w-full rounded-[32px]" />
@@ -67,7 +67,7 @@ export default function PropertiesPage() {
   }
 
   return (
-    <div className="flex-1 space-y-12 pb-24 animate-in fade-in duration-700">
+    <div className="flex-1 space-y-10 lg:space-y-12 pb-24 animate-in fade-in duration-700">
       <AddPropertyModal 
         isOpen={isPropertyModalOpen} 
         onClose={() => setIsPropertyModalOpen(false)} 
@@ -85,17 +85,17 @@ export default function PropertiesPage() {
 
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-1">
         <div className="space-y-1">
-          <h1 className="text-2xl font-bold text-slate-900">Properties</h1>
-          <p className="text-sm text-slate-500">Manage your properties and units.</p>
+          <h1 className="text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">Properties</h1>
+          <p className="text-[10px] lg:text-sm text-slate-400 font-bold uppercase tracking-widest">Asset Management</p>
         </div>
         <Button 
           onClick={() => {
             setSelectedPropertyId(undefined);
             setIsPropertyModalOpen(true);
           }}
-          className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-xl h-12 px-6 shadow-md shadow-indigo-100 font-semibold transition-all w-full md:w-auto"
+          className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-2xl h-14 lg:h-12 px-8 shadow-xl shadow-indigo-100 font-bold transition-all w-full md:w-auto active:scale-95"
         >
-          <Plus className="h-4 w-4 mr-2" />
+          <Plus className="h-5 w-5 mr-2" />
           Add Property
         </Button>
       </div>
@@ -121,58 +121,57 @@ export default function PropertiesPage() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {properties.map((property) => (
-            <Card key={property._id} className="overflow-hidden bg-white border border-slate-200/50 rounded-2xl shadow-sm flex flex-col p-0 hover-lift group">
-              <div className="aspect-[16/9] w-full bg-slate-50 relative overflow-hidden flex items-center justify-center border-b border-slate-100/50">
+            <Card key={property._id} className="overflow-hidden bg-white border border-slate-100 rounded-[32px] shadow-sm flex flex-col p-0 hover:shadow-md transition-all group">
+              <div className="aspect-[16/9] w-full bg-slate-50 relative overflow-hidden flex items-center justify-center border-b border-slate-50">
                 {property.images && property.images.length > 0 ? (
                   <img 
                     src={property.images[0]} 
                     alt={property.name} 
-                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
                   />
                 ) : (
                   <div className="flex flex-col items-center gap-2">
                     <Building2 className="h-8 w-8 text-slate-200" />
-                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">No Image</span>
+                    <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">No Image</span>
                   </div>
                 )}
-                <div className="absolute top-4 left-4 px-3 py-1.5 bg-white/90 backdrop-blur-md rounded-xl border border-white/20 shadow-sm">
+                <div className="absolute top-5 left-5 px-3 py-1.5 bg-white/90 backdrop-blur-md rounded-xl border border-white shadow-sm">
                    <div className="flex items-center gap-2">
-                     <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                     <span className="text-[10px] font-bold uppercase tracking-wider text-slate-900">Active</span>
+                     <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                     <span className="text-[10px] font-black uppercase tracking-wider text-slate-900">Active Asset</span>
                    </div>
                 </div>
               </div>
 
-              <div className="p-6 space-y-6 flex-1 flex flex-col justify-between">
+              <div className="p-6 lg:p-8 space-y-6 flex-1 flex flex-col justify-between">
                 <div className="space-y-2">
-                  <h3 className="font-bold text-xl text-slate-900 tracking-tight">{property.name}</h3>
-                  <div className="flex items-center gap-2 text-slate-400 font-medium text-xs">
+                  <h3 className="font-black text-xl text-slate-900 tracking-tight truncate">{property.name}</h3>
+                  <div className="flex items-center gap-2 text-slate-400 font-bold text-[11px] uppercase tracking-tight">
                     <MapPin className="h-3.5 w-3.5 shrink-0 text-slate-300" />
                     <span className="truncate">{property.address}</span>
                   </div>
                 </div>
 
-                <div className="pt-6 flex items-center justify-between border-t border-slate-50">
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wider">Type</span>
-                    <span className="text-xs font-semibold text-slate-600">Residential</span>
+                <div className="pt-6 flex flex-col gap-4 border-t border-slate-50">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Category</span>
+                    <span className="text-[10px] font-black text-slate-600 uppercase bg-slate-50 px-2.5 py-1 rounded-lg">Residential</span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="grid grid-cols-2 gap-3">
                      <Button 
                        variant="ghost" 
-                       size="sm"
                        onClick={() => {
                          setSelectedPropertyId(property._id);
                          setIsTenantModalOpen(true);
                        }}
-                       className="rounded-xl h-9 px-4 bg-slate-50/50 hover:bg-slate-100/80 text-slate-500 hover:text-indigo-600 transition-all border border-transparent flex items-center gap-2"
+                       className="rounded-2xl h-12 bg-indigo-50/50 hover:bg-indigo-600 hover:text-white text-indigo-600 transition-all border border-transparent font-black text-[10px] uppercase tracking-widest active:scale-95"
                      >
-                       <Plus className="h-3.5 w-3.5" />
-                       <span className="text-[10px] font-bold uppercase tracking-wider">Add Tenant</span>
+                       <Plus className="h-3.5 w-3.5 mr-2" />
+                       Add Resident
                      </Button>
-                     <Button variant="outline" className="text-[10px] font-bold uppercase tracking-wider text-slate-500 rounded-xl h-9 px-4 bg-white hover:bg-slate-50 border-slate-200/60">
+                     <Button variant="outline" className="rounded-2xl h-12 border-slate-100 hover:bg-slate-50 text-slate-500 font-black text-[10px] uppercase tracking-widest active:scale-95">
                         Manage
                      </Button>
                   </div>

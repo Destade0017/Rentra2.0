@@ -36,27 +36,18 @@ export default function PaymentsPage() {
 
   if (loading) {
     return (
-      <div className="flex-1 space-y-8 animate-in fade-in duration-500">
+      <div className="flex-1 space-y-10 animate-in fade-in duration-500">
         <div className="px-1">
           <Skeleton className="h-8 w-40 rounded-xl" />
           <Skeleton className="h-4 w-64 mt-2 rounded-xl" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Skeleton className="h-24 rounded-2xl" />
-          <Skeleton className="h-24 rounded-2xl" />
+        <div className="grid grid-cols-2 gap-4">
+          <Skeleton className="h-28 rounded-[24px]" />
+          <Skeleton className="h-28 rounded-[24px]" />
         </div>
-        <div className="space-y-4">
+        <div className="space-y-3">
           {[1, 2, 3].map(i => (
-            <div key={i} className="p-5 bg-white rounded-2xl border border-slate-50 shadow-sm flex items-center justify-between">
-              <div className="flex items-center gap-4 flex-1">
-                <Skeleton className="h-10 w-10 rounded-lg" />
-                <div className="space-y-2 flex-1">
-                  <Skeleton className="h-4 w-1/4 rounded-lg" />
-                  <Skeleton className="h-3 w-1/6 rounded-lg" />
-                </div>
-              </div>
-              <Skeleton className="h-8 w-20 rounded-lg" />
-            </div>
+            <Skeleton key={i} className="h-20 rounded-[24px]" />
           ))}
         </div>
       </div>
@@ -67,37 +58,37 @@ export default function PaymentsPage() {
   const totalAmount = tenants.reduce((acc, t) => acc + (t.rentAmount || 0), 0);
 
   return (
-    <div className="flex-1 space-y-12 pb-24 animate-in fade-in duration-700">
-      <div className="px-1">
-        <h1 className="text-2xl font-bold text-slate-900">Payments</h1>
-        <p className="text-sm text-slate-500">Track rent collection status.</p>
+    <div className="flex-1 space-y-10 lg:space-y-12 pb-24 animate-in fade-in duration-700">
+      <div className="px-1 space-y-1">
+        <h1 className="text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">Financials</h1>
+        <p className="text-[10px] lg:text-sm text-slate-400 font-bold uppercase tracking-widest">Rent Collection Status</p>
       </div>
 
-      {/* Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="p-6 rounded-2xl border-slate-200/50 bg-white shadow-sm flex items-center gap-4">
-          <div className="p-3 bg-green-50 rounded-xl text-green-600">
-            <CheckCircle2 className="h-6 w-6" />
+      {/* Summary Stats (Mobile-First) */}
+      <div className="grid grid-cols-2 gap-4 lg:gap-6">
+        <Card className="p-5 lg:p-6 rounded-[24px] lg:rounded-[32px] border-slate-100 bg-white shadow-sm flex flex-col gap-4">
+          <div className="w-10 h-10 rounded-2xl bg-green-50 flex items-center justify-center text-green-600 border border-green-100/50">
+            <CheckCircle2 className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Collected</p>
-            <p className="text-2xl font-bold text-slate-900">{paidCount} / {tenants.length} Tenants</p>
+            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Collected</p>
+            <p className="text-lg lg:text-2xl font-black text-slate-900 tracking-tighter tabular-nums">{paidCount}<span className="text-[10px] text-slate-300 ml-1">/ {tenants.length}</span></p>
           </div>
         </Card>
-        <Card className="p-6 rounded-2xl border-slate-200/50 bg-white shadow-sm flex items-center gap-4">
-          <div className="p-3 bg-indigo-50 rounded-xl text-indigo-600">
-            <DollarSign className="h-6 w-6" />
+        <Card className="p-5 lg:p-6 rounded-[24px] lg:rounded-[32px] border-slate-100 bg-white shadow-sm flex flex-col gap-4">
+          <div className="w-10 h-10 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 border border-indigo-100/50">
+            <DollarSign className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Value</p>
-            <p className="text-2xl font-bold text-slate-900">${totalAmount.toLocaleString()}</p>
+            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Total Value</p>
+            <p className="text-lg lg:text-2xl font-black text-slate-900 tracking-tighter tabular-nums">₦{totalAmount.toLocaleString()}</p>
           </div>
         </Card>
       </div>
 
       {/* Payments List */}
-      <div className="space-y-4">
-        <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider px-1">Recent Activity</h2>
+      <div className="space-y-6">
+        <h2 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] px-1">Recent Transactions</h2>
         {tenants.length === 0 ? (
           <div className="flex-1 flex items-center justify-center min-h-[300px] animate-in fade-in zoom-in duration-700">
             <div className="text-center space-y-6 max-w-[340px] mx-auto p-12 bg-white rounded-[40px] border border-slate-100 shadow-2xl shadow-slate-200">
@@ -106,30 +97,34 @@ export default function PaymentsPage() {
               </div>
               <div className="space-y-2">
                 <p className="text-lg font-bold text-slate-900">No Payments Yet</p>
-                <p className="text-sm text-slate-500 font-medium leading-relaxed">Financial data will appear here once you assign tenants to your properties.</p>
+                <p className="text-sm text-slate-500 font-medium leading-relaxed">Financial data will appear here once you onboard residents.</p>
               </div>
             </div>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="bg-white rounded-[32px] border border-slate-100 overflow-hidden shadow-sm">
             {tenants.map((tenant) => (
-              <Card key={tenant._id} className="p-5 rounded-2xl border-slate-200/50 bg-white shadow-sm flex items-center justify-between hover:bg-slate-50/50 transition-colors">
-                <div className="flex items-center gap-4">
-                  <div className={`p-2.5 rounded-lg ${tenant.status === 'paid' ? 'bg-green-50 text-green-600' : 'bg-amber-50 text-amber-600'}`}>
+              <div key={tenant._id} className="p-5 flex items-center justify-between hover:bg-slate-50/50 transition-all border-b border-slate-50 last:border-0 active:bg-slate-50">
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${
+                    tenant.status === 'paid' ? 'bg-green-50 text-green-600' : 'bg-amber-50 text-amber-600'
+                  }`}>
                     {tenant.status === 'paid' ? <CheckCircle2 className="h-5 w-5" /> : <Clock className="h-5 w-5" />}
                   </div>
-                  <div>
-                    <p className="font-bold text-slate-900 text-sm">{tenant.name}</p>
-                    <p className="text-[11px] text-slate-400 font-medium">Rent Payment</p>
+                  <div className="min-w-0">
+                    <p className="font-black text-slate-900 text-sm truncate">{tenant.name}</p>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Rent Payment</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-bold text-slate-900 text-sm">${(tenant.rentAmount || 0).toLocaleString()}</p>
-                  <p className={`text-[10px] font-bold uppercase tracking-wider ${tenant.status === 'paid' ? 'text-green-600' : 'text-amber-600'}`}>
+                <div className="text-right shrink-0">
+                  <p className="font-black text-slate-900 text-base tabular-nums tracking-tighter">₦{(tenant.rentAmount || 0).toLocaleString()}</p>
+                  <p className={`text-[9px] font-black uppercase tracking-widest ${
+                    tenant.status === 'paid' ? 'text-green-600' : 'text-amber-600'
+                  }`}>
                     {tenant.status}
                   </p>
                 </div>
-              </Card>
+              </div>
             ))}
           </div>
         )}
