@@ -12,56 +12,33 @@ import {
   AlertCircle,
   ArrowRight,
 } from 'lucide-react';
-import api from '@/lib/api';
+import { useProperties } from '@/hooks/use-properties';
+import { useTenants } from '@/hooks/use-tenants';
 import { AddPropertyModal } from '@/components/modals/add-property-modal';
 import { AddTenantModal } from '@/components/modals/add-tenant-modal';
 
-interface SummaryCard {
-  label: string;
-  value: string;
-  icon: React.ReactNode;
-  subtext?: string;
-}
-
 export default function DashboardPage() {
-  const [properties, setProperties] = useState<any[]>([]);
-  const [tenants, setTenants] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { data: properties = [], isLoading: loadingProperties, error: errorProperties, refetch: refetchProperties } = useProperties();
+  const { data: tenants = [], isLoading: loadingTenants, error: errorTenants, refetch: refetchTenants } = useTenants();
   
+  const loading = loadingProperties || loadingTenants;
+  const error = errorProperties || errorTenants ? 'Failed to load dashboard data. Please try again later.' : '';
+
   // Modal states
   const [isPropertyModalOpen, setIsPropertyModalOpen] = useState(false);
   const [isTenantModalOpen, setIsTenantModalOpen] = useState(false);
 
-  const fetchDashboardData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const [propRes, tenantRes] = await Promise.all([
-        api.get('/properties'),
-        api.get('/tenants')
-      ]);
-
-      setProperties(propRes.data.data || []);
-      setTenants(tenantRes.data.data || []);
-      setError('');
-    } catch (err: any) {
-      console.error('Error fetching dashboard data:', err);
-      setError('Failed to load dashboard data. Please try again later.');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchDashboardData();
-  }, [fetchDashboardData]);
+  const handleRefresh = useCallback(() => {
+    refetchProperties();
+    refetchTenants();
+  }, [refetchProperties, refetchTenants]);
 
   // Memoized Calculations for Performance
   const { totalProperties, totalTenants, paidTenants, totalRentAmount } = useMemo(() => ({
     totalProperties: properties.length,
     totalTenants: tenants.length,
-    paidTenants: tenants.filter(t => t.status === 'paid').length,
-    totalRentAmount: tenants.reduce((acc, t) => acc + (t.rentAmount || 0), 0)
+    paidTenants: tenants.filter((t: any) => t.status === 'paid').length,
+    totalRentAmount: tenants.reduce((acc: number, t: any) => acc + (t.rentAmount || 0), 0)
   }), [properties, tenants]);
 
   const summaryCards = useMemo(() => [
@@ -97,7 +74,7 @@ export default function DashboardPage() {
             <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Sync Delayed</h2>
             <p className="text-sm text-slate-500 font-medium leading-relaxed">{error}</p>
           </div>
-          <Button onClick={fetchDashboardData} className="rounded-2xl h-14 w-full bg-indigo-600 text-white font-bold shadow-xl shadow-indigo-100 transition-all active:scale-95 group">
+          <Button onClick={handleRefresh} className="rounded-2xl h-14 w-full bg-indigo-600 text-white font-bold shadow-xl shadow-indigo-100 transition-all active:scale-95 group">
             <span className="group-hover:mr-2 transition-all">Reconnect Terminal</span>
             <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-all" />
           </Button>
@@ -113,12 +90,12 @@ export default function DashboardPage() {
       <AddPropertyModal 
         isOpen={isPropertyModalOpen} 
         onClose={() => setIsPropertyModalOpen(false)} 
-        onSuccess={fetchDashboardData}
+        onSuccess={handleRefresh}
       />
       <AddTenantModal 
         isOpen={isTenantModalOpen} 
         onClose={() => setIsTenantModalOpen(false)} 
-        onSuccess={fetchDashboardData}
+        onSuccess={handleRefresh}
       />
 
       <div className="space-y-8">

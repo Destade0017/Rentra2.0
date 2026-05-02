@@ -12,8 +12,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ImagePlus, X, Image as ImageIcon, Loader2 } from 'lucide-react';
-import api from '@/lib/api';
+import { useAddProperty } from '@/hooks/use-properties';
 import { toast } from 'sonner';
+import { uploadImage } from '@/lib/supabase';
 
 interface AddPropertyModalProps {
   isOpen: boolean;
@@ -22,7 +23,7 @@ interface AddPropertyModalProps {
 }
 
 export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModalProps) {
-  const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [images, setImages] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     name: '',
@@ -30,27 +31,36 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
-    Array.from(files).forEach(file => {
+    const newFiles = Array.from(files);
+    
+    for (const file of newFiles) {
       if (file.size > 2 * 1024 * 1024) {
         toast.error(`${file.name} is too large (max 2MB)`);
-        return;
+        continue;
       }
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImages(prev => [...prev, reader.result as string]);
-      };
-      reader.readAsDataURL(file);
-    });
+      try {
+        setUploading(true);
+        const url = await uploadImage(file, 'rentra-files', 'properties');
+        setImages(prev => [...prev, url]);
+      } catch (error) {
+        console.error('Upload error:', error);
+        toast.error(`Failed to upload ${file.name}`);
+      } finally {
+        setUploading(false);
+      }
+    }
   };
 
   const removeImage = (index: number) => {
     setImages(prev => prev.filter((_, i) => i !== index));
   };
+
+  const addProperty = useAddProperty();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,9 +69,8 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
       return;
     }
 
-    setLoading(true);
     try {
-      await api.post('/properties', {
+      await addProperty.mutateAsync({
         ...formData,
         images
       });
@@ -75,10 +84,10 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
     } catch (error: any) {
       console.error('Error creating property:', error);
       toast.error(error.response?.data?.message || 'Failed to sync property');
-    } finally {
-      setLoading(false);
     }
   };
+
+  const loading = addProperty.isPending;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -133,11 +142,17 @@ export function AddPropertyModal({ isOpen, onClose, onSuccess }: AddPropertyModa
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    disabled={loading}
-                    className="aspect-square rounded-2xl border-2 border-dashed border-slate-100 bg-slate-50/50 flex flex-col items-center justify-center gap-2 hover:bg-slate-50 hover:border-indigo-100 transition-all group active:scale-95"
+                    disabled={loading || uploading}
+                    className="aspect-square rounded-2xl border-2 border-dashed border-slate-100 bg-slate-50/50 flex flex-col items-center justify-center gap-2 hover:bg-slate-50 hover:border-indigo-100 transition-all group active:scale-95 disabled:opacity-50"
                   >
-                    <ImagePlus className="h-5 w-5 text-slate-300 group-hover:text-indigo-600 transition-colors" />
-                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Attach</span>
+                    {uploading ? (
+                      <Loader2 className="h-5 w-5 text-indigo-600 animate-spin" />
+                    ) : (
+                      <ImagePlus className="h-5 w-5 text-slate-300 group-hover:text-indigo-600 transition-colors" />
+                    )}
+                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">
+                      {uploading ? 'Uploading...' : 'Attach'}
+                    </span>
                   </button>
                 )}
               </div>

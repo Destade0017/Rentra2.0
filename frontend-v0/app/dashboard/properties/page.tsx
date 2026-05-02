@@ -5,32 +5,15 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plus, Building2, MapPin } from 'lucide-react';
-import api from '@/lib/api';
+import { useProperties } from '@/hooks/use-properties';
 import { AddPropertyModal } from '@/components/modals/add-property-modal';
 import { AddTenantModal } from '@/components/modals/add-tenant-modal';
 
 export default function PropertiesPage() {
-  const [properties, setProperties] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: properties = [], isLoading: loading, error, refetch: fetchProperties } = useProperties();
   const [isPropertyModalOpen, setIsPropertyModalOpen] = useState(false);
   const [isTenantModalOpen, setIsTenantModalOpen] = useState(false);
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | undefined>(undefined);
-
-  const fetchProperties = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await api.get('/properties');
-      setProperties(response.data.data || []);
-    } catch (error) {
-      console.error('Error fetching properties:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchProperties();
-  }, [fetchProperties]);
 
   if (loading) {
     return (

@@ -15,6 +15,9 @@ import {
 } from 'lucide-react';
 import { AuthGuard } from '@/components/auth-guard';
 import { useAuth } from '@/hooks/use-auth';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import api from '@/lib/api';
 
 const navItems = [
   { label: 'Dashboard', href: '/dashboard', icon: <Home className="h-4 w-4" /> },
@@ -32,6 +35,39 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const router = useRouter();
   const { logout, user } = useAuth();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    // Prefetch critical data when layout mounts
+    const prefetchData = async () => {
+      try {
+        await Promise.all([
+          queryClient.prefetchQuery({
+            queryKey: ['properties'],
+            queryFn: async () => {
+              const { data } = await api.get('/properties');
+              return data.data || [];
+            },
+            staleTime: 5 * 60 * 1000,
+          }),
+          queryClient.prefetchQuery({
+            queryKey: ['tenants'],
+            queryFn: async () => {
+              const { data } = await api.get('/tenants');
+              return data.data || [];
+            },
+            staleTime: 5 * 60 * 1000,
+          })
+        ]);
+      } catch (error) {
+        console.error('Prefetch error:', error);
+      }
+    };
+
+    if (user) {
+      prefetchData();
+    }
+  }, [queryClient, user]);
 
   const handleLogout = () => {
     logout();

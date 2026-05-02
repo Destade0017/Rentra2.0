@@ -18,8 +18,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import api from '@/lib/api';
+import { useAddTenant } from '@/hooks/use-tenants';
+import { useProperties } from '@/hooks/use-properties';
 import { toast } from 'sonner';
+import { useRef } from 'react';
+import { ImagePlus, X, Loader2 } from 'lucide-react';
+import { uploadImage } from '@/lib/supabase';
 
 interface AddTenantModalProps {
   isOpen: boolean;
@@ -29,8 +33,11 @@ interface AddTenantModalProps {
 }
 
 export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }: AddTenantModalProps) {
-  const [loading, setLoading] = useState(false);
-  const [properties, setProperties] = useState<any[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const { data: properties = [] } = useProperties();
+  const addTenant = useAddTenant();
+  const [profileImage, setProfileImage] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -44,16 +51,28 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
       if (defaultPropertyId) {
         setFormData(prev => ({ ...prev, property: defaultPropertyId }));
       }
-      fetchProperties();
     }
   }, [isOpen, defaultPropertyId]);
 
-  const fetchProperties = async () => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('Image too large (max 2MB)');
+      return;
+    }
+
     try {
-      const response = await api.get('/properties');
-      setProperties(response.data.data || []);
+      setUploading(true);
+      const url = await uploadImage(file, 'rentra-files', 'tenants');
+      setProfileImage(url);
+      toast.success('Profile image uploaded');
     } catch (error) {
-      console.error('Error fetching properties:', error);
+      console.error('Upload error:', error);
+      toast.error('Failed to upload image');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -66,11 +85,11 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
       return;
     }
 
-    setLoading(true);
     try {
-      await api.post('/tenants', {
+      await addTenant.mutateAsync({
         ...formData,
         rentAmount: Number(formData.rentAmount),
+        profileImage
       });
       toast.success('Resident Successfully Contracted', {
         className: 'rounded-2xl font-bold uppercase tracking-tighter text-[10px]'
@@ -81,10 +100,10 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
     } catch (error: any) {
       console.error('Error adding tenant:', error);
       toast.error(error.response?.data?.message || 'Operational Fault');
-    } finally {
-      setLoading(false);
     }
   };
+
+  const loading = addTenant.isPending;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -158,6 +177,51 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
                 onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
                 disabled={loading}
                 className="rounded-2xl h-12 bg-slate-50/50 border-slate-100 focus:bg-white transition-all text-sm font-medium"
+              />
+            </div>
+          </div>
+
+          {/* Profile Image Upload */}
+          <div className="space-y-3">
+            <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Profile Photo (Optional)</Label>
+            <div className="flex items-center gap-4">
+              {profileImage ? (
+                <div className="relative w-16 h-16 rounded-2xl overflow-hidden border border-slate-100 shadow-inner group">
+                  <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+                  <button 
+                    type="button"
+                    onClick={() => setProfileImage('')}
+                    className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="h-4 w-4 text-white" />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={loading || uploading}
+                  className="w-16 h-16 rounded-2xl border-2 border-dashed border-slate-100 bg-slate-50/50 flex items-center justify-center hover:bg-slate-50 hover:border-indigo-100 transition-all disabled:opacity-50"
+                >
+                  {uploading ? (
+                    <Loader2 className="h-5 w-5 text-indigo-600 animate-spin" />
+                  ) : (
+                    <ImagePlus className="h-5 w-5 text-slate-300" />
+                  )}
+                </button>
+              )}
+              <div className="flex-1">
+                <p className="text-[10px] font-bold text-slate-400 leading-tight uppercase tracking-tighter">
+                  {profileImage ? 'Profile image attached' : 'Click to upload a profile photo'}
+                </p>
+                <p className="text-[9px] text-slate-300 mt-0.5">JPG, PNG or GIF up to 2MB</p>
+              </div>
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                onChange={handleFileChange} 
+                accept="image/*" 
+                className="hidden" 
               />
             </div>
           </div>

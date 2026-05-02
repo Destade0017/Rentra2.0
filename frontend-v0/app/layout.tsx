@@ -29,6 +29,7 @@ export const metadata: Metadata = {
   },
 }
 
+import { QueryProvider } from '@/components/query-provider'
 import { Toaster } from 'sonner'
 
 export default function RootLayout({
@@ -39,8 +40,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-background">
       <body className="font-sans antialiased bg-background">
-        {children}
-        <Toaster position="top-right" richColors />
+        <QueryProvider>
+          {children}
+          <Toaster position="top-right" richColors />
+        </QueryProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

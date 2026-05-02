@@ -4,27 +4,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { DollarSign, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
-import api from '@/lib/api';
+import { useTenants } from '@/hooks/use-tenants';
 
 export default function PaymentsPage() {
-  const [tenants, setTenants] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchPayments = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await api.get('/tenants');
-      setTenants(response.data.data || []);
-    } catch (error) {
-      console.error('Error fetching payments:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchPayments();
-  }, [fetchPayments]);
+  const { data: tenants = [], isLoading: loading } = useTenants();
 
   if (loading) {
     return (

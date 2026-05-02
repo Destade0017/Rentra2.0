@@ -5,29 +5,12 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plus, Users, Mail } from 'lucide-react';
-import api from '@/lib/api';
+import { useTenants } from '@/hooks/use-tenants';
 import { AddTenantModal } from '@/components/modals/add-tenant-modal';
 
 export default function TenantsPage() {
-  const [tenants, setTenants] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: tenants = [], isLoading: loading, error, refetch: fetchTenants } = useTenants();
   const [isTenantModalOpen, setIsTenantModalOpen] = useState(false);
-
-  const fetchTenants = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await api.get('/tenants');
-      setTenants(response.data.data || []);
-    } catch (error) {
-      console.error('Error fetching tenants:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchTenants();
-  }, [fetchTenants]);
 
   if (loading) {
     return (
@@ -108,8 +91,12 @@ export default function TenantsPage() {
             <Card key={tenant._id} className="bg-white border border-slate-200/50 rounded-2xl shadow-sm flex flex-col justify-between p-6 lg:p-8 hover-lift group">
               <div className="space-y-6 lg:space-y-8">
                 <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 lg:h-14 lg:w-14 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-900 font-bold text-base lg:text-lg shrink-0 group-hover:scale-105 transition-transform">
-                    {tenant.name.charAt(0)}
+                  <div className="h-12 w-12 lg:h-14 lg:w-14 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden text-slate-900 font-bold text-base lg:text-lg shrink-0 group-hover:scale-105 transition-transform">
+                    {tenant.profileImage ? (
+                      <img src={tenant.profileImage} alt={tenant.name} className="w-full h-full object-cover" />
+                    ) : (
+                      tenant.name.charAt(0)
+                    )}
                   </div>
                   <div className="min-w-0">
                     <h3 className="font-bold text-base lg:text-lg text-slate-900 tracking-tight truncate">{tenant.name}</h3>
