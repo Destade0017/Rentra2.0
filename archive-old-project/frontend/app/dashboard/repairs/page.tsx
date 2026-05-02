@@ -8,7 +8,7 @@ import { ReportIssueModal } from '@/components/report-issue-modal';
 import { 
   Wrench, 
   Plus, 
-  Search, 
+  Search,
   Clock, 
   CheckCircle2, 
   AlertCircle, 
