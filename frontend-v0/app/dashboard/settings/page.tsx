@@ -1,185 +1,228 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
 import { 
   User, 
   Lock, 
-  Bell, 
+  Building2, 
+  Settings2,
+  Camera,
+  Check,
   ShieldCheck,
-  CreditCard
+  Phone,
+  MapPin,
+  Coins
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-type SettingsTab = 'account' | 'security' | 'notifications' | 'billing';
-
 export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState<SettingsTab>('account');
-  const [loading, setLoading] = useState(false);
+  const [loadingSection, setLoadingSection] = useState<string | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleSave = () => {
-    setLoading(true);
+  const handleSave = (section: string) => {
+    setLoadingSection(section);
     setTimeout(() => {
-      setLoading(false);
-      toast.success('Settings saved successfully', {
-        className: 'rounded-2xl font-bold uppercase tracking-tighter text-[10px]'
+      setLoadingSection(null);
+      toast.success(`${section} updated`, {
+        className: 'rounded-2xl font-bold uppercase tracking-widest text-[9px] px-6 py-4 border-green-100 bg-white shadow-xl shadow-green-50/50',
+        icon: <Check className="h-4 w-4 text-green-500" />
       });
-    }, 800);
+    }, 1000);
   };
 
-  const navItems = [
-    { id: 'account', label: 'Account', icon: <User className="h-4 w-4" /> },
-    { id: 'security', label: 'Security', icon: <Lock className="h-4 w-4" /> },
-    { id: 'notifications', label: 'Notifications', icon: <Bell className="h-4 w-4" /> },
-    { id: 'billing', label: 'Billing', icon: <CreditCard className="h-4 w-4" /> },
-  ];
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
-    <div className="flex-1 max-w-[1000px] mx-auto w-full space-y-12 pb-24 animate-in fade-in duration-700">
+    <div className="flex-1 max-w-[800px] mx-auto w-full space-y-16 pb-32 animate-in fade-in duration-700">
       {/* Page Header */}
-      <div className="px-1">
-        <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
-        <p className="text-sm text-slate-500">Manage your profile and preferences.</p>
+      <div className="px-1 space-y-2">
+        <h1 className="text-3xl font-black text-slate-900 tracking-tight">Settings</h1>
+        <p className="text-sm text-slate-500 font-medium">Manage your profile, business info, and account security.</p>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-12 items-start">
-        {/* Settings Sidebar */}
-        <aside className="w-full lg:w-64 space-y-1 shrink-0">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id as SettingsTab)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
-                activeTab === item.id 
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-100' 
-                  : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
-              }`}
-            >
-              <div className={`${activeTab === item.id ? 'text-white' : 'text-slate-400 group-hover:text-indigo-600'}`}>
-                {item.icon}
-              </div>
-              <span className="text-sm font-semibold">{item.label}</span>
-            </button>
-          ))}
-        </aside>
-
-        {/* Settings Content Area */}
-        <div className="flex-1 max-w-xl animate-in slide-in-from-bottom-2 duration-500">
-          {activeTab === 'account' && (
+      <div className="grid grid-cols-1 gap-12">
+        {/* 1. PROFILE SECTION */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-3 px-1">
+             <div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
+                <User className="h-4 w-4" />
+             </div>
+             <h2 className="text-sm font-bold text-slate-900 uppercase tracking-widest">Personal Profile</h2>
+          </div>
+          
+          <Card className="p-8 border-slate-100 bg-white rounded-[32px] shadow-sm hover:shadow-md transition-all duration-500">
             <div className="space-y-8">
-              <section className="space-y-6">
+              {/* Avatar Upload */}
+              <div className="flex items-center gap-6">
+                <div className="relative group">
+                  <div className="w-24 h-24 rounded-[32px] bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden transition-all group-hover:border-indigo-400">
+                    {avatarPreview ? (
+                      <img src={avatarPreview} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <User className="h-8 w-8 text-slate-300" />
+                    )}
+                  </div>
+                  <button 
+                    onClick={() => fileInputRef.current?.click()}
+                    className="absolute -bottom-2 -right-2 w-10 h-10 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-100 hover:scale-110 active:scale-95 transition-all border-4 border-white"
+                  >
+                    <Camera className="h-4 w-4" />
+                  </button>
+                  <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleImageChange} />
+                </div>
                 <div className="space-y-1">
-                  <h2 className="text-lg font-bold text-slate-900">Profile</h2>
-                  <p className="text-sm text-slate-400">Update your personal information.</p>
+                  <p className="text-sm font-bold text-slate-900">Profile Picture</p>
+                  <p className="text-xs text-slate-400 font-medium leading-relaxed">JPG, PNG or GIF. Max size of 2MB.</p>
                 </div>
-                <Card className="p-8 border-slate-200/50 bg-white rounded-2xl shadow-sm">
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 ml-1">Full Name</label>
-                        <Input className="h-11 rounded-xl bg-slate-50 border-slate-100 focus:bg-white font-medium" placeholder="John Doe" />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 ml-1">Username</label>
-                        <Input className="h-11 rounded-xl bg-slate-50 border-slate-100 focus:bg-white font-medium" placeholder="johndoe" />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 ml-1">Email</label>
-                      <Input className="h-11 rounded-xl bg-slate-50 border-slate-100 focus:bg-white font-medium" placeholder="john@example.com" />
-                    </div>
-                    <div className="space-y-2">
-                       <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 ml-1">Bio</label>
-                       <textarea className="w-full min-h-[100px] p-4 rounded-xl bg-slate-50 border border-slate-100 focus:bg-white focus:outline-none text-sm transition-all text-slate-600 font-medium" placeholder="A short description about yourself..." />
-                    </div>
-                  </div>
-                </Card>
-              </section>
+              </div>
 
-              <div className="flex justify-end">
-                 <Button 
-                   onClick={handleSave} 
-                   loading={loading}
-                   className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-xl px-8 h-11 shadow-md shadow-indigo-100 font-semibold text-sm active:scale-95 transition-all"
-                 >
-                   Save Changes
-                 </Button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 ml-1">Full Name</label>
+                  <Input className="h-12 rounded-2xl bg-slate-50 border-slate-100 focus:bg-white font-semibold text-slate-700 transition-all" placeholder="Enter your name" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 ml-1">Email Address</label>
+                  <Input className="h-12 rounded-2xl bg-slate-50 border-slate-100 focus:bg-white font-semibold text-slate-700 transition-all" placeholder="your@email.com" />
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-4 border-t border-slate-50">
+                <Button 
+                  onClick={() => handleSave('Profile')}
+                  disabled={loadingSection === 'Profile'}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl px-10 h-12 font-bold shadow-xl shadow-indigo-100 active:scale-95 transition-all"
+                >
+                  {loadingSection === 'Profile' ? 'Saving...' : 'Save Profile'}
+                </Button>
               </div>
             </div>
-          )}
+          </Card>
+        </section>
 
-          {activeTab === 'security' && (
+        {/* 2. BUSINESS / ACCOUNT SECTION */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-3 px-1">
+             <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
+                <Building2 className="h-4 w-4" />
+             </div>
+             <h2 className="text-sm font-bold text-slate-900 uppercase tracking-widest">Business Details</h2>
+          </div>
+          
+          <Card className="p-8 border-slate-100 bg-white rounded-[32px] shadow-sm">
             <div className="space-y-8">
-              <section className="space-y-6">
-                 <div className="space-y-1">
-                  <h2 className="text-lg font-bold text-slate-900">Security</h2>
-                  <p className="text-sm text-slate-500">Manage your password and access.</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 ml-1 flex items-center gap-2">
+                    <User className="h-3 w-3" /> Landlord Display Name
+                  </label>
+                  <Input className="h-12 rounded-2xl bg-slate-50 border-slate-100 focus:bg-white font-semibold text-slate-700 transition-all" placeholder="e.g. Rentra Properties Ltd" />
                 </div>
-                <Card className="p-8 border-slate-200/50 bg-white rounded-2xl shadow-sm">
-                  <div className="space-y-8">
-                    <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100">
-                       <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-indigo-600 border border-slate-100 shadow-sm">
-                          <ShieldCheck className="h-6 w-6" />
-                       </div>
-                       <div>
-                          <p className="text-sm font-bold text-slate-900">Account Secured</p>
-                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Status: Protected</p>
-                       </div>
-                    </div>
-                    <div className="space-y-6">
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 ml-1">Current Password</label>
-                        <Input type="password" placeholder="••••••••" className="h-11 rounded-xl bg-slate-50 border-slate-100 focus:bg-white" />
-                      </div>
-                       <div className="space-y-2">
-                        <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 ml-1">New Password</label>
-                        <Input type="password" placeholder="Enter new password" className="h-11 rounded-xl bg-slate-50 border-slate-100 focus:bg-white" />
-                      </div>
-                    </div>
-                    <Button 
-                      onClick={handleSave} 
-                      loading={loading}
-                      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl h-12 font-bold shadow-md shadow-indigo-100"
-                    >
-                      Save Changes
-                    </Button>
-                  </div>
-                </Card>
-              </section>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 ml-1 flex items-center gap-2">
+                    <Phone className="h-3 w-3" /> Phone Number
+                  </label>
+                  <Input className="h-12 rounded-2xl bg-slate-50 border-slate-100 focus:bg-white font-semibold text-slate-700 transition-all" placeholder="+234..." />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 ml-1 flex items-center gap-2">
+                  <MapPin className="h-3 w-3" /> Business Address (Optional)
+                </label>
+                <Input className="h-12 rounded-2xl bg-slate-50 border-slate-100 focus:bg-white font-semibold text-slate-700 transition-all" placeholder="Enter physical address" />
+              </div>
+
+              <div className="flex justify-end pt-4 border-t border-slate-50">
+                <Button 
+                  onClick={() => handleSave('Business')}
+                  disabled={loadingSection === 'Business'}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl px-10 h-12 font-bold shadow-xl shadow-indigo-100 active:scale-95 transition-all"
+                >
+                  {loadingSection === 'Business' ? 'Updating...' : 'Save Business Info'}
+                </Button>
+              </div>
             </div>
-          )}
+          </Card>
+        </section>
 
-          {activeTab === 'notifications' && (
-            <Card className="p-16 text-center border-dashed border-2 bg-white rounded-2xl">
-              <div className="max-w-[240px] mx-auto space-y-6">
-                <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto border border-slate-100 text-slate-300">
-                  <Bell className="h-8 w-8" />
+        {/* 3. SECURITY SECTION */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-3 px-1">
+             <div className="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600">
+                <Lock className="h-4 w-4" />
+             </div>
+             <h2 className="text-sm font-bold text-slate-900 uppercase tracking-widest">Security</h2>
+          </div>
+          
+          <Card className="p-8 border-slate-100 bg-white rounded-[32px] shadow-sm">
+            <div className="space-y-8">
+              <div className="flex items-center gap-4 p-5 bg-amber-50/50 rounded-2xl border border-amber-100/50">
+                 <ShieldCheck className="h-5 w-5 text-amber-600" />
+                 <p className="text-xs font-bold text-amber-900">Your account is protected by industry-standard encryption.</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 ml-1">Current Password</label>
+                  <Input type="password" placeholder="••••••••" className="h-12 rounded-2xl bg-slate-50 border-slate-100 focus:bg-white font-semibold" />
                 </div>
                 <div className="space-y-2">
-                  <p className="text-lg font-bold text-slate-900">Coming Soon</p>
-                  <p className="text-sm text-slate-400 font-medium leading-relaxed">Notifications and alerts are currently being developed.</p>
+                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 ml-1">New Password</label>
+                  <Input type="password" placeholder="Min. 8 characters" className="h-12 rounded-2xl bg-slate-50 border-slate-100 focus:bg-white font-semibold" />
                 </div>
               </div>
-            </Card>
-          )}
 
-          {activeTab === 'billing' && (
-            <Card className="p-16 text-center border-dashed border-2 bg-white rounded-2xl">
-              <div className="max-w-[240px] mx-auto space-y-6">
-                <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto border border-slate-100 text-slate-300">
-                  <CreditCard className="h-8 w-8" />
-                </div>
-                <div className="space-y-2">
-                   <p className="text-lg font-bold text-slate-900">Coming Soon</p>
-                   <p className="text-sm text-slate-400 font-medium leading-relaxed">Billing and plans will be available soon.</p>
-                </div>
+              <div className="flex justify-end pt-4 border-t border-slate-50">
+                <Button 
+                  onClick={() => handleSave('Security')}
+                  disabled={loadingSection === 'Security'}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl px-10 h-12 font-bold shadow-xl shadow-indigo-100 active:scale-95 transition-all"
+                >
+                  {loadingSection === 'Security' ? 'Securing...' : 'Update Password'}
+                </Button>
               </div>
-            </Card>
-          )}
-        </div>
+            </div>
+          </Card>
+        </section>
+
+        {/* 4. PREFERENCES SECTION */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-3 px-1">
+             <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
+                <Coins className="h-4 w-4" />
+             </div>
+             <h2 className="text-sm font-bold text-slate-900 uppercase tracking-widest">Preferences</h2>
+          </div>
+          
+          <Card className="p-8 border-slate-100 bg-white rounded-[32px] shadow-sm">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="space-y-1">
+                <p className="text-sm font-bold text-slate-900">Portfolio Currency</p>
+                <p className="text-xs text-slate-400 font-medium">This will be the default currency for all rent metrics.</p>
+              </div>
+              <div className="flex items-center gap-2 p-1.5 bg-slate-50 rounded-2xl border border-slate-100">
+                <Button variant="ghost" className="h-10 px-6 rounded-xl bg-white text-indigo-600 shadow-sm font-black text-sm border border-slate-100">
+                   ₦ Naira
+                </Button>
+                <Button variant="ghost" disabled className="h-10 px-6 rounded-xl text-slate-300 font-bold text-sm">
+                   $ USD
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </section>
       </div>
     </div>
   );
