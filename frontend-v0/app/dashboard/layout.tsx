@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -16,7 +16,6 @@ import {
 import { AuthGuard } from '@/components/auth-guard';
 import { useAuth } from '@/hooks/use-auth';
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import api from '@/lib/api';
 import { UserDropdown } from '@/components/user-dropdown';
 
@@ -75,9 +74,12 @@ export default function DashboardLayout({
   };
 
   const isActive = (href: string) => {
+    if (!pathname) return false;
     if (href === '/dashboard') return pathname === '/dashboard';
     return pathname.startsWith(href);
   };
+
+  const pageTitle = (pathname || '').split('/').pop()?.replace(/-/g, ' ') || 'Dashboard';
 
   return (
     <AuthGuard>
@@ -135,7 +137,7 @@ export default function DashboardLayout({
               </div>
               <div className="space-y-0.5">
                 <h2 className="text-base lg:text-sm font-bold text-slate-900 capitalize tracking-tight leading-none">
-                  {pathname.split('/').pop()?.replace(/-/g, ' ') || 'Dashboard'}
+                  {pageTitle || 'Dashboard'}
                 </h2>
                 <p className="lg:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Control Center</p>
               </div>
