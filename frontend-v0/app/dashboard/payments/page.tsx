@@ -4,19 +4,11 @@ import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { DollarSign, CheckCircle2, Clock, AlertCircle, ArrowRight } from 'lucide-react';
-import { useTenants } from '@/hooks/use-tenants';
-
-interface Tenant {
-  _id: string;
-  name: string;
-  email: string;
-  status: 'paid' | 'unpaid' | 'pending';
-  rentAmount: number;
-}
+import { useTenants, Tenant } from '@/hooks/use-tenants';
 
 export default function PaymentsPage() {
   const { 
-    data: tenants = [] as Tenant[], 
+    data: tenants = [], 
     isLoading: loading, 
     error,
     refetch

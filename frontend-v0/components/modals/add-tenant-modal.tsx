@@ -94,19 +94,24 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
       toast.success('Resident Successfully Contracted', {
         className: 'rounded-2xl font-bold uppercase tracking-tighter text-[10px]'
       });
-      setFormData({ name: '', email: '', property: '', rentAmount: '', dueDate: '' });
+      handleClose();
       onSuccess();
-      onClose();
     } catch (error: any) {
       console.error('Error adding tenant:', error);
       toast.error(error.response?.data?.message || 'Operational Fault');
     }
   };
 
+  const handleClose = () => {
+    setFormData({ name: '', email: '', property: '', rentAmount: '', dueDate: '' });
+    setProfileImage('');
+    onClose();
+  };
+
   const loading = addTenant.isPending;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[480px] bg-white border-slate-100 rounded-[40px] p-0 overflow-hidden gap-0 shadow-2xl shadow-slate-200">
         <DialogHeader className="p-10 pb-4">
           <DialogTitle className="text-2xl font-bold tracking-tight text-slate-900">Add New Tenant</DialogTitle>
@@ -236,7 +241,7 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
             <Button
               type="button"
               variant="ghost"
-              onClick={onClose}
+              onClick={handleClose}
               disabled={loading}
               className="text-xs font-bold text-slate-400 hover:text-slate-900 px-6 h-14 rounded-2xl w-full md:w-auto"
             >

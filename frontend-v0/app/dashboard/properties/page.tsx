@@ -5,20 +5,13 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plus, Building2, MapPin, AlertCircle, ArrowRight } from 'lucide-react';
-import { useProperties } from '@/hooks/use-properties';
+import { useProperties, Property } from '@/hooks/use-properties';
 import { AddPropertyModal } from '@/components/modals/add-property-modal';
 import { AddTenantModal } from '@/components/modals/add-tenant-modal';
 
-interface Property {
-  _id: string;
-  name: string;
-  address: string;
-  images: string[];
-}
-
 export default function PropertiesPage() {
   const { 
-    data: properties = [] as Property[], 
+    data: properties = [], 
     isLoading: loading, 
     error, 
     refetch: fetchProperties 

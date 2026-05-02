@@ -5,21 +5,12 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plus, Users, Mail, AlertCircle, ArrowRight } from 'lucide-react';
-import { useTenants } from '@/hooks/use-tenants';
+import { useTenants, Tenant } from '@/hooks/use-tenants';
 import { AddTenantModal } from '@/components/modals/add-tenant-modal';
-
-interface Tenant {
-  _id: string;
-  name: string;
-  email: string;
-  status: 'paid' | 'unpaid' | 'pending';
-  rentAmount: number;
-  profileImage?: string;
-}
 
 export default function TenantsPage() {
   const { 
-    data: tenants = [] as Tenant[], 
+    data: tenants = [], 
     isLoading: loading, 
     error, 
     refetch: fetchTenants 
