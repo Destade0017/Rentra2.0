@@ -5,6 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { DollarSign, CheckCircle2, Clock, AlertCircle, ArrowRight } from 'lucide-react';
 import { useTenants, Tenant } from '@/hooks/use-tenants';
+import { formatCurrency } from '@/lib/utils';
 
 export default function PaymentsPage() {
   const { 
@@ -81,7 +82,7 @@ export default function PaymentsPage() {
           </div>
           <div>
             <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Total Value</p>
-            <p className="text-lg lg:text-2xl font-black text-slate-900 tracking-tighter tabular-nums">₦{totalAmount.toLocaleString()}</p>
+            <p className="text-lg lg:text-2xl font-black text-slate-900 tracking-tighter tabular-nums">₦{formatCurrency(totalAmount)}</p>
           </div>
         </Card>
       </div>
@@ -117,7 +118,7 @@ export default function PaymentsPage() {
                   </div>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="font-black text-slate-900 text-base tabular-nums tracking-tighter">₦{(tenant.rentAmount || 0).toLocaleString()}</p>
+                  <p className="font-black text-slate-900 text-base tabular-nums tracking-tighter">₦{formatCurrency(tenant.rentAmount)}</p>
                   <p className={`text-[9px] font-black uppercase tracking-widest ${
                     tenant.status === 'paid' ? 'text-green-600' : 'text-amber-600'
                   }`}>

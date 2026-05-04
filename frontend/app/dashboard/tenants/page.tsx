@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Plus, Users, Mail, AlertCircle, ArrowRight } from 'lucide-react';
 import { useTenants, Tenant } from '@/hooks/use-tenants';
 import { AddTenantModal } from '@/components/modals/add-tenant-modal';
+import { formatCurrency } from '@/lib/utils';
 
 export default function TenantsPage() {
   const { 
@@ -135,7 +136,7 @@ export default function TenantsPage() {
                 <div className="space-y-4 lg:space-y-5 pt-6 lg:pt-8 border-t border-slate-50">
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Monthly Rent</span>
-                    <span className="text-xl font-black text-slate-900 tabular-nums tracking-tighter">₦{(tenant.rentAmount || 0).toLocaleString()}</span>
+                    <span className="text-xl font-black text-slate-900 tabular-nums tracking-tighter">₦{formatCurrency(tenant.rentAmount)}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Payment Status</span>

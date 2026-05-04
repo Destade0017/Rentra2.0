@@ -23,6 +23,7 @@ import { useProperties } from '@/hooks/use-properties';
 import { useTenants, Tenant } from '@/hooks/use-tenants';
 import { AddPropertyModal } from '@/components/modals/add-property-modal';
 import { AddTenantModal } from '@/components/modals/add-tenant-modal';
+import { formatCurrency } from '@/lib/utils';
 
 interface Property {
   _id: string;
@@ -132,7 +133,7 @@ export default function DashboardPage() {
           <div className="w-full sm:w-auto flex items-center justify-between sm:justify-end gap-6 pt-4 sm:pt-0 border-t border-white/10 sm:border-0">
             <div className="space-y-0.5">
               <span className="block text-[9px] font-black text-indigo-200 uppercase tracking-[0.2em]">Monthly Goal</span>
-              <span className="text-lg font-black text-white leading-none">₦{stats.collectedRent.toLocaleString()}</span>
+              <span className="text-lg font-black text-white leading-none">₦{formatCurrency(stats.collectedRent)}</span>
             </div>
             <ArrowRight className="h-5 w-5 text-white/40 hidden sm:block" />
           </div>
@@ -179,13 +180,13 @@ export default function DashboardPage() {
             />
             <MetricCard 
               label="Revenue" 
-              value={`₦${stats.collectedRent.toLocaleString()}`} 
+              value={`₦${formatCurrency(stats.collectedRent)}`} 
               icon={<CheckCircle2 className="h-4 w-4 lg:h-5 lg:w-5" />} 
               color="green" 
             />
             <MetricCard 
               label="Overdue" 
-              value={`₦${stats.overdueAmount.toLocaleString()}`} 
+              value={`₦${formatCurrency(stats.overdueAmount)}`} 
               icon={<AlertCircle className="h-4 w-4 lg:h-5 lg:w-5" />} 
               color="amber" 
             />
@@ -237,7 +238,7 @@ export default function DashboardPage() {
                         </div>
                         <div className="min-w-0">
                           <p className="text-sm font-bold text-slate-900 truncate">{tenant.name}</p>
-                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Rent Pending • ₦{tenant.rentAmount.toLocaleString()}</p>
+                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Rent Pending • ₦{formatCurrency(tenant.rentAmount)}</p>
                         </div>
                       </div>
                       <Button variant="ghost" size="sm" className="rounded-xl h-10 px-5 font-black text-[10px] uppercase tracking-widest text-indigo-600 bg-indigo-50/50 hover:bg-indigo-600 hover:text-white transition-all shrink-0">
@@ -268,7 +269,7 @@ export default function DashboardPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-xs font-bold text-slate-800">Rent Entry Recorded</p>
-                        <p className="text-[10px] text-slate-400 font-bold truncate tracking-tight">{tenant.name} • ₦{tenant.rentAmount.toLocaleString()}</p>
+                        <p className="text-[10px] text-slate-400 font-bold truncate tracking-tight">{tenant.name} • ₦{formatCurrency(tenant.rentAmount)}</p>
                       </div>
                       <span className="text-[9px] font-black text-slate-300 tabular-nums uppercase">Recently</span>
                     </div>
