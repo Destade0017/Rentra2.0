@@ -1,10 +1,10 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { addTenant, getTenantsByProperty, getAllTenants } = require('../controllers/tenantController');
-const { protect } = require('../middleware/authMiddleware');
+import { addTenant, getTenantsByProperty, getAllTenants } from '../controllers/tenantController.js';
+import { protect } from '../middleware/authMiddleware.js';
 
 router.post('/', protect, addTenant);
 router.get('/', protect, getAllTenants);
 router.get('/:propertyId', protect, getTenantsByProperty);
 
-module.exports = router;
+export default router;

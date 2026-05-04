@@ -1,11 +1,11 @@
-const Tenant = require('../models/Tenant');
-const Property = require('../models/Property');
-const { asyncHandler } = require('../middleware/errorMiddleware');
+import Tenant from '../models/Tenant.js';
+import Property from '../models/Property.js';
+import { asyncHandler } from '../middleware/errorMiddleware.js';
 
 // @desc    Add a tenant to a property
 // @route   POST /api/tenants
 // @access  Private
-const addTenant = asyncHandler(async (req, res) => {
+export const addTenant = asyncHandler(async (req, res) => {
     const { name, email, property: propertyId, rentAmount, dueDate } = req.body;
     const normalizedEmail = email?.toLowerCase().trim();
 
@@ -43,7 +43,7 @@ const addTenant = asyncHandler(async (req, res) => {
 // @desc    Get all tenants for a specific property
 // @route   GET /api/tenants/:propertyId
 // @access  Private
-const getTenantsByProperty = asyncHandler(async (req, res) => {
+export const getTenantsByProperty = asyncHandler(async (req, res) => {
     const { propertyId } = req.params;
 
     // Verify property ownership first
@@ -54,7 +54,7 @@ const getTenantsByProperty = asyncHandler(async (req, res) => {
         throw new Error('Property not found or access denied');
     }
 
-    const tenants = await Tenant.find({ property: propertyId });
+    const tenants = await Tenant.find({ property: propertyId }).sort({ createdAt: -1 });
 
     res.status(200).json({
         success: true,
@@ -66,13 +66,13 @@ const getTenantsByProperty = asyncHandler(async (req, res) => {
 // @desc    Get all tenants for all properties of the landlord
 // @route   GET /api/tenants
 // @access  Private
-const getAllTenants = asyncHandler(async (req, res) => {
+export const getAllTenants = asyncHandler(async (req, res) => {
     // First find all properties belonging to the landlord
     const properties = await Property.find({ landlord: req.user._id });
     const propertyIds = properties.map(p => p._id);
 
     // Then find all tenants belonging to those properties
-    const tenants = await Tenant.find({ property: { $in: propertyIds } });
+    const tenants = await Tenant.find({ property: { $in: propertyIds } }).sort({ createdAt: -1 });
 
     res.status(200).json({
         success: true,
@@ -80,9 +80,3 @@ const getAllTenants = asyncHandler(async (req, res) => {
         data: tenants
     });
 });
-
-module.exports = {
-    addTenant,
-    getTenantsByProperty,
-    getAllTenants
-};

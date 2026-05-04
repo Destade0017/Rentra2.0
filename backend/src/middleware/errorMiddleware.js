@@ -1,7 +1,7 @@
 /**
  * Custom Error Handler Middleware
  */
-const errorHandler = (err, req, res, next) => {
+export const errorHandler = (err, req, res, next) => {
     let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     let message = err.message;
 
@@ -34,8 +34,6 @@ const errorHandler = (err, req, res, next) => {
 /**
  * Async Handler Wrapper to eliminate try-catch blocks in controllers
  */
-const asyncHandler = fn => (req, res, next) => {
+export const asyncHandler = fn => (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch(next);
 };
-
-module.exports = { errorHandler, asyncHandler };

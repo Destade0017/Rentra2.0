@@ -31,8 +31,8 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
             <div className="absolute inset-0 h-12 w-12 animate-spin rounded-full border-[3px] border-indigo-600 border-t-transparent" />
           </div>
           <div className="space-y-1.5 text-center">
-            <p className="text-sm text-slate-900 font-bold tracking-tight">Securing Terminal</p>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">Institutional Access Level</p>
+            <p className="text-base text-slate-900 font-black tracking-tight italic">Rentra</p>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">Initializing Workspace</p>
           </div>
         </div>
       </div>

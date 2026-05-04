@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const { asyncHandler } = require('../middleware/errorMiddleware');
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
+import { asyncHandler } from '../middleware/errorMiddleware.js';
 
 //Helper to generate JWT
 
@@ -12,7 +12,7 @@ const generateToken = (id) => {
 // @desc    Register a new user
 // @route   POST /api/auth/register
 // @access  Public
-const registerUser = asyncHandler(async (req, res) => {
+export const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
     const normalizedEmail = email.toLowerCase().trim();
 
@@ -54,7 +54,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // @desc    Authenticate a user & get token
 // @route   POST /api/auth/login
 // @access  Public
-const loginUser = asyncHandler(async (req, res) => {
+export const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     const normalizedEmail = email.toLowerCase().trim();
 
@@ -85,7 +85,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // @desc    Get user profile
 // @route   GET /api/auth/me
 // @access  Private
-const getMe = asyncHandler(async (req, res) => {
+export const getMe = asyncHandler(async (req, res) => {
     const user = {
         _id: req.user._id,
         name: req.user.name,
@@ -98,9 +98,3 @@ const getMe = asyncHandler(async (req, res) => {
         data: user
     });
 });
-
-module.exports = {
-    registerUser,
-    loginUser,
-    getMe
-};

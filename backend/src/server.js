@@ -1,7 +1,11 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const cors = require('cors');
-const connectDB = require('./config/db');
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import connectDB from './config/db.js';
+import authRoutes from './routes/authRoutes.js';
+import propertyRoutes from './routes/propertyRoutes.js';
+import tenantRoutes from './routes/tenantRoutes.js';
+import { errorHandler } from './middleware/errorMiddleware.js';
 
 // Load environment variables
 dotenv.config();
@@ -35,12 +39,11 @@ app.get('/', (req, res) => {
 });
 
 // Routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/properties', require('./routes/propertyRoutes'));
-app.use('/api/tenants', require('./routes/tenantRoutes'));
+app.use('/api/auth', authRoutes);
+app.use('/api/properties', propertyRoutes);
+app.use('/api/tenants', tenantRoutes);
 
 // Error Middleware
-const { errorHandler } = require('./middleware/errorMiddleware');
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5001;

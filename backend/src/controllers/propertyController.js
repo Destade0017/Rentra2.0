@@ -1,10 +1,10 @@
-const Property = require('../models/Property');
-const { asyncHandler } = require('../middleware/errorMiddleware');
+import Property from '../models/Property.js';
+import { asyncHandler } from '../middleware/errorMiddleware.js';
 
 // @desc    Create a new property
 // @route   POST /api/properties
 // @access  Private
-const createProperty = asyncHandler(async (req, res) => {
+export const createProperty = asyncHandler(async (req, res) => {
     const { name, address } = req.body;
 
     if (!name || !address) {
@@ -29,8 +29,8 @@ const createProperty = asyncHandler(async (req, res) => {
 // @desc    Get all properties for logged-in landlord
 // @route   GET /api/properties
 // @access  Private
-const getProperties = asyncHandler(async (req, res) => {
-    const properties = await Property.find({ landlord: req.user._id });
+export const getProperties = asyncHandler(async (req, res) => {
+    const properties = await Property.find({ landlord: req.user._id }).sort({ createdAt: -1 });
 
     res.status(200).json({
         success: true,
@@ -38,8 +38,3 @@ const getProperties = asyncHandler(async (req, res) => {
         data: properties
     });
 });
-
-module.exports = {
-    createProperty,
-    getProperties
-};
