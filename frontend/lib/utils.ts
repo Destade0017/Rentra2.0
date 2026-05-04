@@ -7,8 +7,10 @@ export function cn(...inputs: ClassValue[]) {
 
 /**
  * Safely formats a numeric value to a localized string.
- * Fallback to 0 if the value is null or undefined.
+ * Handles numbers, strings, and nullish values.
  */
-export function formatCurrency(value: number | undefined | null): string {
-  return (value ?? 0).toLocaleString();
+export function formatCurrency(value: number | string | undefined | null): string {
+  if (value === undefined || value === null) return '0';
+  const num = typeof value === 'string' ? parseFloat(value) : value;
+  return (isNaN(num) ? 0 : num).toLocaleString();
 }
