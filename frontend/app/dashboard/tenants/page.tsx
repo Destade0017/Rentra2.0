@@ -122,7 +122,7 @@ export default function TenantsPage() {
                     {tenant.profileImage ? (
                       <img src={tenant.profileImage} alt={tenant.name} className="w-full h-full object-cover" />
                     ) : (
-                      tenant.name.charAt(0)
+                      (tenant.name || '?').charAt(0)
                     )}
                   </div>
                   <div className="min-w-0">
