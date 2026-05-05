@@ -39,3 +39,20 @@ export function useAddTenant() {
     },
   });
 }
+
+export function useMarkPaid() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (tenantId: string) => {
+      const { data } = await api.patch(`/tenants/${tenantId}/status`, { status: 'paid' });
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tenants'] });
+      toast.success('Marked as paid');
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || 'Could not update payment status');
+    },
+  });
+}

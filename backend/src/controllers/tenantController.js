@@ -80,3 +80,37 @@ export const getAllTenants = asyncHandler(async (req, res) => {
         data: tenants
     });
 });
+
+// @desc    Update a tenant's payment status
+// @route   PATCH /api/tenants/:id/status
+// @access  Private
+export const updateTenantStatus = asyncHandler(async (req, res) => {
+    const { status } = req.body;
+    const validStatuses = ['paid', 'unpaid', 'pending'];
+
+    if (!status || !validStatuses.includes(status)) {
+        res.status(400);
+        throw new Error(`Status must be one of: ${validStatuses.join(', ')}`);
+    }
+
+    // Verify ownership via the property's landlord field
+    const tenant = await Tenant.findById(req.params.id).populate('property');
+    if (!tenant) {
+        res.status(404);
+        throw new Error('Tenant not found');
+    }
+
+    if (String(tenant.property?.landlord) !== String(req.user._id)) {
+        res.status(403);
+        throw new Error('Access denied');
+    }
+
+    tenant.status = status;
+    await tenant.save();
+
+    res.status(200).json({
+        success: true,
+        message: 'Payment status updated',
+        data: tenant
+    });
+});
