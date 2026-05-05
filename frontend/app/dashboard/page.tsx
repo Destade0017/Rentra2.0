@@ -13,10 +13,12 @@ import {
   Clock,
   ArrowRight,
   ChevronRight,
+  MessageCircle,
 } from 'lucide-react';
 import { useTenants, Tenant, useMarkPaid } from '@/hooks/use-tenants';
 import { AddTenantModal } from '@/components/modals/add-tenant-modal';
 import { formatCurrency } from '@/lib/utils';
+import { openWhatsApp } from '@/lib/whatsapp';
 
 export default function DashboardPage() {
   const {
@@ -324,8 +326,10 @@ function TenantRow({
     green: 'bg-green-50 text-green-600',
   };
 
+  const hasPhone = !!tenant.phone;
+
   return (
-    <div className="flex items-center gap-4 p-4 hover:bg-slate-50/60 transition-colors">
+    <div className="flex items-center gap-3 p-4 hover:bg-slate-50/60 transition-colors">
       {/* Avatar */}
       <div
         className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm shrink-0 overflow-hidden ${avatarColors[accent]}`}
@@ -345,7 +349,21 @@ function TenantRow({
         </p>
       </div>
 
-      {/* Action */}
+      {/* WhatsApp remind button */}
+      <button
+        onClick={() => openWhatsApp(tenant.phone, tenant.name, tenant.rentAmount)}
+        disabled={!hasPhone}
+        title={hasPhone ? `Remind ${tenant.name} on WhatsApp` : 'No phone number saved'}
+        className={`shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all active:scale-90 ${
+          hasPhone
+            ? 'bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white cursor-pointer'
+            : 'bg-slate-50 text-slate-200 cursor-not-allowed'
+        }`}
+      >
+        <MessageCircle className="h-4 w-4" />
+      </button>
+
+      {/* Mark Paid / Paid badge */}
       {onMarkPaid ? (
         <Button
           onClick={() => onMarkPaid(tenant._id)}

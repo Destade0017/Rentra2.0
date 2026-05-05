@@ -35,6 +35,10 @@ const tenantSchema = new mongoose.Schema({
     profileImage: {
         type: String,
         default: ''
+    },
+    phone: {
+        type: String,
+        default: ''
     }
 }, {
     timestamps: true

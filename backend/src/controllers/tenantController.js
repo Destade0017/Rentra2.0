@@ -6,7 +6,7 @@ import { asyncHandler } from '../middleware/errorMiddleware.js';
 // @route   POST /api/tenants
 // @access  Private
 export const addTenant = asyncHandler(async (req, res) => {
-    const { name, email, property: propertyId, rentAmount, dueDate } = req.body;
+    const { name, email, property: propertyId, rentAmount, dueDate, phone } = req.body;
     const normalizedEmail = email?.toLowerCase().trim();
 
     // Field validation
@@ -30,7 +30,8 @@ export const addTenant = asyncHandler(async (req, res) => {
         rentAmount,
         dueDate,
         status: 'pending',
-        profileImage: req.body.profileImage || ''
+        profileImage: req.body.profileImage || '',
+        phone: phone || ''
     });
 
     res.status(201).json({

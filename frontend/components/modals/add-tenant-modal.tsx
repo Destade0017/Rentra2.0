@@ -41,6 +41,7 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     property: '',
     rentAmount: '',
     dueDate: '',
@@ -103,7 +104,7 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
   };
 
   const handleClose = () => {
-    setFormData({ name: '', email: '', property: '', rentAmount: '', dueDate: '' });
+    setFormData({ name: '', email: '', phone: '', property: '', rentAmount: '', dueDate: '' });
     setProfileImage('');
     onClose();
   };
@@ -140,6 +141,24 @@ export function AddTenantModal({ isOpen, onClose, onSuccess, defaultPropertyId }
               disabled={loading}
               className="rounded-2xl h-12 bg-slate-50/50 border-slate-100 focus:bg-white transition-all text-sm font-medium"
             />
+          </div>
+          <div className="space-y-3">
+            <Label htmlFor="phone" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">
+              WhatsApp Number <span className="text-slate-300 normal-case font-medium tracking-normal">(optional)</span>
+            </Label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400 select-none">+234</span>
+              <Input
+                id="phone"
+                type="tel"
+                placeholder="8012345678"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                disabled={loading}
+                className="rounded-2xl h-12 bg-slate-50/50 border-slate-100 focus:bg-white transition-all text-sm font-medium pl-[3.75rem]"
+              />
+            </div>
+            <p className="text-[9px] text-slate-300 ml-1">Used to send WhatsApp rent reminders</p>
           </div>
           <div className="space-y-3">
             <Label htmlFor="property" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Select Property</Label>

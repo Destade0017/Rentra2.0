@@ -11,8 +11,10 @@ import {
   CheckCircle2,
   Clock,
   Search,
+  MessageCircle,
 } from 'lucide-react';
 import { useTenants, Tenant, useMarkPaid } from '@/hooks/use-tenants';
+import { openWhatsApp } from '@/lib/whatsapp';
 import { AddTenantModal } from '@/components/modals/add-tenant-modal';
 import { formatCurrency } from '@/lib/utils';
 
@@ -257,9 +259,18 @@ function TenantRow({
   };
 
   const cfg = statusConfig[tenant.status] || statusConfig.pending;
+  const hasPhone = !!tenant.phone;
+
+  const handleWhatsApp = () => {
+    const sent = openWhatsApp(tenant.phone, tenant.name, tenant.rentAmount);
+    if (!sent) {
+      // Shouldn't happen since button is disabled when no phone, but just in case
+      alert('No WhatsApp number saved for this tenant.');
+    }
+  };
 
   return (
-    <div className="flex items-center gap-4 px-5 py-4 hover:bg-slate-50/60 transition-colors group">
+    <div className="flex items-center gap-3 px-5 py-4 hover:bg-slate-50/60 transition-colors group">
       {/* Avatar */}
       <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center font-black text-sm text-slate-700 shrink-0 overflow-hidden">
         {tenant.profileImage ? (
@@ -283,7 +294,21 @@ function TenantRow({
         <p className="text-[10px] text-slate-400 font-semibold">/ month</p>
       </div>
 
-      {/* Status badge or action */}
+      {/* WhatsApp remind button */}
+      <button
+        onClick={handleWhatsApp}
+        disabled={!hasPhone}
+        title={hasPhone ? `Remind ${tenant.name} on WhatsApp` : 'No phone number saved'}
+        className={`shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all active:scale-90 ${
+          hasPhone
+            ? 'bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white cursor-pointer'
+            : 'bg-slate-50 text-slate-200 cursor-not-allowed'
+        }`}
+      >
+        <MessageCircle className="h-4 w-4" />
+      </button>
+
+      {/* Status badge or Mark Paid action */}
       <div className="shrink-0">
         {tenant.status === 'paid' ? (
           <span

@@ -6,6 +6,7 @@ export interface Tenant {
   _id: string;
   name: string;
   email: string;
+  phone?: string;
   property: string | any;
   rentAmount: number;
   dueDate: string;
