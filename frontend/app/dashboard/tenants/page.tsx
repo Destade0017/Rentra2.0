@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
@@ -12,10 +11,12 @@ import {
   Clock,
   Search,
   MessageCircle,
+  ChevronRight,
 } from 'lucide-react';
 import { useTenants, Tenant, useMarkPaid } from '@/hooks/use-tenants';
 import { openWhatsApp } from '@/lib/whatsapp';
 import { AddTenantModal } from '@/components/modals/add-tenant-modal';
+import { TenantQuickViewModal } from '@/components/modals/tenant-quick-view-modal';
 import { formatCurrency } from '@/lib/utils';
 
 type Filter = 'all' | 'unpaid' | 'pending' | 'paid';
@@ -30,6 +31,7 @@ export default function TenantsPage() {
 
   const { mutate: markPaid } = useMarkPaid();
   const [isTenantModalOpen, setIsTenantModalOpen] = useState(false);
+  const [selectedTenant, setSelectedTenant] = useState<Tenant | null>(null);
   const [filter, setFilter] = useState<Filter>('all');
   const [search, setSearch] = useState('');
   const [markingId, setMarkingId] = useState<string | null>(null);
@@ -57,7 +59,12 @@ export default function TenantsPage() {
 
   const handleMarkPaid = (id: string) => {
     setMarkingId(id);
-    markPaid(id, { onSettled: () => setMarkingId(null) });
+    markPaid(id, {
+      onSettled: () => {
+        setMarkingId(null);
+        // Keep quick-view open but update the displayed tenant from fresh data
+      },
+    });
   };
 
   if (error) {
@@ -88,6 +95,14 @@ export default function TenantsPage() {
         isOpen={isTenantModalOpen}
         onClose={() => setIsTenantModalOpen(false)}
         onSuccess={fetchTenants}
+      />
+
+      {/* Quick View Modal — always mounted, controlled by selectedTenant */}
+      <TenantQuickViewModal
+        tenant={selectedTenant}
+        onClose={() => setSelectedTenant(null)}
+        onMarkPaid={handleMarkPaid}
+        markingId={markingId}
       />
 
       {/* HEADER */}
@@ -180,6 +195,7 @@ export default function TenantsPage() {
               tenant={tenant}
               isMarking={markingId === tenant._id}
               onMarkPaid={handleMarkPaid}
+              onRowClick={() => setSelectedTenant(tenant)}
             />
           ))}
         </div>
@@ -235,10 +251,12 @@ function TenantRow({
   tenant,
   isMarking,
   onMarkPaid,
+  onRowClick,
 }: {
   tenant: Tenant;
   isMarking: boolean;
   onMarkPaid: (id: string) => void;
+  onRowClick: () => void;
 }) {
   const statusConfig = {
     paid: {
@@ -258,35 +276,36 @@ function TenantRow({
     },
   };
 
-  const cfg = statusConfig[tenant.status] || statusConfig.pending;
-  const hasPhone = !!tenant.phone;
-
-  const handleWhatsApp = () => {
-    const sent = openWhatsApp(tenant.phone, tenant.name, tenant.rentAmount);
-    if (!sent) {
-      // Shouldn't happen since button is disabled when no phone, but just in case
-      alert('No WhatsApp number saved for this tenant.');
-    }
-  };
+  const cfg = statusConfig[tenant.status] ?? statusConfig.pending;
+  const hasPhone = !!tenant.phone?.trim();
 
   return (
-    <div className="flex items-center gap-3 px-5 py-4 hover:bg-slate-50/60 transition-colors group">
+    /* Entire row is clickable — buttons stop propagation */
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onRowClick}
+      onKeyDown={(e) => e.key === 'Enter' && onRowClick()}
+      className="flex items-center gap-3 px-5 py-4 hover:bg-slate-50/80 active:bg-slate-50 transition-colors cursor-pointer group"
+    >
       {/* Avatar */}
-      <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center font-black text-sm text-slate-700 shrink-0 overflow-hidden">
+      <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center font-black text-sm text-slate-700 shrink-0 overflow-hidden group-hover:border-indigo-100 transition-colors">
         {tenant.profileImage ? (
           <img src={tenant.profileImage} alt={tenant.name} className="w-full h-full object-cover" />
         ) : (
-          (tenant.name || '?').charAt(0).toUpperCase()
+          (tenant.name ?? '?').charAt(0).toUpperCase()
         )}
       </div>
 
       {/* Name + email */}
       <div className="flex-1 min-w-0">
-        <p className="font-bold text-slate-900 text-sm truncate">{tenant.name}</p>
+        <p className="font-bold text-slate-900 text-sm truncate group-hover:text-indigo-700 transition-colors">
+          {tenant.name}
+        </p>
         <p className="text-[11px] text-slate-400 font-medium truncate">{tenant.email}</p>
       </div>
 
-      {/* Rent amount */}
+      {/* Rent amount — hidden on mobile, shown on sm+ */}
       <div className="text-right hidden sm:block shrink-0">
         <p className="font-black text-slate-900 text-sm tabular-nums">
           ₦{formatCurrency(tenant.rentAmount)}
@@ -294,9 +313,12 @@ function TenantRow({
         <p className="text-[10px] text-slate-400 font-semibold">/ month</p>
       </div>
 
-      {/* WhatsApp remind button */}
+      {/* WhatsApp remind button — stops row click propagation */}
       <button
-        onClick={handleWhatsApp}
+        onClick={(e) => {
+          e.stopPropagation();
+          openWhatsApp(tenant.phone, tenant.name, tenant.rentAmount);
+        }}
         disabled={!hasPhone}
         title={hasPhone ? `Remind ${tenant.name} on WhatsApp` : 'No phone number saved'}
         className={`shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all active:scale-90 ${
@@ -308,8 +330,8 @@ function TenantRow({
         <MessageCircle className="h-4 w-4" />
       </button>
 
-      {/* Status badge or Mark Paid action */}
-      <div className="shrink-0">
+      {/* Status badge or Mark Paid — stops row click propagation */}
+      <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
         {tenant.status === 'paid' ? (
           <span
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${cfg.badge}`}
@@ -327,6 +349,9 @@ function TenantRow({
           </Button>
         )}
       </div>
+
+      {/* Chevron hint — visible on hover */}
+      <ChevronRight className="h-4 w-4 text-slate-200 group-hover:text-indigo-400 transition-colors shrink-0 hidden sm:block" />
     </div>
   );
 }
