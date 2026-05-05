@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Tenant } from '@/hooks/use-tenants';
 import { useProperties } from '@/hooks/use-properties';
 import { useMarkPaid } from '@/hooks/use-tenants';
-import { openWhatsApp } from '@/lib/whatsapp';
+import { openWhatsApp, formatPhoneForWhatsApp } from '@/lib/whatsapp';
 import { formatCurrency } from '@/lib/utils';
 
 interface TenantQuickViewProps {
@@ -187,7 +187,7 @@ export function TenantQuickViewModal({
             {hasPhone ? (
               <span className="text-sm font-semibold text-slate-700 flex items-center gap-1.5">
                 <Phone className="h-3.5 w-3.5 text-slate-300 shrink-0" />
-                +{tenant.phone?.startsWith('0') ? `234${tenant.phone?.slice(1)}` : tenant.phone}
+                +{formatPhoneForWhatsApp(tenant.phone || '')}
               </span>
             ) : (
               <span className="text-sm text-slate-300 font-medium">Not saved</span>

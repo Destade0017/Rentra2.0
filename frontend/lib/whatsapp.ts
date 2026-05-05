@@ -1,28 +1,41 @@
 /**
  * Formats a phone number to international format for WhatsApp.
- * - Strips spaces, dashes, parentheses
- * - Removes leading 0 and prepends country code (default: 234 for Nigeria)
- * - Returns null if the number is empty or clearly invalid
+ * - Strips all non-digit characters
+ * - Ensures no leading zero after country code
+ * - Prepends country code (default: 234 for Nigeria)
+ * - Returns null if the number is clearly invalid
  */
 export function formatPhoneForWhatsApp(
   raw: string,
   countryCode = '234'
 ): string | null {
-  const stripped = raw.replace(/[\s\-().+]/g, '');
+  if (!raw) return null;
 
-  if (!stripped || stripped.length < 7) return null;
+  // Strip everything except digits
+  let digits = raw.replace(/\D/g, '');
 
-  // Already has a country code (starts with + or 234/1/44 etc.)
-  if (stripped.startsWith(countryCode)) return stripped;
+  if (!digits || digits.length < 7) return null;
 
-  // Remove leading zero (local format → international)
-  const local = stripped.startsWith('0') ? stripped.slice(1) : stripped;
+  // Handle leading zero (e.g. 0803... -> 803...)
+  if (digits.startsWith('0')) {
+    digits = digits.slice(1);
+  }
 
-  return `${countryCode}${local}`;
+  // Handle case where user entered country code + leading zero (e.g. 2340803... -> 234803...)
+  if (digits.startsWith(countryCode + '0')) {
+    digits = countryCode + digits.slice(countryCode.length + 1);
+  }
+
+  // Prepend country code if not present
+  if (!digits.startsWith(countryCode)) {
+    digits = countryCode + digits;
+  }
+
+  return digits;
 }
 
 /**
- * Builds a wa.me deep-link with a pre-filled message.
+ * Builds a wa.me link with a pre-filled message.
  * Returns null when the phone number cannot be formatted.
  */
 export function buildWhatsAppLink(
@@ -39,12 +52,12 @@ export function buildWhatsAppLink(
     `of ₦${rentAmount.toLocaleString()} is due. ` +
     `Kindly make payment at your earliest convenience. Thank you! 🏠`;
 
+  // Standard wa.me format: https://wa.me/number?text=message
   return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }
 
 /**
  * Opens the WhatsApp link in a new tab.
- * Returns false if the phone number is missing/invalid.
  */
 export function openWhatsApp(
   phone: string | undefined,
@@ -54,6 +67,8 @@ export function openWhatsApp(
   if (!phone) return false;
   const link = buildWhatsAppLink(phone, tenantName, rentAmount);
   if (!link) return false;
+  
+  // Open in new tab
   window.open(link, '_blank', 'noopener,noreferrer');
   return true;
 }
