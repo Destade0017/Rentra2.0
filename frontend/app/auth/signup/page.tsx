@@ -10,7 +10,7 @@ import { AlertCircle } from 'lucide-react';
 import { Spinner } from '@/components/ui/spinner';
 import { useAuth } from '@/hooks/use-auth';
 import { AuthCard } from '@/components/auth/auth-card';
-import { GoogleButton } from '@/components/auth/google-button';
+// import { GoogleButton } from '@/components/auth/google-button';
 import api from '@/lib/api';
 
 export default function SignupPage() {
@@ -88,10 +88,10 @@ export default function SignupPage() {
         </Alert>
       )}
 
-      {/* Google OAuth */}
+      {/* Google OAuth - Temporarily disabled */}
+      {/* 
       <GoogleButton onError={(msg) => setError(msg)} />
 
-      {/* Divider */}
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-zinc-100" />
@@ -102,6 +102,7 @@ export default function SignupPage() {
           </span>
         </div>
       </div>
+      */}
 
       <form onSubmit={handleSignup} className="space-y-4">
         <div className="space-y-2">
