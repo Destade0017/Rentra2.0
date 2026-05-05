@@ -94,24 +94,32 @@ export const updateTenantStatus = asyncHandler(async (req, res) => {
         throw new Error(`Status must be one of: ${validStatuses.join(', ')}`);
     }
 
-    // Verify ownership via the property's landlord field
+    // 1. Find the tenant first to check ownership
     const tenant = await Tenant.findById(req.params.id).populate('property');
     if (!tenant) {
         res.status(404);
         throw new Error('Tenant not found');
     }
 
-    if (String(tenant.property?.landlord) !== String(req.user._id)) {
+    // 2. Verify ownership via the property's landlord field
+    // Ensure we handle cases where property might not be populated or landlord is missing
+    const landlordId = tenant.property?.landlord?._id || tenant.property?.landlord;
+    
+    if (String(landlordId) !== String(req.user._id)) {
         res.status(403);
-        throw new Error('Access denied');
+        throw new Error('Access denied: You do not own this property');
     }
 
-    tenant.status = status;
-    await tenant.save();
+    // 3. Update the status using findByIdAndUpdate for a cleaner update
+    const updatedTenant = await Tenant.findByIdAndUpdate(
+        req.params.id,
+        { status },
+        { new: true, runValidators: true }
+    );
 
     res.status(200).json({
         success: true,
-        message: 'Payment status updated',
-        data: tenant
+        message: `Tenant marked as ${status}`,
+        data: updatedTenant
     });
 });

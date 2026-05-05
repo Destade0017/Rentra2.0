@@ -60,9 +60,14 @@ export default function TenantsPage() {
   const handleMarkPaid = (id: string) => {
     setMarkingId(id);
     markPaid(id, {
+      onSuccess: (response) => {
+        // If the quick-view modal is open for this tenant, update its data
+        if (selectedTenant && selectedTenant._id === id) {
+          setSelectedTenant(response.data);
+        }
+      },
       onSettled: () => {
         setMarkingId(null);
-        // Keep quick-view open but update the displayed tenant from fresh data
       },
     });
   };
